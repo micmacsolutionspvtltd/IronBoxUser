@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Quicksand-Medium.ttf">
+            <string>Quicksand-Medium</string>
+        </array>
+        <array key="Quicksand-Regular.ttf">
+            <string>Quicksand-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="150" id="KGk-i7-Jjw" customClass="MySubscriptionsTableViewCell" customModule="Ironbox" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="354" height="150"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="354" height="149.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ODO-KP-TiG">
+                        <rect key="frame" x="15" y="15" width="324" height="134.5"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rs.8.5 per cloth" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="psk-7M-Xnb">
+                                <rect key="frame" x="12" y="15" width="245" height="16.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16.5" id="SiW-tG-Ykt"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Quicksand-Regular" family="Quicksand" pointSize="13"/>
+                                <color key="textColor" red="0.1019607843" green="0.23529411759999999" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total 200 clothes" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M3u-pw-TFl">
+                                <rect key="frame" x="12" y="34.5" width="245" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="nG0-rS-0ee"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Quicksand-Regular" family="Quicksand" pointSize="13"/>
+                                <color key="textColor" red="0.1019607843" green="0.23529411759999999" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rs.1000/1 month " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Hu-aO-kpz">
+                                <rect key="frame" x="12" y="80.5" width="245" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="rQi-ma-SJj"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Quicksand-Medium" family="Quicksand" pointSize="15"/>
+                                <color key="textColor" red="0.1019607843" green="0.23529411759999999" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rs. 9" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="6Is-uZ-kNC">
+                                <rect key="frame" x="262" y="42" width="50" height="50"/>
+                                <color key="backgroundColor" red="0.35294117650000001" green="0.81176470590000005" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="efp-ui-VzO"/>
+                                    <constraint firstAttribute="height" constant="50" id="qf5-AR-yyE"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Quicksand-Medium" family="Quicksand" pointSize="13"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Balance 200 clothes" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k5P-qy-jC1">
+                                <rect key="frame" x="12" y="57.5" width="245" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="Iq6-2k-1FF"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Quicksand-Regular" family="Quicksand" pointSize="13"/>
+                                <color key="textColor" red="0.1019607843" green="0.23529411759999999" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Expires on 22 Aug 2018" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9DA-PX-tou">
+                                <rect key="frame" x="12" y="103.5" width="245" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="ooR-1p-Jlv"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Quicksand-Regular" family="Quicksand" pointSize="13"/>
+                                <color key="textColor" red="0.1019607843" green="0.23529411759999999" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="M3u-pw-TFl" firstAttribute="top" secondItem="psk-7M-Xnb" secondAttribute="bottom" constant="3" id="2Ed-OG-hpG"/>
+                            <constraint firstItem="7Hu-aO-kpz" firstAttribute="width" secondItem="k5P-qy-jC1" secondAttribute="width" id="43m-JI-0cK"/>
+                            <constraint firstItem="psk-7M-Xnb" firstAttribute="width" secondItem="M3u-pw-TFl" secondAttribute="width" id="G06-u6-m3d"/>
+                            <constraint firstItem="6Is-uZ-kNC" firstAttribute="leading" secondItem="k5P-qy-jC1" secondAttribute="trailing" constant="5" id="Jfm-yc-d7r"/>
+                            <constraint firstItem="7Hu-aO-kpz" firstAttribute="top" secondItem="k5P-qy-jC1" secondAttribute="bottom" constant="3" id="KFZ-UM-TvE"/>
+                            <constraint firstItem="9DA-PX-tou" firstAttribute="leading" secondItem="ODO-KP-TiG" secondAttribute="leading" constant="12" id="NGE-1D-sKb"/>
+                            <constraint firstItem="k5P-qy-jC1" firstAttribute="top" secondItem="M3u-pw-TFl" secondAttribute="bottom" constant="3" id="Tu0-j1-cFf"/>
+                            <constraint firstItem="M3u-pw-TFl" firstAttribute="leading" secondItem="ODO-KP-TiG" secondAttribute="leading" constant="12" id="cAY-zo-yzC"/>
+                            <constraint firstItem="k5P-qy-jC1" firstAttribute="leading" secondItem="ODO-KP-TiG" secondAttribute="leading" constant="12" id="e82-Kj-GdB"/>
+                            <constraint firstItem="M3u-pw-TFl" firstAttribute="width" secondItem="k5P-qy-jC1" secondAttribute="width" id="g8B-6w-n0S"/>
+                            <constraint firstItem="psk-7M-Xnb" firstAttribute="leading" secondItem="ODO-KP-TiG" secondAttribute="leading" constant="12" id="hmQ-QR-TCb"/>
+                            <constraint firstItem="9DA-PX-tou" firstAttribute="top" secondItem="7Hu-aO-kpz" secondAttribute="bottom" constant="3" id="iJO-uz-FYs"/>
+                            <constraint firstItem="9DA-PX-tou" firstAttribute="width" secondItem="k5P-qy-jC1" secondAttribute="width" id="iLp-yy-BEr"/>
+                            <constraint firstAttribute="trailing" secondItem="6Is-uZ-kNC" secondAttribute="trailing" constant="12" id="iPv-Vb-UdR"/>
+                            <constraint firstItem="7Hu-aO-kpz" firstAttribute="leading" secondItem="ODO-KP-TiG" secondAttribute="leading" constant="12" id="jjM-Us-RAI"/>
+                            <constraint firstItem="6Is-uZ-kNC" firstAttribute="centerY" secondItem="ODO-KP-TiG" secondAttribute="centerY" id="q7Q-tq-Stf"/>
+                            <constraint firstItem="k5P-qy-jC1" firstAttribute="centerY" secondItem="ODO-KP-TiG" secondAttribute="centerY" id="wYL-jG-wcg"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" red="0.1019607843" green="0.23529411759999999" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                <constraints>
+                    <constraint firstItem="ODO-KP-TiG" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="6Gr-ol-aVR"/>
+                    <constraint firstItem="ODO-KP-TiG" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="C2g-mA-2fc"/>
+                    <constraint firstAttribute="trailing" secondItem="ODO-KP-TiG" secondAttribute="trailing" constant="15" id="W9e-9L-XCq"/>
+                    <constraint firstAttribute="bottom" secondItem="ODO-KP-TiG" secondAttribute="bottom" id="zMJ-6E-Nku"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="lblBalanceClothes" destination="k5P-qy-jC1" id="DEP-Bz-lmE"/>
+                <outlet property="lblExpiry" destination="9DA-PX-tou" id="xXo-zV-RQH"/>
+                <outlet property="lblOriginalRate" destination="6Is-uZ-kNC" id="EfX-rJ-FKL"/>
+                <outlet property="lblPackageDetail" destination="7Hu-aO-kpz" id="SmL-pf-oQZ"/>
+                <outlet property="lblRatePerCloth" destination="psk-7M-Xnb" id="kKW-tN-Cgb"/>
+                <outlet property="lblTotalClothes" destination="M3u-pw-TFl" id="cte-Kk-VE7"/>
+                <outlet property="viewBG" destination="ODO-KP-TiG" id="hcZ-W3-z8s"/>
+            </connections>
+            <point key="canvasLocation" x="51" y="159"/>
+        </tableViewCell>
+    </objects>
+</document>

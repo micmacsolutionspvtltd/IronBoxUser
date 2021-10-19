@@ -1,0 +1,68 @@
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '9.0'
+
+use_frameworks!
+
+target 'Ironbox' do
+#    pod 'SDWebImage'
+    pod 'ReachabilitySwift'
+    pod 'Alamofire', '~> 4.5'
+    pod 'AlamofireImage', '~> 3.3'
+    pod 'SwiftyJSON'
+    pod 'Toaster'
+    pod 'NVActivityIndicatorView'
+    pod 'ImageSlideshow/Kingfisher'
+    pod 'SideMenu'
+    pod 'DropDown'
+    pod 'JVFloatLabeledTextField'
+    pod 'UIFloatLabelTextView'
+    pod 'GoogleMaps'
+    pod 'GooglePlaces'
+    pod 'GooglePlacePicker'
+    pod 'DatePickerDialog'
+    pod 'CircularRevealKit', '~> 0.8'
+    pod 'Spring'
+    pod 'UIFloatLabelTextView'
+    pod 'Cosmos', '~> 15.0'
+    pod 'Firebase/Core'
+    pod 'Firebase/Messaging'
+    pod 'SwiftGifOrigin'
+    pod 'Motion'
+    pod 'Parchment'
+    pod 'FBSDKCoreKit'
+    pod 'FBSDKLoginKit'
+    pod 'GoogleAnalytics'
+
+    
+#    pod 'Paytm-Payments'
+
+    pod 'AWSAutoScaling'
+    pod 'AWSCloudWatch'
+    pod 'AWSCognito'
+    pod 'AWSCognitoIdentityProvider'
+    pod 'AWSDynamoDB'
+    pod 'AWSEC2'
+    pod 'AWSElasticLoadBalancing'
+    pod 'AWSIoT'
+    pod 'AWSKinesis'
+    pod 'AWSLambda'
+    pod 'AWSLex'
+    pod 'AWSMachineLearning'
+    pod 'AWSMobileAnalytics'
+    pod 'AWSPinpoint'
+    pod 'AWSPolly'
+    pod 'AWSRekognition'
+    pod 'AWSS3'
+    pod 'AWSSES'
+    pod 'AWSSimpleDB'
+    pod 'AWSSNS'
+    pod 'AWSSQS'
+
+post_install do |installer|
+    installer.pods_project.build_configurations.each do |config|
+        config.build_settings.delete('CODE_SIGNING_ALLOWED')
+        config.build_settings.delete('CODE_SIGNING_REQUIRED')
+    end
+end
+end
+

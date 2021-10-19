@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "FD1E9FB8-FB74-4B01-A039-15DFBC1D9EFA"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "320CDD1F-D32A-4211-AAD5-577801941CF2"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Ironbox/ViewControllers/OnGoingTableViewCell.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "12"
+            endingLineNumber = "12"
+            landmarkName = "OnGoingTableViewCell"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  uuid = "320CDD1F-D32A-4211-AAD5-577801941CF2 - 9f1c8cd6c01999be"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Ironbox.OnGoingTableViewCell.lblBookingId.getter : Swift.Optional&lt;__C.UILabel&gt;"
+                  moduleName = "Ironbox"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vignesh/Desktop/ioSCompleteProjects/IronBox-2020-Completed/Ironbox-2/%3Ccompiler-generated%3E"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "7">
+               </Location>
+               <Location
+                  uuid = "320CDD1F-D32A-4211-AAD5-577801941CF2 - 8d7b1c3f0ee716d0"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "function signature specialization &lt;Arg[1] = Owned To Guaranteed&gt; of Ironbox.OnGoingTableViewCell.init(style: __C.UITableViewCellStyle, reuseIdentifier: Swift.Optional&lt;Swift.String&gt;) -&gt; Ironbox.OnGoingTableViewCell"
+                  moduleName = "Ironbox"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vignesh/Desktop/ioSCompleteProjects/IronBox-2020-Completed/Ironbox-2/Ironbox/ViewControllers/OnGoingTableViewCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "13"
+                  endingLineNumber = "13"
+                  offsetFromSymbolStart = "31">
+               </Location>
+               <Location
+                  uuid = "320CDD1F-D32A-4211-AAD5-577801941CF2 - 65da7dce830ca08c"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "function signature specialization &lt;Arg[0] = Owned To Guaranteed&gt; of Ironbox.OnGoingTableViewCell.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;Ironbox.OnGoingTableViewCell&gt;"
+                  moduleName = "Ironbox"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vignesh/Desktop/ioSCompleteProjects/IronBox-2020-Completed/Ironbox-2/Ironbox/ViewControllers/OnGoingTableViewCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "13"
+                  endingLineNumber = "13"
+                  offsetFromSymbolStart = "19">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "79EE651D-91D2-4D97-866A-849EB8839124"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Ironbox/Main Class/AlamofireHC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "17"
+            endingLineNumber = "17"
+            landmarkName = "AlamofireHC"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "08B3F3AC-63AB-40B8-AB67-8AAA6F3BADA4"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Ironbox/ViewControllers/RateCardVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "15"
+            endingLineNumber = "15"
+            landmarkName = "RateCardVC"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  uuid = "08B3F3AC-63AB-40B8-AB67-8AAA6F3BADA4 - 606f2c1463f49fb1"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Ironbox.RateCardVC.viewBG.getter : Swift.Optional&lt;Spring.SpringView&gt;"
+                  moduleName = "Ironbox"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vignesh/Desktop/vicky/Ironbox/Ironbox/ViewControllers/RateCardVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "16"
+                  endingLineNumber = "16"
+                  offsetFromSymbolStart = "88">
+               </Location>
+               <Location
+                  uuid = "08B3F3AC-63AB-40B8-AB67-8AAA6F3BADA4 - f4b82b2b218462fd"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Ironbox.RateCardVC.viewBG.setter : Swift.Optional&lt;Spring.SpringView&gt;"
+                  moduleName = "Ironbox"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vignesh/Desktop/vicky/Ironbox/Ironbox/ViewControllers/RateCardVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "16"
+                  endingLineNumber = "16"
+                  offsetFromSymbolStart = "104">
+               </Location>
+               <Location
+                  uuid = "08B3F3AC-63AB-40B8-AB67-8AAA6F3BADA4 - 23a9ade004ecbd0e"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Ironbox.RateCardVC.viewBG.modify : Swift.Optional&lt;Spring.SpringView&gt;"
+                  moduleName = "Ironbox"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vignesh/Desktop/vicky/Ironbox/Ironbox/ViewControllers/RateCardVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "67">
+               </Location>
+               <Location
+                  uuid = "08B3F3AC-63AB-40B8-AB67-8AAA6F3BADA4 - 47043c3a018a549e"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Ironbox.RateCardVC.viewBG.modify : Swift.Optional&lt;Spring.SpringView&gt; with unmangled suffix &quot;.resume.0&quot;"
+                  moduleName = "Ironbox"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vignesh/Desktop/vicky/Ironbox/Ironbox/ViewControllers/RateCardVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "16"
+                  endingLineNumber = "16"
+                  offsetFromSymbolStart = "76">
+               </Location>
+               <Location
+                  uuid = "08B3F3AC-63AB-40B8-AB67-8AAA6F3BADA4 - 604594c9b2818bd5"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Ironbox.RateCardVC.init(nibName: Swift.Optional&lt;Swift.String&gt;, bundle: Swift.Optional&lt;__C.NSBundle&gt;) -&gt; Ironbox.RateCardVC"
+                  moduleName = "Ironbox"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vignesh/Desktop/vicky/Ironbox/Ironbox/ViewControllers/RateCardVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "16"
+                  endingLineNumber = "16"
+                  offsetFromSymbolStart = "182">
+               </Location>
+               <Location
+                  uuid = "08B3F3AC-63AB-40B8-AB67-8AAA6F3BADA4 - d5cc1e7ab1fe8a4a"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Ironbox.RateCardVC.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;Ironbox.RateCardVC&gt;"
+                  moduleName = "Ironbox"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vignesh/Desktop/vicky/Ironbox/Ironbox/ViewControllers/RateCardVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "16"
+                  endingLineNumber = "16"
+                  offsetFromSymbolStart = "119">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "82A39CC1-61A8-4915-AFB6-5EF596746DEB"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Ironbox/ViewControllers/TransactionsTableViewCell.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "12"
+            endingLineNumber = "12"
+            landmarkName = "TransactionsTableViewCell"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  uuid = "82A39CC1-61A8-4915-AFB6-5EF596746DEB - cc648137707ea312"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "function signature specialization &lt;Arg[1] = Owned To Guaranteed&gt; of Ironbox.TransactionsTableViewCell.init(style: __C.UITableViewCellStyle, reuseIdentifier: Swift.Optional&lt;Swift.String&gt;) -&gt; Ironbox.TransactionsTableViewCell"
+                  moduleName = "Ironbox"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vignesh/Desktop/KFE/days/4.13.21/Ironbox-2%202/Ironbox/ViewControllers/TransactionsTableViewCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "13"
+                  endingLineNumber = "13"
+                  offsetFromSymbolStart = "31">
+               </Location>
+               <Location
+                  uuid = "82A39CC1-61A8-4915-AFB6-5EF596746DEB - 8b4a5a63cc96a954"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "function signature specialization &lt;Arg[0] = Owned To Guaranteed&gt; of Ironbox.TransactionsTableViewCell.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;Ironbox.TransactionsTableViewCell&gt;"
+                  moduleName = "Ironbox"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vignesh/Desktop/KFE/days/4.13.21/Ironbox-2%202/Ironbox/ViewControllers/TransactionsTableViewCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "13"
+                  endingLineNumber = "13"
+                  offsetFromSymbolStart = "19">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CBC849B6-4417-497D-A45B-2F6D8A048437"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Ironbox/ViewControllers/LaunchVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "15"
+            endingLineNumber = "15"
+            landmarkName = "LaunchVC"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

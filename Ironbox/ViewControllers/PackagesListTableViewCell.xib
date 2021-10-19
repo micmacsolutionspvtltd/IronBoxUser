@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Quicksand-Medium.ttf">
+            <string>Quicksand-Medium</string>
+        </array>
+        <array key="Quicksand-Regular.ttf">
+            <string>Quicksand-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="131" id="KGk-i7-Jjw" customClass="PackagesListTableViewCell" customModule="Ironbox" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="347" height="135"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="347" height="134.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XLu-SE-8GG">
+                        <rect key="frame" x="15" y="15" width="317" height="119.5"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rs.8.5 per cloth" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CJ7-0j-wYo">
+                                <rect key="frame" x="12" y="25.5" width="233" height="16.5"/>
+                                <fontDescription key="fontDescription" name="Quicksand-Regular" family="Quicksand" pointSize="13"/>
+                                <color key="textColor" red="0.1019607843" green="0.23529411759999999" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total 200 clothes" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JcK-0S-zc9">
+                                <rect key="frame" x="12" y="52" width="233" height="16.5"/>
+                                <fontDescription key="fontDescription" name="Quicksand-Regular" family="Quicksand" pointSize="13"/>
+                                <color key="textColor" red="0.1019607843" green="0.23529411759999999" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rs.1000/1 month " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6WR-Mh-VsS">
+                                <rect key="frame" x="12" y="78" width="233" height="19"/>
+                                <fontDescription key="fontDescription" name="Quicksand-Medium" family="Quicksand" pointSize="15"/>
+                                <color key="textColor" red="0.1019607843" green="0.23529411759999999" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rs. 9" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="EXv-uA-iMp">
+                                <rect key="frame" x="255" y="34.5" width="50" height="50"/>
+                                <color key="backgroundColor" red="0.35294117650000001" green="0.81176470590000005" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="COw-XQ-fug"/>
+                                    <constraint firstAttribute="height" constant="50" id="O83-Xh-HDK"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Quicksand-Medium" family="Quicksand" pointSize="13"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="JcK-0S-zc9" firstAttribute="top" secondItem="CJ7-0j-wYo" secondAttribute="bottom" constant="10" id="2q9-3p-kAI"/>
+                            <constraint firstItem="6WR-Mh-VsS" firstAttribute="top" secondItem="JcK-0S-zc9" secondAttribute="bottom" constant="10" id="E1Y-Ag-DpX"/>
+                            <constraint firstItem="JcK-0S-zc9" firstAttribute="leading" secondItem="XLu-SE-8GG" secondAttribute="leading" constant="12" id="N7T-tG-4a6"/>
+                            <constraint firstItem="CJ7-0j-wYo" firstAttribute="width" secondItem="JcK-0S-zc9" secondAttribute="width" id="OJJ-0j-aIN"/>
+                            <constraint firstAttribute="trailing" secondItem="EXv-uA-iMp" secondAttribute="trailing" constant="12" id="SkN-Yh-WMy"/>
+                            <constraint firstItem="6WR-Mh-VsS" firstAttribute="leading" secondItem="XLu-SE-8GG" secondAttribute="leading" constant="12" id="UKt-TT-wla"/>
+                            <constraint firstItem="EXv-uA-iMp" firstAttribute="leading" secondItem="JcK-0S-zc9" secondAttribute="trailing" constant="10" id="bqp-e7-XtC"/>
+                            <constraint firstItem="JcK-0S-zc9" firstAttribute="centerY" secondItem="XLu-SE-8GG" secondAttribute="centerY" id="ePP-I5-avp"/>
+                            <constraint firstItem="6WR-Mh-VsS" firstAttribute="width" secondItem="JcK-0S-zc9" secondAttribute="width" id="eWM-se-ctK"/>
+                            <constraint firstItem="EXv-uA-iMp" firstAttribute="centerY" secondItem="XLu-SE-8GG" secondAttribute="centerY" id="hoB-6J-KKG"/>
+                            <constraint firstItem="CJ7-0j-wYo" firstAttribute="leading" secondItem="XLu-SE-8GG" secondAttribute="leading" constant="12" id="rgf-eg-eIi"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" red="0.1019607843" green="0.23529411759999999" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                <constraints>
+                    <constraint firstItem="XLu-SE-8GG" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="7dU-Yk-wOl"/>
+                    <constraint firstAttribute="bottom" secondItem="XLu-SE-8GG" secondAttribute="bottom" id="J6N-o0-6He"/>
+                    <constraint firstAttribute="trailing" secondItem="XLu-SE-8GG" secondAttribute="trailing" constant="15" id="LMP-Kg-Rui"/>
+                    <constraint firstItem="XLu-SE-8GG" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="gPg-fi-sek"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="lblOriginalRate" destination="EXv-uA-iMp" id="tXL-7o-TfU"/>
+                <outlet property="lblPackageDetail" destination="6WR-Mh-VsS" id="wF6-jR-PSz"/>
+                <outlet property="lblRatePerCloth" destination="CJ7-0j-wYo" id="J9S-3n-TxE"/>
+                <outlet property="lblTotalClothes" destination="JcK-0S-zc9" id="olx-TL-rFd"/>
+                <outlet property="viewBG" destination="XLu-SE-8GG" id="NQx-RY-tss"/>
+            </connections>
+            <point key="canvasLocation" x="47.5" y="153.5"/>
+        </tableViewCell>
+    </objects>
+</document>
