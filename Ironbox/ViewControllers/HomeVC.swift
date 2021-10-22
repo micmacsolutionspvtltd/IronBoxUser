@@ -17,8 +17,9 @@ import Spring
 import ImageSlideshow
 import FBSDKCoreKit
 import SwiftUI
+import SnapKit
 
-class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
+class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, ObservableObject {
     
     @IBOutlet weak var viewOnGoingServicesCount: SpringView!
     
@@ -88,49 +89,161 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
     var strBookingDate = ""
     var strAddressId = ""
     var strAddresspassId = ""
-    var strTimeSlot = ""
+    @Published var strTimeSlot = ""
     var strTimeSlotID = ""
     var strPaymentType = ""
     var strQuantity = ""
-    var  nTutorialNumber = Int()
+    var nTutorialNumber = Int()
     var strPackageSubscribed = ""
     var frameLblClothesCount = CGRect()
     var frameTxtClothesCount = CGRect()
     var CurrentDate = ""
     var deliverytype = ""
-
+    
     let yourAttributes : [NSAttributedStringKey: Any] = [
         NSAttributedStringKey.font : UIFont(name: FONT_LIGHT, size: 14)!,
         NSAttributedStringKey.foregroundColor : UIColor(red: 26/255, green: 60/255, blue: 92/255, alpha: 1.0),
         NSAttributedStringKey.underlineStyle : NSUnderlineStyle.styleSingle.rawValue]
     
+    var isShowLocationConfirmationAlert = false {
+        didSet {
+            showOrHideLocationConfirmationAlert()
+        }
+    }
+    
+    let locationConfirmationAlertView = LocationConfirmationAlertView().uiView()
+    lazy var viewClothes2: UIView = {
+        let v = ScheduleMyPickupScreen(data: self).uiView()
+        return v
+    }()
+    let fieldCount = TextFieldCoordinator()
+    let fieldPromoCode = TextFieldCoordinator()
+    let fieldVoucherCode = TextFieldCoordinator()
+    let fieldInstruction = TextFieldCoordinator()
+    
+    @Published var selectedAddressName = ""
+    @Published var dSelectedDate = ""
+    @Published var isCash = true {
+        didSet {
+            strPaymentType = isCash ? "Cash" : "Wallet"
+        }
+    }
+    @Published var isNormalDeliveryType = true {
+        didSet {
+            deliverytype = isNormalDeliveryType ? "0" : "1"
+        }
+    }
+    
+//    private var cancellables = Set<Cancellable>()
+    
+    private func showOrHideLocationConfirmationAlert() {
+        if !(navigationController!.view.subviews.contains(where: {$0 == locationConfirmationAlertView})) && isShowLocationConfirmationAlert == true {
+            navigationController?.view.addSubview(locationConfirmationAlertView)
+            locationConfirmationAlertView.snp.makeConstraints { c in
+                c.edges.equalToSuperview()
+            }
+        } else if (navigationController!.view.subviews.contains(where: {$0 == locationConfirmationAlertView})) && isShowLocationConfirmationAlert == false {
+            locationConfirmationAlertView.removeFromSuperview()
+        }
+    }
+    
+    //    enum PopupType: Int {
+    //        case address
+    //        case date
+    //        case time
+    //    }
+    
+    func showPopup(leftView: UIView?, rightView: UIView?, isMoveRight: Bool) {
+        viewAddress.isHidden = true
+        viewDate.isHidden = true
+        viewTime.isHidden = true
+        viewBooking.isHidden = true
+        
+        if leftView != nil || rightView != nil {
+            viewBooking.isHidden = false
+        }
+        let viewWidth = view.frame.width
+        if let leftView = leftView {
+            leftView.isHidden = false
+            leftView.frame.origin.x = isMoveRight ? 0 : -viewWidth
+            //            leftView.frame.origin.y = 0
+            UIView.animate(withDuration: 0.4, animations: {
+                leftView.frame.origin.x = isMoveRight ? -viewWidth : 0
+            })
+        }
+        
+        if let rightView = rightView {
+            rightView.isHidden = false
+            rightView.frame.origin.x = isMoveRight ? viewWidth : 0
+            //            rightView.frame.origin.y = 0
+            UIView.animate(withDuration: 0.4, animations: {
+                rightView.frame.origin.x = isMoveRight ? 0 : viewWidth
+            })
+        }
+    }
+    
+    @objc private func onBack() {
+        showPopup(leftView: nil, rightView: nil, isMoveRight: true)
+        setupNavigationBar(isDefault: true)
+        viewClothes2.isHidden = true
+    }
+    
+    private func setupNavigationBar(isDefault: Bool) {
+        if isDefault {
+            self.navigationController?.navigationBar.titleTextAttributes = [ NSAttributedStringKey.font: UIFont(name: FONT_BOLD, size: 19)!, NSAttributedStringKey.foregroundColor : UIColor(red: 26/255.0, green: 60/255.0, blue: 92/255.0, alpha: 1.0)]
+            
+            let btnMenu = UIButton(type: .custom)
+            btnMenu.setImage(UIImage(named: "Menu"), for: .normal)
+            btnMenu.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+            navigationController?.navigationBar.barTintColor =  UIColor.white
+            btnMenu.addTarget(self, action: #selector(self.onMenuClick), for: .touchUpInside)
+            let item = UIBarButtonItem(customView: btnMenu)
+            self.title = "Ironbox"
+            self.navigationItem.setLeftBarButtonItems([item], animated: true)
+        } else {
+            self.navigationController?.navigationBar.titleTextAttributes = [ NSAttributedStringKey.font: UIFont(name: FONT_BOLD, size: 19)!, NSAttributedStringKey.foregroundColor : UIColor.white]
+            
+            let btnMenu = UIButton(type: .custom)
+            btnMenu.setImage(UIImage(named: "BackButton"), for: .normal)
+            btnMenu.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+            btnMenu.tintColor = .white
+            navigationController?.navigationBar.barTintColor =  UIColor.primaryColor
+            btnMenu.addTarget(self, action: #selector(self.onBack), for: .touchUpInside)
+            let item = UIBarButtonItem(customView: btnMenu)
+            self.title = "Shedule My Pickup"
+            self.navigationItem.setLeftBarButtonItems([item], animated: true)
+        }
+    }
+    
     // MARK: - VIEW LIFE CYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
+        fieldPromoCode.textField.placeholder = "Enter promo code"
+        fieldVoucherCode.textField.placeholder = "Enter voucher code"
+        fieldCount.textField.placeholder = "No. of Clothes"
+        viewClothes2.backgroundColor = .white
+        viewClothes2.isHidden = true
+        view.insertSubview(viewClothes2, belowSubview: viewBooking)
         
-        // Do any additional setup after loading the view.
+        viewClothes2.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        
         self.setFontFamilyAndSize()
         self.addDoneButtonOnKeyboard()
+        
         SideMenuManager.default.menuPresentMode = .menuSlideIn
         SideMenuManager.default.menuAllowPushOfSameClassTwice = true
         SideMenuManager.default.menuWidth = view.frame.width * 0.8
         SideMenuManager.default.menuFadeStatusBar = false
         SideMenuManager.default.menuAnimationFadeStrength = 0.6
         
-        navigationController?.navigationBar.barTintColor =  UIColor.white
-        self.navigationController?.navigationBar.titleTextAttributes = [ NSAttributedStringKey.font: UIFont(name: FONT_BOLD, size: 19)!, NSAttributedStringKey.foregroundColor : UIColor(red: 26/255.0, green: 60/255.0, blue: 92/255.0, alpha: 1.0)]
-        
         deliverytype = "0"
-
+        
         appDelegate.strOfferCode = ""
         nTutorialNumber = 1
-        let btnMenu = UIButton(type: .custom)
-        btnMenu.setImage(UIImage(named: "Menu"), for: .normal)
-        btnMenu.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        btnMenu.addTarget(self, action: #selector(self.onMenuClick), for: .touchUpInside)
-        let item = UIBarButtonItem(customView: btnMenu)
-        self.navigationItem.setLeftBarButtonItems([item], animated: true)
-        
+        setupNavigationBar(isDefault: true)
         imgSlide.pageControlPosition = PageControlPosition.underScrollView
         imgSlide.pageControl.currentPageIndicatorTintColor = UIColor.white
         imgSlide.pageControl.pageIndicatorTintColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.250)
@@ -167,7 +280,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         viewOffers.isHidden = true
         
         tableAddress.backgroundColor = UIColor.white
-
+        
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2)
         {
@@ -200,7 +313,6 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             self.viewOffers.repeatCount = 1
             self.viewOffers.animate()
             
-            
             self.viewOnGoingServicesCount.isHidden = false
             self.viewOnGoingServicesCount.animation = "pop"
             self.viewOnGoingServicesCount.curve = "easeOutCric"
@@ -212,7 +324,6 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         
         frameLblClothesCount = lblClothesCount.frame
         frameTxtClothesCount = txtClothesCount.frame
-        
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -231,6 +342,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         }
         
         self.checkPendingPaytmResponse()
+        showOrHideLocationConfirmationAlert()
         
     }
     override func viewWillLayoutSubviews()
@@ -410,7 +522,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
                 let strAmount = String(describing: Amount)
                 userDefaults.set(strAmount, forKey: AMOUNT)
                 
-              //  let User = json["users"] as? Int ?? 0
+                //  let User = json["users"] as? Int ?? 0
                 let User = 1 as? Int ?? 0
                 let strUser = String(describing: User)
                 userDefaults.set(strUser, forKey: USER)
@@ -448,20 +560,20 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
                 let rating = json.value(forKey: "rating")
                 let strRating = String(describing: rating!)
                 
-//                if strversion == "1"
-//                {
-//                    appDelegate.strUpdateMsg = json["update_message"] as? String ?? ""
-//                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "AppUpdateVC") as! AppUpdateVC
-//                    self.present(vc, animated: true, completion: nil)
-//
-//                }
-//                else if strRating == "1"
-//                {
-//                    appDelegate.dictServiceSuccess = json.value(forKey: "Booking") as! Dictionary<String,Any>
-//                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "ServiceSuccessfullVC") as! ServiceSuccessfullVC
-//                    self.present(vc, animated: true, completion: nil)
-//
-//                }
+                //                if strversion == "1"
+                //                {
+                //                    appDelegate.strUpdateMsg = json["update_message"] as? String ?? ""
+                //                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "AppUpdateVC") as! AppUpdateVC
+                //                    self.present(vc, animated: true, completion: nil)
+                //
+                //                }
+                //                else if strRating == "1"
+                //                {
+                //                    appDelegate.dictServiceSuccess = json.value(forKey: "Booking") as! Dictionary<String,Any>
+                //                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "ServiceSuccessfullVC") as! ServiceSuccessfullVC
+                //                    self.present(vc, animated: true, completion: nil)
+                //
+                //                }
                 
             }
             else if (err == "Unauthenticated.")
@@ -731,7 +843,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         btnOthers.clipsToBounds = true
         tableAddress.isHidden = true
         tableAddress.backgroundColor = UIColor.white
-
+        
         
         if arrHomeAddress.count != 0
         {
@@ -792,13 +904,13 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         viewDate.isHidden = true
         viewClothes.isHidden = true
         
-        viewAddress.frame.origin.y += (self.view.frame.size.height/2)
-        viewAddress.isHidden = false
-        viewBooking.isHidden = false
-        UIView.animate(withDuration: 0.4, animations: {
-            self.viewAddress.frame.origin.y -= (self.view.frame.size.height/2)
-        }, completion: nil)
-        
+        //        viewAddress.frame.origin.y += (self.view.frame.size.height/2)
+        //        viewAddress.isHidden = false
+        //        viewBooking.isHidden = false
+        //        UIView.animate(withDuration: 0.4, animations: {
+        //            self.viewAddress.frame.origin.y -= (self.view.frame.size.height/2)
+        //        }, completion: nil)
+        showPopup(leftView: nil, rightView: viewAddress, isMoveRight: true)
     }
     
     @IBAction func Prevfrmdate(_ sender: Any)
@@ -824,7 +936,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             self.viewClothes.frame.origin.y += (self.view.frame.size.height/10) * 6
             
         }, completion:
-            {
+                        {
             (value: Bool) in
             self.viewBooking.isHidden = true
             self.viewDate.frame.origin.y -= (self.view.frame.size.height/10) * 6
@@ -858,7 +970,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             "pin_id":strAddresspassId
         ]
         print("values:", strBookingDate,strAddresspassId)
-
+        
         self.CheckNetwork()
         
         AlamofireHC.requestPOST(GET_TIMESLOTS, params: param as [String : AnyObject], headers: header, success: { (JSON) in
@@ -879,15 +991,15 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
                 {
                     self.timeCollectionView.reloadData()
                     
-                    self.viewTime.isHidden = false
-                    UIView.animate(withDuration: 0.4, animations: {
-                        self.viewDate.frame.origin.x -= self.view.frame.size.width
-                        self.viewTime.frame.origin.x -= self.view.frame.size.width
-                    }, completion: {
-                        (value: Bool) in
-                        self.viewDate.isHidden = true
-                    })
-                    
+                    //                    self.viewTime.isHidden = false
+                    //                    UIView.animate(withDuration: 0.4, animations: {
+                    //                        self.viewDate.frame.origin.x -= self.view.frame.size.width
+                    //                        self.viewTime.frame.origin.x -= self.view.frame.size.width
+                    //                    }, completion: {
+                    //                        (value: Bool) in
+                    //                        self.viewDate.isHidden = true
+                    //                    })
+                    self.showPopup(leftView: self.viewDate, rightView: self.viewTime, isMoveRight: true)
                 }
                 else
                 {
@@ -927,13 +1039,17 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
     
     @IBAction func onTimeNext(_ sender: Any)
     {
-        viewClothes.isHidden = false
+        //        viewClothes.isHidden = false
+        self.viewBooking.isHidden = true
+        viewClothes2.isHidden = false
+        setupNavigationBar(isDefault: false)
         UIView.animate(withDuration: 0.4, animations: {
             self.viewTime.frame.origin.x -= self.view.frame.size.width
-            self.viewClothes.frame.origin.x -= self.view.frame.size.width
+            //            self.viewClothes2.frame.origin.x -= self.view.frame.size.width
         }, completion: {
             (value: Bool) in
             self.viewTime.isHidden = true
+            
         })
     }
     
@@ -1010,14 +1126,16 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
     
     @IBAction func onAddressNext(_ sender: Any)
     {
-        viewDate.isHidden = false
-        UIView.animate(withDuration: 0.4, animations: {
-            self.viewAddress.frame.origin.x -= self.view.frame.size.width
-            self.viewDate.frame.origin.x -= self.view.frame.size.width
-        }, completion: {
-            (value: Bool) in
-            self.viewAddress.isHidden = true
-        })
+        showPopup(leftView: viewAddress, rightView: viewDate, isMoveRight: true)
+        //        viewDate.isHidden = false
+        //        viewBooking.isHidden = false
+        //        UIView.animate(withDuration: 0.4, animations: {
+        //            self.viewAddress.frame.origin.x = -self.view.frame.size.width// self.view.frame.size.width
+        //            self.viewDate.frame.origin.x = 0
+        //        }, completion: {
+        //            (value: Bool) in
+        //            self.viewAddress.isHidden = true
+        //        })
     }
     
     @IBAction func onClothesPrevious(_ sender: Any)
@@ -1026,10 +1144,10 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         self.viewTime.isHidden = false
         UIView.animate(withDuration: 0.4, animations: {
             self.viewTime.frame.origin.x += self.view.frame.size.width
-            self.viewClothes.frame.origin.x += self.view.frame.size.width
+            //            self.viewClothes2.frame.origin.x += self.view.frame.size.width
         }, completion: {
             (value: Bool) in
-            self.viewClothes.isHidden = true
+            //            self.viewClothes2.isHidden = true
         })
     }
     
@@ -1089,7 +1207,9 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             
             let addresspassId = dictAddress["serviceAreaId"]
             strAddresspassId = String(describing: addresspassId!)
-
+            
+            let address = dictAddress["address"]
+            selectedAddressName = address as? String ?? ""
             
             btnAddressNext.isUserInteractionEnabled = true
             btnAddressNext.setTitleColor(UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1), for: .normal)
@@ -1157,6 +1277,9 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             let addresspassId = dictAddress["serviceAreaId"]
             strAddresspassId = String(describing: addresspassId!)
             
+            let address = dictAddress["address"]
+            selectedAddressName = address as? String ?? ""
+            
             btnAddressNext.isUserInteractionEnabled = true
             btnAddressNext.setTitleColor(UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1), for: .normal)
         }
@@ -1212,6 +1335,8 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             strAddressId = String(describing: addressId!)
             let addresspassId = dictAddress["serviceAreaId"]
             strAddresspassId = String(describing: addresspassId!)
+            let address = dictAddress["address"]
+            selectedAddressName = address as? String ?? ""
             
             viewAddressShow.isHidden = false
             tableAddress.isHidden = false
@@ -1390,42 +1515,61 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
     @IBAction func onConfirmBooking(_ sender: UIButton)
     {
         view.endEditing(true)
-        let strCount = txtClothesCount.text
-        let nCount = Int(strCount!)
         
-        if txtClothesCount.text == "" || (txtClothesCount.text?.trimmingCharacters(in: .whitespaces).isEmpty)!
-        {
-            sender.shake()
-            // ShowAlert(msg: "Please enter your clothes count")
+        guard fieldCount.trimmedText.count > 0 else {
             ToastCenter.default.cancelAll()
             Toast(text: "Please enter your clothes count", duration: 2.5).show()
-            let appearance = ToastView.appearance()
-            appearance.backgroundColor =  UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 0.80)
-            appearance.textColor = UIColor.white
-            appearance.font = UIFont(name: FONT_REG, size: 15)
-            appearance.textInsets = UIEdgeInsets(top: 5, left: 15, bottom: 5, right: 15)
-            appearance.bottomOffsetPortrait = 20
-            appearance.cornerRadius = 15
+            return
         }
-        else if nCount! < 10
-        {
-            sender.shake()
-            // ShowAlert(msg: "Please enter your clothes count")
+        
+        guard let count = Int(fieldCount.text) else {
+            ToastCenter.default.cancelAll()
+            Toast(text: "Enter valid clothes count", duration: 2.5).show()
+            return
+        }
+        
+        
+        guard count >= 10 else {
             ToastCenter.default.cancelAll()
             Toast(text: "Clothes minimum 10 numbers only accepted", duration: 2.5).show()
-            let appearance = ToastView.appearance()
-            appearance.backgroundColor =  UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 0.80)
-            appearance.textColor = UIColor.white
-            appearance.font = UIFont(name: FONT_REG, size: 15)
-            appearance.textInsets = UIEdgeInsets(top: 5, left: 15, bottom: 5, right: 15)
-            appearance.bottomOffsetPortrait = 20
-            appearance.cornerRadius = 15
+            return
         }
-        else
-        {
-            strQuantity = txtClothesCount.text!
-            self.bookingConfirmationAPICall()
-        }
+        
+        self.bookingConfirmationAPICall()
+        
+//        if txtClothesCount.text == "" || (txtClothesCount.text?.trimmingCharacters(in: .whitespaces).isEmpty)!
+//        {
+//            sender.shake()
+//            // ShowAlert(msg: "Please enter your clothes count")
+//            ToastCenter.default.cancelAll()
+//            Toast(text: "Please enter your clothes count", duration: 2.5).show()
+//            let appearance = ToastView.appearance()
+//            appearance.backgroundColor =  UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 0.80)
+//            appearance.textColor = UIColor.white
+//            appearance.font = UIFont(name: FONT_REG, size: 15)
+//            appearance.textInsets = UIEdgeInsets(top: 5, left: 15, bottom: 5, right: 15)
+//            appearance.bottomOffsetPortrait = 20
+//            appearance.cornerRadius = 15
+//        }
+//        else if nCount! < 10
+//        {
+//            sender.shake()
+//            // ShowAlert(msg: "Please enter your clothes count")
+//            ToastCenter.default.cancelAll()
+//            Toast(text: "Clothes minimum 10 numbers only accepted", duration: 2.5).show()
+//            let appearance = ToastView.appearance()
+//            appearance.backgroundColor =  UIColor(red: 101/255, green: 101/255, blue: 101/255, alpha: 0.80)
+//            appearance.textColor = UIColor.white
+//            appearance.font = UIFont(name: FONT_REG, size: 15)
+//            appearance.textInsets = UIEdgeInsets(top: 5, left: 15, bottom: 5, right: 15)
+//            appearance.bottomOffsetPortrait = 20
+//            appearance.cornerRadius = 15
+//        }
+//        else
+//        {
+//            strQuantity = txtClothesCount.text!
+//            self.bookingConfirmationAPICall()
+//        }
     }
     
     @IBAction func onSkipClothesCount(_ sender: Any)
@@ -1437,6 +1581,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         {
             (result : UIAlertAction) -> Void in
             self.strQuantity = ""
+            self.fieldCount.setText("")
             self.bookingConfirmationAPICall()
         }
         
@@ -1451,9 +1596,20 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         self.present(alertController, animated: true, completion: nil)
     }
     
+    
+    var isValid: Bool {
+        if fieldPromoCode.trimmedText.count > 0 && fieldVoucherCode.trimmedText.count > 0 {
+            ToastCenter.default.cancelAll()
+            Toast(text: "Please apply either promocode or voucher code", duration: 2.5).show()
+            return false
+        }
+        return true
+    }
+    
     func bookingConfirmationAPICall()
     {
         view.endEditing(true)
+        guard isValid else { return }
         self.navigationController?.view.addSubview(UIView().customActivityIndicator(view: (self.navigationController?.view)!, widthView: nil, message: "Loading"))
         
         let accessToken = userDefaults.object(forKey: ACCESS_TOKEN)
@@ -1464,12 +1620,13 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             "TimeSlotId":strTimeSlotID,
             "bookingDate":strBookingDate,
             "payment_type":strPaymentType,
-            "promode_code":txtPromoCode.text!,
-            "quantity":strQuantity,
-            "bookingType":deliverytype
+            "promode_code":fieldPromoCode.text,
+            "quantity":fieldCount.text,
+            "bookingType":deliverytype,
+            "voucher_code": fieldVoucherCode.text
         ]
-//        print("addressId,TimeSlotId,bookingDate,payment_type,promode_code,quantity,bookingType", strAddressId,strTimeSlotID,strBookingDate,strPaymentType,txtPromoCode.text,strQuantity)
-        print("token",accessToken)
+        //        print("addressId,TimeSlotId,bookingDate,payment_type,promode_code,quantity,bookingType", strAddressId,strTimeSlotID,strBookingDate,strPaymentType,txtPromoCode.text,strQuantity)
+        print("token", accessToken)
         self.CheckNetwork()
         
         AlamofireHC.requestPOST(USER_BOOKING, params: param as [String : AnyObject], headers: header, success: { (JSON) in
@@ -1525,7 +1682,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
                         self?.ImgBSTick.duration = 1.0
                         self?.ImgBSTick.repeatCount = 1
                         self?.ImgBSTick.animate()
-                }
+                    }
                 
             }
             else
@@ -1554,51 +1711,51 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             let err = json.value(forKey: "error") as? String ?? ""
             if (err == "false")
             {
-            
-                   self.onClose(self)
-                   
-                   let qty = json.value(forKey: "quantity")
-                   let strQty = String(describing: qty!)
-                   
-                   if strQty == ""
-                   {
-                       self.lblBSQuantity.text = "Will be updated post pickup"
-                   }
-                   else
-                   {
-                       self.lblBSQuantity.text = strQty
-                   }
-                   
-                   self.lblBSBookingID.text = json.value(forKey: "bookId") as? String ?? ""
-                   self.lblBSBookedDate.text = json.value(forKey: "bookingDate") as? String ?? ""
-                   self.lblBSBookedTime.text = json.value(forKey: "TimeSlots") as? String ?? ""
-                   let strPaymentMode = json.value(forKey: "paymentType") as? String ?? ""
-                   self.lblBSPaymentType.text = strPaymentMode.uppercased()
-                   
-                   self.viewBookingSuccess.isHidden = false
-                   self.logAdded(toCartEvent: "Success", contentId: "", contentType: "Booking", currency: "Rs", valueToSum: 0)
-                   
-                   let viewControllerSize = self.view.frame.size
-                   let width = viewControllerSize.width
-                   let height = viewControllerSize.height
-                   let rect = CGRect(
-                       origin: CGPoint(
-                           x: width/2,
-                           y: height/2),
-                       size: CGSize(
-                           width: 0,
-                           height: 0))
-                   
-                   self.viewBookingSuccess.drawAnimatedCircularMask(
-                       startFrame: rect,
-                       duration: 0.33,
-                       revealType: RevealType.reveal) { [weak self] in
-                           self?.ImgBSTick.animation = "pop"
-                           self?.ImgBSTick.curve = "easeIn"
-                           self?.ImgBSTick.duration = 1.0
-                           self?.ImgBSTick.repeatCount = 1
-                           self?.ImgBSTick.animate()
-                   }
+                
+                self.onClose(self)
+                
+                let qty = json.value(forKey: "quantity")
+                let strQty = String(describing: qty!)
+                
+                if strQty == ""
+                {
+                    self.lblBSQuantity.text = "Will be updated post pickup"
+                }
+                else
+                {
+                    self.lblBSQuantity.text = strQty
+                }
+                
+                self.lblBSBookingID.text = json.value(forKey: "bookId") as? String ?? ""
+                self.lblBSBookedDate.text = json.value(forKey: "bookingDate") as? String ?? ""
+                self.lblBSBookedTime.text = json.value(forKey: "TimeSlots") as? String ?? ""
+                let strPaymentMode = json.value(forKey: "paymentType") as? String ?? ""
+                self.lblBSPaymentType.text = strPaymentMode.uppercased()
+                
+                self.viewBookingSuccess.isHidden = false
+                self.logAdded(toCartEvent: "Success", contentId: "", contentType: "Booking", currency: "Rs", valueToSum: 0)
+                
+                let viewControllerSize = self.view.frame.size
+                let width = viewControllerSize.width
+                let height = viewControllerSize.height
+                let rect = CGRect(
+                    origin: CGPoint(
+                        x: width/2,
+                        y: height/2),
+                    size: CGSize(
+                        width: 0,
+                        height: 0))
+                
+                self.viewBookingSuccess.drawAnimatedCircularMask(
+                    startFrame: rect,
+                    duration: 0.33,
+                    revealType: RevealType.reveal) { [weak self] in
+                        self?.ImgBSTick.animation = "pop"
+                        self?.ImgBSTick.curve = "easeIn"
+                        self?.ImgBSTick.duration = 1.0
+                        self?.ImgBSTick.repeatCount = 1
+                        self?.ImgBSTick.animate()
+                    }
             }
             else
             {
@@ -1615,7 +1772,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
     
     func logAdded(toCartEvent contentData: String?, contentId: String?, contentType: String?, currency: String?, valueToSum price: Double) {
         let params = [AppEvents.ParameterName.content.rawValue: contentData ?? "", AppEvents.ParameterName.contentID.rawValue: contentId ?? "", AppEvents.ParameterName.contentType.rawValue: contentType ?? "", AppEvents.ParameterName.currency.rawValue: currency ?? ""]
-
+        
         AppEvents.logEvent(AppEvents.Name.completedRegistration, valueToSum: price, parameters: params)
     }
     
@@ -1638,8 +1795,8 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             duration: 0.33,
             revealType: RevealType.unreveal) { [weak self] in
                 self?.viewBookingSuccess.isHidden = true
-        }
-
+            }
+        
     }
     
     // MARK: - TableView DataSource
@@ -1705,6 +1862,9 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         let addresspassId = dictAddress["serviceAreaId"]
         strAddresspassId = String(describing: addresspassId!)
         
+        let address = dictAddress["address"]
+        selectedAddressName = address as? String ?? ""
+        
         tableAddress.reloadData()
     }
     
@@ -1752,36 +1912,36 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             
             //leave days
             
-//            let strDa1 = self.arrleaveDate[indexPath.row] as? String ?? ""
-//            
-//            let dateFormatter1 = DateFormatter()
-//            dateFormatter1.dateFormat = "dd-MM-yyyy"
-//            //   dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
-//            let date1 = dateFormatter1.date(from: strDa1)!
-//            
-//            if (Calendar.current.isDate(date, inSameDayAs:date1))
-//            {
-//                cell.contentView.frame = cell.bounds //This is important line
-//                let viewBG = cell.contentView.viewWithTag(10900) as! UIView
-//                viewBG.layoutIfNeeded() //This is important line
-//                viewBG.layer.cornerRadius = 5
-//                viewBG.layer.borderWidth = 1
-//                viewBG.layer.borderColor = UIColor.clear.cgColor
-//                viewBG.backgroundColor =  UIColor(red: 139/255, green: 214/255, blue: 239/255, alpha: 1)
-//                cell.lblDate.textColor = UIColor.white
-//                cell.lblDay.textColor = UIColor.white
-//                cell.lblMonth.textColor = UIColor.white
-//            }
-   
-//            let formatter1 = DateFormatter()
-//            formatter1.dateFormat = "dd"
-//            let strDate1 = formatter1.string(from: date1 as Date)
-//
-//            formatter1.dateFormat = "EEEEEEE"
-//            let strDay1 = formatter1.string(from: date1 as Date)
-//
-//            formatter1.dateFormat = "MMM"
-//            let strMonth1 = formatter1.string(from: date1 as Date)
+            //            let strDa1 = self.arrleaveDate[indexPath.row] as? String ?? ""
+            //
+            //            let dateFormatter1 = DateFormatter()
+            //            dateFormatter1.dateFormat = "dd-MM-yyyy"
+            //            //   dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+            //            let date1 = dateFormatter1.date(from: strDa1)!
+            //
+            //            if (Calendar.current.isDate(date, inSameDayAs:date1))
+            //            {
+            //                cell.contentView.frame = cell.bounds //This is important line
+            //                let viewBG = cell.contentView.viewWithTag(10900) as! UIView
+            //                viewBG.layoutIfNeeded() //This is important line
+            //                viewBG.layer.cornerRadius = 5
+            //                viewBG.layer.borderWidth = 1
+            //                viewBG.layer.borderColor = UIColor.clear.cgColor
+            //                viewBG.backgroundColor =  UIColor(red: 139/255, green: 214/255, blue: 239/255, alpha: 1)
+            //                cell.lblDate.textColor = UIColor.white
+            //                cell.lblDay.textColor = UIColor.white
+            //                cell.lblMonth.textColor = UIColor.white
+            //            }
+            
+            //            let formatter1 = DateFormatter()
+            //            formatter1.dateFormat = "dd"
+            //            let strDate1 = formatter1.string(from: date1 as Date)
+            //
+            //            formatter1.dateFormat = "EEEEEEE"
+            //            let strDay1 = formatter1.string(from: date1 as Date)
+            //
+            //            formatter1.dateFormat = "MMM"
+            //            let strMonth1 = formatter1.string(from: date1 as Date)
             
             ///leave days end
             
@@ -1792,12 +1952,12 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
                 cell.lblDay.text = "Today"
             }
             
-          
+            
             //            if (calendar.isDateInTomorrow(date))
             //            {
             //                cell.lblDay.text = "Tomorrow"
             //            }
-          
+            
             
             if selectedDateIndex == indexPath.row
             {
@@ -1853,7 +2013,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
                     cell.lblTime.textColor = UIColor(red: 42/255, green: 78/255, blue: 42/255, alpha: 1)
                     viewBG.clipsToBounds = true
                 }
-               else if fillingstatus=="2"
+                else if fillingstatus=="2"
                 {
                     cell.contentView.frame = cell.bounds //This is important line
                     let viewBG = cell.contentView.viewWithTag(10900) as! UIView
@@ -1865,7 +2025,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
                     cell.lblTime.textColor = UIColor.orange
                     viewBG.clipsToBounds = true
                 }
-               else if fillingstatus=="3"
+                else if fillingstatus=="3"
                 {
                     cell.contentView.frame = cell.bounds //This is important line
                     let viewBG = cell.contentView.viewWithTag(10900) as! UIView
@@ -1876,14 +2036,14 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
                     viewBG.backgroundColor =  UIColor(red: 139/255, green: 214/255, blue: 239/255, alpha: 1)
                     cell.lblTime.textColor = UIColor.red
                     viewBG.clipsToBounds = true
-
+                    
                 }
-               
+                
                 
             }
             else
             {
-               
+                
                 if fillingstatus=="1"
                 {
                     cell.contentView.frame = cell.bounds //This is important line
@@ -1916,7 +2076,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
                     viewBG.layer.borderColor = UIColor.black.cgColor
                     viewBG.backgroundColor =  UIColor.white
                     cell.lblTime.textColor = UIColor.red
-
+                    
                 }
                 
             }
@@ -1932,7 +2092,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
     }
     
     func collectionView(_ collectionView: UICollectionView, layout
-        collectionViewLayout: UICollectionViewLayout,
+                        collectionViewLayout: UICollectionViewLayout,
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 5.0
     }
@@ -1972,9 +2132,10 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             
             
             let dtFormatter = DateFormatter()
-            dtFormatter.dateFormat = "dd-MM-yyyy HH:mm:ss"
+            dtFormatter.dateFormat = "EEE, dd"
+            dSelectedDate = dtFormatter.string(from: date)
             // dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
-            let Currdate = dtFormatter.date(from: CurrentDate)!
+//            let Currdate = dtFormatter.date(from: CurrentDate)!
             
             dateCollectionView.reloadData()
             
@@ -2003,17 +2164,17 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             
             if fillingstatus=="1"
             {
-            selectedTimeIndex = indexPath.row
-            let dict = self.arrTime[indexPath.row] as! Dictionary<String,Any>
-            strTimeSlot = dict["TimeSlot"] as? String ?? ""
-            let TimeSlotID = dict["id"]
-            strTimeSlotID = String(describing: TimeSlotID!)
-            lblTimeInTime.text = strTimeSlot
-            lblTimeInDate.text = strTimeSlot
-            lblTimeInAddress.text = strTimeSlot
-            btnTimeNext.isUserInteractionEnabled = true
-            btnTimeNext.setTitleColor(UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1), for: .normal)
-            timeCollectionView.reloadData()
+                selectedTimeIndex = indexPath.row
+                let dict = self.arrTime[indexPath.row] as! Dictionary<String,Any>
+                strTimeSlot = dict["TimeSlot"] as? String ?? ""
+                let TimeSlotID = dict["id"]
+                strTimeSlotID = String(describing: TimeSlotID!)
+                lblTimeInTime.text = strTimeSlot
+                lblTimeInDate.text = strTimeSlot
+                lblTimeInAddress.text = strTimeSlot
+                btnTimeNext.isUserInteractionEnabled = true
+                btnTimeNext.setTitleColor(UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1), for: .normal)
+                timeCollectionView.reloadData()
             }
             else if fillingstatus=="2"
             {
@@ -2107,10 +2268,13 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         doneToolbar.sizeToFit()
         
         txtClothesCount.inputAccessoryView = doneToolbar
+        [fieldCount, fieldPromoCode, fieldVoucherCode].forEach { field in
+            field.textField.inputAccessoryView = doneToolbar
+        }
     }
     
     @objc func doneButtonAction() {
-        txtClothesCount.resignFirstResponder()
+        view.endEditing(true)
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
@@ -2121,7 +2285,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             let  maxLength = 3
             let currentString: NSString = textField.text! as NSString
             let newString: NSString =
-                currentString.replacingCharacters(in: range, with: string) as NSString
+            currentString.replacingCharacters(in: range, with: string) as NSString
             return newString.length <= maxLength
             
         }
@@ -2131,7 +2295,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             let  maxLength = 10
             let currentString: NSString = textField.text! as NSString
             let newString: NSString =
-                currentString.replacingCharacters(in: range, with: string) as NSString
+            currentString.replacingCharacters(in: range, with: string) as NSString
             
             if newString.length <= maxLength
             {
@@ -2164,23 +2328,23 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
     }
     
     @IBAction func segmentcontrolchanges(_ sender: UISegmentedControl)
-       {
-           
-           if sender.selectedSegmentIndex == 0
-                {
-                   deliverytype = "0"
-                   print(deliverytype)
-                }
-                else
-                {
-                   deliverytype = "1"
-                   print(deliverytype)
-
-                }
-       }
+    {
+        
+        if sender.selectedSegmentIndex == 0
+        {
+            deliverytype = "0"
+            print(deliverytype)
+        }
+        else
+        {
+            deliverytype = "1"
+            print(deliverytype)
+            
+        }
+    }
     
     func serverTimeReturn(completionHandler:@escaping (_ getResDate: NSDate?) -> Void){
-            
+        
         let url = NSURL(string: "https://www.google.com/")
         let task = URLSession.shared.dataTask(with: url! as URL) {(data, response, error) in
             let httpResponse = response as? HTTPURLResponse
@@ -2481,26 +2645,40 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
     }
 }
 
-
-class LocationConfirmationAlertView: View {
+struct LocationConfirmationAlertView: View {
     var body: some View {
         ZStack {
             Color.black.opacity(0.5)
             VStack {
                 Text("Confirmation")
+                    .font(.custom(FONT_MEDIUM, size: 25))
+                    .foregroundColor(Color(.primaryColor))
+                    .padding(.bottom, 15)
+                
                 Text("We request you to reconfirm your home location for better accuracy")
+                    .font(.custom(FONT_REG, size: 18))
+                    .foregroundColor(Color(.primaryColor))
                 
                 Button {
                     
                 } label: {
                     Text("OK")
+                        .foregroundColor(.white)
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 20)
+                        .background(
+                            Color(.primaryColor)
+                        )
                 }
+                .padding(.vertical, 15)
             }
+            .padding([.horizontal, .top])
             .fixedSize(horizontal: false, vertical: true)
             .background(
                 Color.white
             )
         }
+        .fixedSize(horizontal: false, vertical: false)
     }
 }
 
@@ -2509,3 +2687,5 @@ struct Previews: PreviewProvider {
         LocationConfirmationAlertView()
     }
 }
+
+

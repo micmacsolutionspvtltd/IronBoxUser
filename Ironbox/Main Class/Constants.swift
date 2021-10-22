@@ -9,16 +9,17 @@
 import Foundation
 import UIKit
 import SystemConfiguration
+import SwiftUI
 
 
 // MARK: - Development Url
 /*
  var BASEURL = "http://139.59.37.241/Ironman/public/api/apv2/"
-var TERMSCONDS_URL = "http://139.59.37.241/Ironman/public/UserTerms"
-var PRIVACY_URL = "http://139.59.37.241/Ironman/public/UserPrivacy"
-var REFUND_URL = "http://139.59.37.241/Ironman/public/Refunds"
-var DISCLAIMER_URL = "http://139.59.37.241/Ironman/public/Disclaimer"
-*/
+ var TERMSCONDS_URL = "http://139.59.37.241/Ironman/public/UserTerms"
+ var PRIVACY_URL = "http://139.59.37.241/Ironman/public/UserPrivacy"
+ var REFUND_URL = "http://139.59.37.241/Ironman/public/Refunds"
+ var DISCLAIMER_URL = "http://139.59.37.241/Ironman/public/Disclaimer"
+ */
 
 
 // MARK: - Production Url
@@ -60,7 +61,7 @@ var GENERATE_CHECKSUM_URL = "GenerateCheckSum"
 var VALIDATE_CHECKSUM_URL = "VerifyChecksum"
 var SERVER_TYPE = "eServerTypeProduction"
 
- // MARK: - Paytm STAGING
+// MARK: - Paytm STAGING
 // var MERCHANT_ID = "zerode85029715802139"
 // var WEBSITE = "APPSTAGING" // APP_STAGING
 // var INDUSTRYTYPEID = "Retail"
@@ -80,7 +81,7 @@ var EDIT_USER_PROFILE = "EditUserProfile"
 var GET_ADDRESS = "GetAddress"
 var GET_TIMESLOTS = "GetTimeSlots"
 var ADD_ADDRESS = "AddAddresses"
-var USER_BOOKING = "UserBooking"
+var USER_BOOKING = "UserBooking_phase4"//"UserBooking"
 var USER_CURRENT_ORDER_LIST = "UserOrderList"
 var BOOKING_HISTORY = "BookingHistory"
 var DELETE_ADDRESS = "DeleteAddress"
@@ -177,10 +178,53 @@ struct UI<V: UIView>: UIViewRepresentable { //hu
     }
 }
 
-func uiView() -> UIView {
-    let controller = UIHostingController(rootView: self)
-    controller.view.translatesAutoresizingMaskIntoConstraints = false
-    controller.view.backgroundColor = .clear
-    controller.view.insetsLayoutMarginsFromSafeArea = false
-    return controller.view
+extension View {
+    func uiView() -> UIView {
+        let controller = UIHostingController(rootView: self)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        controller.view.backgroundColor = .clear
+        controller.view.insetsLayoutMarginsFromSafeArea = false
+        return controller.view
+    }
 }
+
+extension UIColor {
+    @nonobjc class var primaryColor: UIColor {
+        return .hex("1A3C5C")
+    }
+    
+    @nonobjc class var appGray: UIColor {
+        return .hex("EFEDEE")
+    }
+}
+
+extension UIColor {
+    public static var random: UIColor {
+        return UIColor(red: .random(in: 0...1),
+                       green: .random(in: 0...1),
+                       blue: .random(in: 0...1),
+                       alpha: 1.0)
+    }
+    
+    class func hex(_ string: String) -> UIColor {
+        var hex = string.hasPrefix("#")
+        ? String(string.dropFirst())
+        : string
+        guard hex.count == 3 || hex.count == 6
+        else {
+            return .init(white: 1.0, alpha: 0.0)
+        }
+        if hex.count == 3 {
+            for (index, char) in hex.enumerated() {
+                hex.insert(char, at: hex.index(hex.startIndex, offsetBy: index * 2))
+            }
+        }
+        
+        return .init(
+            red:   CGFloat((Int(hex, radix: 16)! >> 16) & 0xFF) / 255.0,
+            green: CGFloat((Int(hex, radix: 16)! >> 8) & 0xFF) / 255.0,
+            blue:  CGFloat((Int(hex, radix: 16)!) & 0xFF) / 255.0, alpha: 1.0)
+    }
+}
+
+var safeArea: UIEdgeInsets = appDelegate.window?.safeAreaInsets ?? UIEdgeInsets(top: 22, left: 0, bottom: 0, right: 0)

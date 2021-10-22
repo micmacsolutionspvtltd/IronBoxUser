@@ -89,6 +89,9 @@
 		2FAF937223F577E200CE6A29 /* Pods_Ironbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 203C2C3B87EFAD2A12815EEC /* Pods_Ironbox.framework */; };
 		2FAF937523F577E500CE6A29 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17EFCC0E20BC004E0062A42F /* SystemConfiguration.framework */; };
 		5085630523DC51C3004890DB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5085630423DC51C3004890DB /* Main.storyboard */; };
+		973849B7271F63C300F61D36 /* ScheduleMyPickupScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973849B6271F63C300F61D36 /* ScheduleMyPickupScreen.swift */; };
+		97592C762720923400BF0479 /* TextfieldCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97592C752720923400BF0479 /* TextfieldCoordinator.swift */; };
+		97592C782720BFF000BF0479 /* TextFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97592C772720BFF000BF0479 /* TextFields.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -197,6 +200,9 @@
 		2FAF936E23F5602C00CE6A29 /* Referrallist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Referrallist.swift; sourceTree = "<group>"; };
 		2FAF937023F5611E00CE6A29 /* ReferlistTableviewcell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferlistTableviewcell.swift; sourceTree = "<group>"; };
 		5085630423DC51C3004890DB /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		973849B6271F63C300F61D36 /* ScheduleMyPickupScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleMyPickupScreen.swift; sourceTree = "<group>"; };
+		97592C752720923400BF0479 /* TextfieldCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextfieldCoordinator.swift; sourceTree = "<group>"; };
+		97592C772720BFF000BF0479 /* TextFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFields.swift; sourceTree = "<group>"; };
 		B2E6DC107CAD696E0000E2FB /* Pods-Ironbox.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ironbox.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Ironbox/Pods-Ironbox.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -245,6 +251,8 @@
 		17F643C320636B91000977DB /* Ironbox */ = {
 			isa = PBXGroup;
 			children = (
+				97592C742720922200BF0479 /* Common */,
+				973849B5271F635700F61D36 /* Screens */,
 				171A44FA208DDA190043BDA3 /* Ironbox.entitlements */,
 				171268AA207E31290031178C /* GradientView.swift */,
 				17366E90206B5A08003BA4C8 /* style.json */,
@@ -368,6 +376,23 @@
 				0FB4BB022068EC9C1051DB43 /* Pods-Ironbox.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		973849B5271F635700F61D36 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				973849B6271F63C300F61D36 /* ScheduleMyPickupScreen.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		97592C742720922200BF0479 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				97592C752720923400BF0479 /* TextfieldCoordinator.swift */,
+				97592C772720BFF000BF0479 /* TextFields.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -528,6 +553,7 @@
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/SideMenu/SideMenu.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Spring/Spring.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftGifOrigin/SwiftGifOrigin.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
@@ -581,6 +607,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenu.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Spring.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftGifOrigin.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
@@ -631,6 +658,7 @@
 				17ECDD6420E107FE004A6014 /* AppUpdateVC.swift in Sources */,
 				17F643E720636EDB000977DB /* MenuController.swift in Sources */,
 				17CFB2E7207C9ED400CBE144 /* OnGoingTableViewCell.swift in Sources */,
+				97592C782720BFF000BF0479 /* TextFields.swift in Sources */,
 				17E6C6AD20DBB9D900E533D3 /* MySubscriptionsVC.swift in Sources */,
 				2FAF937123F5611E00CE6A29 /* ReferlistTableviewcell.swift in Sources */,
 				17EF4DD72078CB2300572DBD /* CustomerSupportVC.swift in Sources */,
@@ -646,6 +674,7 @@
 				17F643DC20636CF7000977DB /* SignUpVC.swift in Sources */,
 				17E5323A2085FEB5005E79B2 /* ServiceSuccessfullVC.swift in Sources */,
 				17A666172064E07900C79CA1 /* HomeVC.swift in Sources */,
+				973849B7271F63C300F61D36 /* ScheduleMyPickupScreen.swift in Sources */,
 				17D42B9C20C80967003A44EF /* WalletPaymentVC.swift in Sources */,
 				17EBF99720DCB786004F1A3A /* MySubscriptionTransactionsVC.swift in Sources */,
 				17F70C9B2068B88400F4B848 /* DateCollectionViewCell.swift in Sources */,
@@ -671,6 +700,7 @@
 				17366E93206BA586003BA4C8 /* AddressTableViewCell.swift in Sources */,
 				1740804420BFC95500991E21 /* UIView+constraints.swift in Sources */,
 				1726592420BEBAAF00C81956 /* WalletTransactionsVC.swift in Sources */,
+				97592C762720923400BF0479 /* TextfieldCoordinator.swift in Sources */,
 				176F8E2D207B6E7300175273 /* OnGoingServices.swift in Sources */,
 				1734C92E20C566AA0076146B /* ApplyOffersTableViewCell.swift in Sources */,
 				171268AD207E33FD0031178C /* BillingDetailsVC.swift in Sources */,

@@ -32,6 +32,7 @@ target 'Ironbox' do
     pod 'FBSDKCoreKit'
     pod 'FBSDKLoginKit'
     pod 'GoogleAnalytics'
+    pod 'SnapKit'
 
     
 #    pod 'Paytm-Payments'

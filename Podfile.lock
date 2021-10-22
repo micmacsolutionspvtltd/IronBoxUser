@@ -163,6 +163,7 @@ PODS:
   - Protobuf (3.18.1)
   - ReachabilitySwift (5.0.0)
   - SideMenu (5.0.1)
+  - SnapKit (4.2.0)
   - Spring (1.0.5)
   - SwiftGifOrigin (1.7.0)
   - SwiftyJSON (5.0.1)
@@ -212,6 +213,7 @@ DEPENDENCIES:
   - Parchment
   - ReachabilitySwift
   - SideMenu
+  - SnapKit
   - Spring
   - SwiftGifOrigin
   - SwiftyJSON
@@ -278,6 +280,7 @@ SPEC REPOS:
     - Protobuf
     - ReachabilitySwift
     - SideMenu
+    - SnapKit
     - Spring
     - SwiftGifOrigin
     - SwiftyJSON
@@ -343,12 +346,13 @@ SPEC CHECKSUMS:
   Protobuf: 0ac2cdc92fb5c33dab66dd1c4e9f9cc4c34d00ba
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SideMenu: 87efd943737bb83aedf0358884d09fcf5576636d
+  SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
   Spring: 17901566c8ecf3a1327902b940406c64512f9bb1
   SwiftGifOrigin: fbd6cf37afcfcf97a5c3db996ddc0492e5c5c145
   SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
   Toaster: c3473963c78e8cabbf6ea6f11ad0fdaae6f54987
   UIFloatLabelTextView: 96b7c5a18739fd1af8fd9480f7943d75a7547e4d
 
-PODFILE CHECKSUM: 2c3055249ad9d5882ec986dd84ce1998c3df0709
+PODFILE CHECKSUM: 85a2728ce6a480011d6bda3f82072021e06f0bef
 
 COCOAPODS: 1.11.2
