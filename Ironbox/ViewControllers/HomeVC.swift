@@ -18,8 +18,9 @@ import ImageSlideshow
 import FBSDKCoreKit
 import SwiftUI
 import SnapKit
+import Cosmos
 
-class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, ObservableObject {
+class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, ObservableObject, DelegateUpdateLocation{
     
     @IBOutlet weak var viewOnGoingServicesCount: SpringView!
     
@@ -111,7 +112,22 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         }
     }
     
-    let locationConfirmationAlertView = LocationConfirmationAlertView().uiView()
+    func didupdateLocation(isUpdated: Bool) {
+        isShowLocationConfirmationAlert = !isUpdated
+    }
+    
+    lazy var locationConfirmationAlertView: UIView = {
+        let v = LocationConfirmationAlertView(onTap: { [unowned self] in
+            isShowLocationConfirmationAlert = false
+            let addAddressVC = storyboard?.instantiateViewController(withIdentifier: "AddAddressVC") as! AddAddressVC
+            addAddressVC.editAddressID = editAddressID
+            addAddressVC.isForSpecialUpdate = true
+            addAddressVC.delegateDidUpdateLocation = self
+            self.navigationController?.present(addAddressVC, animated: true)
+        } ).uiView()
+        return v
+    }()
+    
     lazy var viewClothes2: UIView = {
         let v = ScheduleMyPickupScreen(data: self).uiView()
         return v
@@ -133,6 +149,42 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             deliverytype = isNormalDeliveryType ? "0" : "1"
         }
     }
+    
+    struct MLocationStatus: Codable {
+        let error, errorMessage, checkAddress: String
+        
+        enum CodingKeys: String, CodingKey {
+            case error
+            case errorMessage = "error_message"
+            case checkAddress = "CheckAddress"
+            
+        }
+    }
+    
+//    private func scCheckLocationUpdate(completion: @escaping ((Bool) -> Void)) {
+////        CheckAddress
+//        guard CheckNetwork() else {
+//            completion(false)
+//            return
+//        }
+//        let accessToken = userDefaults.object(forKey: ACCESS_TOKEN)
+//        let header:HTTPHeaders = ["Accept":"application/json", "Authorization":accessToken as! String]
+////        self.navigationController?.view.addSubview(UIView().customActivityIndicator(view: (self.navigationController?.view)!, widthView: nil, message: "Loading"))
+//
+////        let defaultErrorMessage = "Something went wrong. please try again"
+//        SessionManager.default.request("\(BASEURL)UserCheckOpt", method: .post, headers: header).responseJSON { res in
+////            UIView().hideLoader(removeFrom: (self.navigationController?.view)!)
+//            do {
+//                if let dataObject = res.data {
+//                    let model = try JSONDecoder().decode(MLocationStatus.self, from: dataObject)
+//                    self.isShowLocationConfirmationAlert = model.checkAddress.lowercased() == "no"
+//                }
+//            } catch {
+//                self.isShowLocationConfirmationAlert = true
+//            }
+//            completion(!self.isShowLocationConfirmationAlert)
+//        }
+//    }
     
 //    private var cancellables = Set<Cancellable>()
     
@@ -162,29 +214,52 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         if leftView != nil || rightView != nil {
             viewBooking.isHidden = false
         }
+        
         let viewWidth = view.frame.width
         if let leftView = leftView {
+            if !isMoveRight {
+                view.bringSubview(toFront: leftView)
+            }
+            leftView.layer.opacity = 1
             leftView.isHidden = false
-            leftView.frame.origin.x = isMoveRight ? 0 : -viewWidth
+            leftView.center.y = self.navigationController!.view.center.y - 20
+            leftView.center.x = isMoveRight ? view.center.x : -viewWidth
             //            leftView.frame.origin.y = 0
             UIView.animate(withDuration: 0.4, animations: {
-                leftView.frame.origin.x = isMoveRight ? -viewWidth : 0
-            })
+                leftView.center.x = isMoveRight ? -viewWidth : self.view.center.x
+                if isMoveRight {
+                    leftView.layer.opacity = 0
+                }
+                
+            }) { _ in
+                leftView.isHidden = isMoveRight
+            }
         }
         
         if let rightView = rightView {
+            if isMoveRight {
+                view.bringSubview(toFront: rightView)
+            }
+            rightView.layer.opacity = 1
             rightView.isHidden = false
-            rightView.frame.origin.x = isMoveRight ? viewWidth : 0
+            rightView.center.y = self.navigationController!.view.center.y - 20
+            rightView.center.x = isMoveRight ? viewWidth : view.center.x
             //            rightView.frame.origin.y = 0
             UIView.animate(withDuration: 0.4, animations: {
-                rightView.frame.origin.x = isMoveRight ? 0 : viewWidth
-            })
+                rightView.center.x = isMoveRight ? self.view.center.x : viewWidth
+                if !isMoveRight {
+                    rightView.layer.opacity = 0
+                }
+            }) { _ in
+                rightView.isHidden = !isMoveRight
+            }
         }
     }
     
     @objc private func onBack() {
         showPopup(leftView: nil, rightView: nil, isMoveRight: true)
         setupNavigationBar(isDefault: true)
+        fieldCount.setText("")
         viewClothes2.isHidden = true
     }
     
@@ -215,12 +290,15 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         }
     }
     
+    
+    var editAddressID = ""
+
     // MARK: - VIEW LIFE CYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
         fieldPromoCode.textField.placeholder = "Enter promo code"
         fieldVoucherCode.textField.placeholder = "Enter voucher code"
-        fieldCount.textField.placeholder = "No. of Clothes"
+        fieldCount.textField.placeholder = ""
         viewClothes2.backgroundColor = .white
         viewClothes2.isHidden = true
         view.insertSubview(viewClothes2, belowSubview: viewBooking)
@@ -263,7 +341,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
                                                          attributes: yourAttributes)
         btnAddressForUnderLine.setAttributedTitle(attributeString1, for: .normal)
         
-        viewBooking.backgroundColor = UIColor(red: 18/255, green: 24/255, blue: 38/255, alpha: 0.852)
+        viewBooking.backgroundColor = UIColor(red: 18/255, green: 24/255, blue: 38/255, alpha: 0.5)
         viewBooking.isHidden = true
         viewBookingSuccess.isHidden = true
         appDelegate.isNewAddressAdded = false
@@ -506,7 +584,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         
         self.CheckNetwork()
         
-        AlamofireHC.requestPOST("Home", params: param as [String : AnyObject], headers: header, success: { (JSON) in
+        AlamofireHC.requestPOST(HOME_API, params: param as [String : AnyObject], headers: header, success: { (JSON) in
             
             let  result = JSON.dictionaryObject
             let json = result! as NSDictionary
@@ -514,6 +592,10 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             let err = json.value(forKey: "error") as? String ?? ""
             if (err == "false")
             {
+                if let addressID = json["user_home_address_id"] as? Int {
+                    self.editAddressID = "\(addressID)"
+                    self.isShowLocationConfirmationAlert = ((json["is_address_updated"] as? String ?? "") != "1")
+                }
                 let refAmount = json["referral_amount"] as? Int ?? 0
                 let strRefAmount = String(describing: refAmount)
                 userDefaults.set(strRefAmount, forKey: REFERRAL_AMOUNT)
@@ -633,71 +715,75 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
     // MARK: - NEW ORDER
     @IBAction func onAddOrder(_ sender: Any)
     {
-        self.navigationController?.view.addSubview(UIView().customActivityIndicator(view: (self.navigationController?.view)!, widthView: nil, message: "Loading"))
         
-        let accessToken = userDefaults.object(forKey: ACCESS_TOKEN)
-        let header:HTTPHeaders = ["Accept":"application/json", "Authorization":accessToken as! String]
-        
-        self.CheckNetwork()
-        
-        AlamofireHC.requestPOST(GET_ADDRESS, params: nil, headers: header, success: { (JSON) in
-            UIView().hideLoader(removeFrom: (self.navigationController?.view)!)
-            let  result = JSON.dictionaryObject
-            let json = result! as NSDictionary
-            
-            let err = json.value(forKey: "error") as? String ?? ""
-            if (err == "false")
-            {
-                self.arrDate.removeAll()
-                self.arrTime.removeAll()
-                self.arrleaveDate.removeAll()
+//        scCheckLocationUpdate { isAllow in
+//            if isAllow {
+                self.navigationController?.view.addSubview(UIView().customActivityIndicator(view: (self.navigationController?.view)!, widthView: nil, message: "Loading"))
                 
+                let accessToken = userDefaults.object(forKey: ACCESS_TOKEN)
+                let header:HTTPHeaders = ["Accept":"application/json", "Authorization":accessToken as! String]
                 
-                self.arrTime = json.value(forKey: "Slots") as! Array<Any>
-                self.arrHomeAddress = json.value(forKey: "Home") as! Array<Any>
-                self.arrWorkAddress = json.value(forKey: "Work") as! Array<Any>
-                self.arrOtherAddress = json.value(forKey: "Other") as! Array<Any>
-                self.arrDate = json.value(forKey: "order_date") as! Array<Any>
-                self.arrleaveDate = json.value(forKey: "leave_dates") as! Array<Any>
+                self.CheckNetwork()
                 
-                
-                if(appDelegate.isNewAddressAdded)
-                {
-                    if self.arrHomeAddress.count != 0
+                AlamofireHC.requestPOST(GET_ADDRESS, params: nil, headers: header, success: { (JSON) in
+                    UIView().hideLoader(removeFrom: (self.navigationController?.view)!)
+                    let  result = JSON.dictionaryObject
+                    let json = result! as NSDictionary
+                    
+                    let err = json.value(forKey: "error") as? String ?? ""
+                    if (err == "false")
                     {
-                        self.onHome(self)
+                        self.arrDate.removeAll()
+                        self.arrTime.removeAll()
+                        self.arrleaveDate.removeAll()
+                        
+                        
+                        self.arrTime = json.value(forKey: "Slots") as! Array<Any>
+                        self.arrHomeAddress = json.value(forKey: "Home") as! Array<Any>
+                        self.arrWorkAddress = json.value(forKey: "Work") as! Array<Any>
+                        self.arrOtherAddress = json.value(forKey: "Other") as! Array<Any>
+                        self.arrDate = json.value(forKey: "order_date") as! Array<Any>
+                        self.arrleaveDate = json.value(forKey: "leave_dates") as! Array<Any>
+                        
+                        
+                        if(appDelegate.isNewAddressAdded)
+                        {
+                            if self.arrHomeAddress.count != 0
+                            {
+                                self.onHome(self)
+                            }
+                            else if self.arrWorkAddress.count != 0
+                            {
+                                self.onWork(self)
+                            }
+                            else if self.arrOtherAddress.count != 0
+                            {
+                                self.onOthers(self)
+                            }
+                            
+                            appDelegate.isNewAddressAdded = false
+                        }
+                        else
+                        {
+                            self.startBookingProcess()
+                            appDelegate.isNewAddressAdded = false
+                        }
                     }
-                    else if self.arrWorkAddress.count != 0
+                    else
                     {
-                        self.onWork(self)
-                    }
-                    else if self.arrOtherAddress.count != 0
-                    {
-                        self.onOthers(self)
+                        let errorMessage = json.value(forKey: "error_message")as? String ?? ""
+                        self.ShowAlert(msg: errorMessage)
+                        appDelegate.isNewAddressAdded = false
                     }
                     
+                    
+                }, failure: { (error) in
+                    UIView().hideLoader(removeFrom: (self.navigationController?.view)!)
+                    print(error)
                     appDelegate.isNewAddressAdded = false
-                }
-                else
-                {
-                    self.startBookingProcess()
-                    appDelegate.isNewAddressAdded = false
-                }
-            }
-            else
-            {
-                let errorMessage = json.value(forKey: "error_message")as? String ?? ""
-                self.ShowAlert(msg: errorMessage)
-                appDelegate.isNewAddressAdded = false
-            }
-            
-            
-        }, failure: { (error) in
-            UIView().hideLoader(removeFrom: (self.navigationController?.view)!)
-            print(error)
-            appDelegate.isNewAddressAdded = false
-        })
-        
+                })
+//            }
+//        }
     }
     
     func startBookingProcess()
@@ -757,6 +843,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         strAddresspassId = ""
         strTimeSlot = ""
         strQuantity = ""
+        fieldCount.setText("")
         strPaymentType = "Cash"
         strTimeSlotID = ""
         lblYear.text = ""
@@ -892,10 +979,12 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         btnWallet.layer.cornerRadius = 4
         btnWallet.clipsToBounds = true
         
-        
-        viewDate.roundCorners([.topLeft, .topRight], radius: 15)
-        viewTime.roundCorners([.topLeft, .topRight], radius: 15)
-        viewAddress.roundCorners([.topLeft, .topRight], radius: 15)
+        [viewAddress, viewDate, viewTime].forEach { each in
+            each?.roundCorners(.allCorners, radius: 10)
+        }
+//        viewDate.roundCorners([.topLeft, .topRight], radius: 15)
+//        viewTime.roundCorners([.topLeft, .topRight], radius: 15)
+//        viewAddress.roundCorners([.topLeft, .topRight], radius: 15)
         viewClothes.roundCorners([.topLeft, .topRight], radius: 15)
         viewTime.frame.origin.x += self.view.frame.size.width
         viewDate.frame.origin.x += self.view.frame.size.width
@@ -911,19 +1000,22 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         //            self.viewAddress.frame.origin.y -= (self.view.frame.size.height/2)
         //        }, completion: nil)
         showPopup(leftView: nil, rightView: viewAddress, isMoveRight: true)
+        setupNavigationBar(isDefault: false)
+        viewClothes2.isHidden = false
     }
     
     @IBAction func Prevfrmdate(_ sender: Any)
     {
-        self.viewAddress.isHidden = false
-        UIView.animate(withDuration: 0.4, animations: {
-            self.viewAddress.frame.origin.x += self.view.frame.size.width
-            self.viewDate.frame.origin.x += self.view.frame.size.width
-        }, completion: {
-            (value: Bool) in
-            self.viewDate.isHidden = true
-            
-        })
+        showPopup(leftView: viewAddress, rightView: viewDate, isMoveRight: false)
+//        self.viewAddress.isHidden = false
+//        UIView.animate(withDuration: 0.4, animations: {
+//            self.viewAddress.frame.origin.x += self.view.frame.size.width
+//            self.viewDate.frame.origin.x += self.view.frame.size.width
+//        }, completion: {
+//            (value: Bool) in
+//            self.viewDate.isHidden = true
+//
+//        })
     }
     
     @IBAction func onClose(_ sender: Any)
@@ -934,20 +1026,18 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             self.viewTime.frame.origin.y += (self.view.frame.size.height/10) * 6
             self.viewAddress.frame.origin.y += (self.view.frame.size.height/10) * 6
             self.viewClothes.frame.origin.y += (self.view.frame.size.height/10) * 6
-            
-        }, completion:
-                        {
-            (value: Bool) in
-            self.viewBooking.isHidden = true
-            self.viewDate.frame.origin.y -= (self.view.frame.size.height/10) * 6
-            self.viewTime.frame.origin.y -= (self.view.frame.size.height/10) * 6
-            self.viewAddress.frame.origin.y -= (self.view.frame.size.height/10) * 6
-            self.viewClothes.frame.origin.y -= (self.view.frame.size.height/10) * 6
-            
-            self.viewDate.frame.origin.x = self.viewBooking.frame.origin.x
-            self.viewTime.frame.origin.x = self.viewBooking.frame.origin.x
-            self.viewAddress.frame.origin.x = self.viewBooking.frame.origin.x
-            self.viewClothes.frame.origin.x = self.viewBooking.frame.origin.x
+        }, completion: { [weak self] _ in
+            self?.showPopup(leftView: nil, rightView: nil, isMoveRight: true)
+//            self.viewBooking.isHidden = true
+//            self.viewDate.frame.origin.y -= (self.view.frame.size.height/10) * 6
+//            self.viewTime.frame.origin.y -= (self.view.frame.size.height/10) * 6
+//            self.viewAddress.frame.origin.y -= (self.view.frame.size.height/10) * 6
+//            self.viewClothes.frame.origin.y -= (self.view.frame.size.height/10) * 6
+//
+//            self.viewDate.frame.origin.x = self.viewBooking.frame.origin.x
+//            self.viewTime.frame.origin.x = self.viewBooking.frame.origin.x
+//            self.viewAddress.frame.origin.x = self.viewBooking.frame.origin.x
+//            self.viewClothes.frame.origin.x = self.viewBooking.frame.origin.x
         })
     }
     
@@ -1026,101 +1116,102 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
     
     @IBAction func onTimePrevious(_ sender: Any)
     {
-        self.viewDate.isHidden = false
-        UIView.animate(withDuration: 0.4, animations: {
-            self.viewDate.frame.origin.x += self.view.frame.size.width
-            self.viewTime.frame.origin.x += self.view.frame.size.width
-        }, completion: {
-            (value: Bool) in
-            self.viewTime.isHidden = true
-            
-        })
+        showPopup(leftView: viewDate, rightView: viewTime, isMoveRight: false)
+        //        self.viewDate.isHidden = false
+        //        UIView.animate(withDuration: 0.4, animations: {
+        //            self.viewDate.frame.origin.x += self.view.frame.size.width
+        //            self.viewTime.frame.origin.x += self.view.frame.size.width
+        //        }, completion: {
+        //            (value: Bool) in
+        //            self.viewTime.isHidden = true
+        //
+        //        })
     }
     
     @IBAction func onTimeNext(_ sender: Any)
     {
-        //        viewClothes.isHidden = false
-        self.viewBooking.isHidden = true
-        viewClothes2.isHidden = false
-        setupNavigationBar(isDefault: false)
-        UIView.animate(withDuration: 0.4, animations: {
-            self.viewTime.frame.origin.x -= self.view.frame.size.width
-            //            self.viewClothes2.frame.origin.x -= self.view.frame.size.width
-        }, completion: {
-            (value: Bool) in
-            self.viewTime.isHidden = true
-            
-        })
+        onClose(sender)
+//        self.viewBooking.isHidden = true
+//        UIView.animate(withDuration: 0.4, animations: {
+//            self.viewTime.frame.origin.x -= self.view.frame.size.width
+//            //            self.viewClothes2.frame.origin.x -= self.view.frame.size.width
+//        }, completion: {
+//            (value: Bool) in
+//            self.viewTime.isHidden = true
+//
+//        })
     }
     
     @IBAction func onAddressPrevious(_ sender: Any)
     {
-        selectedTimeIndex = -1
-        lblTimeInTime.text = ""
-        lblTimeInDate.text = ""
-        lblTimeInAddress.text = ""
-        btnTimeNext.isUserInteractionEnabled = false
-        btnTimeNext.setTitleColor(UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.2), for: .normal)
-        
-        self.navigationController?.view.addSubview(UIView().customActivityIndicator(view: (self.navigationController?.view)!, widthView: nil, message: "Loading"))
-        
-        let accessToken = userDefaults.object(forKey: ACCESS_TOKEN)
-        let header:HTTPHeaders = ["Accept":"application/json", "Authorization":accessToken as! String]
-        
-        let param: [String: Any] = [
-            "order_date":strBookingDate
-        ]
-        
-        self.CheckNetwork()
-        
-        AlamofireHC.requestPOST(GET_TIMESLOTS, params: param as [String : AnyObject], headers: header, success: { (JSON) in
-            UIView().hideLoader(removeFrom: (self.navigationController?.view)!)
-            let  result = JSON.dictionaryObject
-            let json = result! as NSDictionary
-            
-            let err = json.value(forKey: "error") as? String ?? ""
-            if (err == "false")
-            {
-                let nPackage = json.value(forKey: "Is_package") as? Int ?? 0
-                self.strPackageSubscribed = String(describing: nPackage)
-                self.onHandlePackages()
-                
-                self.arrTime = json.value(forKey: "time_slot") as! Array<Any>
-                
-                if self.arrTime.count != 0
-                {
-                    self.timeCollectionView.reloadData()
-                    
-                    self.viewTime.isHidden = false
-                    UIView.animate(withDuration: 0.4, animations: {
-                        self.viewTime.frame.origin.x += self.view.frame.size.width
-                        self.viewAddress.frame.origin.x += self.view.frame.size.width
-                    }, completion: {
-                        (value: Bool) in
-                        self.viewAddress.isHidden = true
-                    })
-                    
-                }
-                else
-                {
-                    let errorMessage = json.value(forKey: "error_message")as? String ?? ""
-                    self.ShowAlert(msg: errorMessage)
-                }
-                
-            }
-            else
-            {
-                let errorMessage = json.value(forKey: "error_message")as? String ?? ""
-                self.ShowAlert(msg: errorMessage)
-                
-            }
-            
-            
-        }, failure: { (error) in
-            UIView().hideLoader(removeFrom: (self.navigationController?.view)!)
-            print(error)
-            
-        })
+        onClose(sender)
+        return
+//        selectedTimeIndex = -1
+//        lblTimeInTime.text = ""
+//        lblTimeInDate.text = ""
+//        lblTimeInAddress.text = ""
+//        btnTimeNext.isUserInteractionEnabled = false
+//        btnTimeNext.setTitleColor(UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.2), for: .normal)
+//
+//        self.navigationController?.view.addSubview(UIView().customActivityIndicator(view: (self.navigationController?.view)!, widthView: nil, message: "Loading"))
+//
+//        let accessToken = userDefaults.object(forKey: ACCESS_TOKEN)
+//        let header:HTTPHeaders = ["Accept":"application/json", "Authorization":accessToken as! String]
+//
+//        let param: [String: Any] = [
+//            "order_date":strBookingDate
+//        ]
+//
+//        self.CheckNetwork()
+//
+//        AlamofireHC.requestPOST(GET_TIMESLOTS, params: param as [String : AnyObject], headers: header, success: { (JSON) in
+//            UIView().hideLoader(removeFrom: (self.navigationController?.view)!)
+//            let  result = JSON.dictionaryObject
+//            let json = result! as NSDictionary
+//
+//            let err = json.value(forKey: "error") as? String ?? ""
+//            if (err == "false")
+//            {
+//                let nPackage = json.value(forKey: "Is_package") as? Int ?? 0
+//                self.strPackageSubscribed = String(describing: nPackage)
+//                self.onHandlePackages()
+//
+//                self.arrTime = json.value(forKey: "time_slot") as! Array<Any>
+//
+//                if self.arrTime.count != 0
+//                {
+//                    self.timeCollectionView.reloadData()
+//
+//                    self.viewTime.isHidden = false
+//                    UIView.animate(withDuration: 0.4, animations: {
+//                        self.viewTime.frame.origin.x += self.view.frame.size.width
+//                        self.viewAddress.frame.origin.x += self.view.frame.size.width
+//                    }, completion: {
+//                        (value: Bool) in
+//                        self.viewAddress.isHidden = true
+//                    })
+//
+//                }
+//                else
+//                {
+//                    let errorMessage = json.value(forKey: "error_message")as? String ?? ""
+//                    self.ShowAlert(msg: errorMessage)
+//                }
+//
+//            }
+//            else
+//            {
+//                let errorMessage = json.value(forKey: "error_message")as? String ?? ""
+//                self.ShowAlert(msg: errorMessage)
+//
+//            }
+//
+//
+//        }, failure: { (error) in
+//            UIView().hideLoader(removeFrom: (self.navigationController?.view)!)
+//            print(error)
+//
+//        })
         
     }
     
@@ -1512,29 +1603,52 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         }
     }
     
+    func isValid(isWithCount: Bool) -> Bool {
+        guard selectedAddressName != "" else {
+            ToastCenter.default.cancelAll()
+            Toast(text: "Please choose address", duration: 2.5).show()
+            return false
+        }
+        
+        guard dSelectedDate != "" && strTimeSlot != ""  else {
+            ToastCenter.default.cancelAll()
+            Toast(text: "Please choose date and time", duration: 2.5).show()
+            return false
+        }
+        
+        if isWithCount {
+            guard fieldCount.trimmedText.count > 0 else {
+                ToastCenter.default.cancelAll()
+                Toast(text: "Please enter your clothes count", duration: 2.5).show()
+                return false
+            }
+            
+            guard let count = Int(fieldCount.text) else {
+                ToastCenter.default.cancelAll()
+                Toast(text: "Enter valid clothes count", duration: 2.5).show()
+                return false
+            }
+            
+            
+            guard count >= 10 else {
+                ToastCenter.default.cancelAll()
+                Toast(text: "Clothes minimum 10 numbers only accepted", duration: 2.5).show()
+                return false
+            }
+        }
+        
+        if fieldPromoCode.trimmedText.count > 0 && fieldVoucherCode.trimmedText.count > 0 {
+            ToastCenter.default.cancelAll()
+            Toast(text: "Please apply either promocode or voucher code", duration: 2.5).show()
+            return false
+        }
+        return true
+    }
+    
     @IBAction func onConfirmBooking(_ sender: UIButton)
     {
         view.endEditing(true)
-        
-        guard fieldCount.trimmedText.count > 0 else {
-            ToastCenter.default.cancelAll()
-            Toast(text: "Please enter your clothes count", duration: 2.5).show()
-            return
-        }
-        
-        guard let count = Int(fieldCount.text) else {
-            ToastCenter.default.cancelAll()
-            Toast(text: "Enter valid clothes count", duration: 2.5).show()
-            return
-        }
-        
-        
-        guard count >= 10 else {
-            ToastCenter.default.cancelAll()
-            Toast(text: "Clothes minimum 10 numbers only accepted", duration: 2.5).show()
-            return
-        }
-        
+        strQuantity = fieldCount.text
         self.bookingConfirmationAPICall()
         
 //        if txtClothesCount.text == "" || (txtClothesCount.text?.trimmingCharacters(in: .whitespaces).isEmpty)!
@@ -1580,8 +1694,8 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         let yesAction = UIAlertAction(title: "continue", style: UIAlertActionStyle.default)
         {
             (result : UIAlertAction) -> Void in
-            self.strQuantity = ""
-            self.fieldCount.setText("")
+            self.strQuantity = "10"
+//            self.fieldCount.setText("10")
             self.bookingConfirmationAPICall()
         }
         
@@ -1595,21 +1709,11 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         alertController.addAction(noAction)
         self.present(alertController, animated: true, completion: nil)
     }
-    
-    
-    var isValid: Bool {
-        if fieldPromoCode.trimmedText.count > 0 && fieldVoucherCode.trimmedText.count > 0 {
-            ToastCenter.default.cancelAll()
-            Toast(text: "Please apply either promocode or voucher code", duration: 2.5).show()
-            return false
-        }
-        return true
-    }
-    
+
     func bookingConfirmationAPICall()
     {
         view.endEditing(true)
-        guard isValid else { return }
+//        guard isValid() else { return }
         self.navigationController?.view.addSubview(UIView().customActivityIndicator(view: (self.navigationController?.view)!, widthView: nil, message: "Loading"))
         
         let accessToken = userDefaults.object(forKey: ACCESS_TOKEN)
@@ -1621,7 +1725,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             "bookingDate":strBookingDate,
             "payment_type":strPaymentType,
             "promode_code":fieldPromoCode.text,
-            "quantity":fieldCount.text,
+            "quantity":strQuantity,
             "bookingType":deliverytype,
             "voucher_code": fieldVoucherCode.text
         ]
@@ -1660,6 +1764,10 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
                 self.lblBSPaymentType.text = strPaymentMode.uppercased()
                 
                 self.viewBookingSuccess.isHidden = false
+                self.showPopup(leftView: nil, rightView: nil, isMoveRight: true)
+                self.setupNavigationBar(isDefault: true)
+                self.fieldCount.setText("")
+                self.viewClothes2.isHidden = true
                 self.logAdded(toCartEvent: "Success", contentId: "", contentType: "Booking", currency: "Rs", valueToSum: 0)
                 
                 let viewControllerSize = self.view.frame.size
@@ -2581,7 +2689,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         let strBankTransID = response["BANKTXNID"] as? String ?? ""
         let strStatusCode = response["RESPCODE"] as? String ?? ""
         
-        let strQuantity = response["quantity"] as? String ?? ""
+        let quantity = response["quantity"] as? String ?? ""
         let strPackageID = response["packageID"] as? String ?? ""
         
         
@@ -2596,7 +2704,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             "bank_name":strBankName,
             "bank_tnx_id":strBankTransID,
             "status_code":strStatusCode,
-            "quantity":strQuantity,
+            "quantity":quantity,
             "packageId": strPackageID
         ]
         
@@ -2646,6 +2754,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
 }
 
 struct LocationConfirmationAlertView: View {
+    let onTap: () -> Void
     var body: some View {
         ZStack {
             Color.black.opacity(0.5)
@@ -2660,7 +2769,7 @@ struct LocationConfirmationAlertView: View {
                     .foregroundColor(Color(.primaryColor))
                 
                 Button {
-                    
+                    onTap()
                 } label: {
                     Text("OK")
                         .foregroundColor(.white)
@@ -2684,7 +2793,7 @@ struct LocationConfirmationAlertView: View {
 
 struct Previews: PreviewProvider {
     static var previews: some View {
-        LocationConfirmationAlertView()
+        LocationConfirmationAlertView(onTap: {})
     }
 }
 

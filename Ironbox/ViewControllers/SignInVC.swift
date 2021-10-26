@@ -31,6 +31,12 @@ class SignInVC: UIViewController, UITextFieldDelegate{
     var counterTimer = 0
     var timer = Timer()
     var strOTP = ""
+    var updatableAddress: [String: Any]!
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if let destination = segue.destination as? AddAddressVC {
+//        }
+    }
     
     // MARK: - VIEW LIFE CYCLE
     override func viewDidLoad() {
@@ -224,10 +230,10 @@ class SignInVC: UIViewController, UITextFieldDelegate{
             let header:HTTPHeaders = ["Accept":"application/json"]
             
             
-            let strMobileNo = txtMobileNo.text as String!
+            let strMobileNo = txtMobileNo.text!
             
             let param: [String: Any] = [
-                "mobile":strMobileNo!,
+                "mobile":strMobileNo,
                 "otp":strEnteredOTP
             ]
            

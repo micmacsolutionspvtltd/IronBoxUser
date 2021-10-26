@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     // MARK: - App
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-//        window?.rootViewController = UIHostingController(rootView: ScheduleMyPickupScreen(isShow: .constant(false)))
+//        window?.rootViewController = UIHostingController(rootView: BookingConfirmationAlertView(onOkay: {}, onCancel: {}))
         // Override point for customization after application launch.
         GMSServices.provideAPIKey(GOOGLE_MAP_API)
         GMSPlacesClient.provideAPIKey(GOOGLE_PALCES_API)

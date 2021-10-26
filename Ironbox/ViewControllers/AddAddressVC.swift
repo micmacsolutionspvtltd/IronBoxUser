@@ -13,6 +13,9 @@ import  Toaster
 import Alamofire
 import NVActivityIndicatorView
 
+protocol DelegateUpdateLocation {
+    func didupdateLocation(isUpdated: Bool)
+}
 
 class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, GMSAutocompleteViewControllerDelegate {
 
@@ -41,6 +44,7 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
     @IBOutlet weak var viewAddressOnMap: UIView!
     @IBOutlet weak var lblAddress: UILabel!
     @IBOutlet weak var btnAddressOnMap: UIButton!
+    var delegateDidUpdateLocation: DelegateUpdateLocation?
     
     var ViewTutorial = UIView()
     var ImgTutorial = UIImageView()
@@ -59,10 +63,14 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
     var strLong = ""
     var dictAddress = Dictionary<String,Any>()
     var height = CGFloat()
+    var isForSpecialUpdate = false //There is two update address api
+    var editAddressID: String!
+    var isSpecialAddressUpdated = false
     
     // MARK: - VIEW LIFE CYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.setNavigationBarHidden(true, animated: true)
         self.setFontFamilyAndSize()
         self.hideKeyboardWhenTappedAround()
        // viewAddress.backgroundColor = UIColor.white
@@ -159,6 +167,13 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
     override func viewDidAppear(_ animated: Bool)
     {
         height = self.viewGoogleMap.frame.size.height + self.viewAddress.frame.size.height
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if isForSpecialUpdate {
+            delegateDidUpdateLocation?.didupdateLocation(isUpdated: isSpecialAddressUpdated)
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -267,6 +282,7 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
     @IBAction func onBack(_ sender: Any)
     {
         appDelegate.IsNewRegistration = false
+        self.navigationController?.popViewController(animated: true)
         self.dismiss(animated: true, completion: nil)
     }
 
@@ -333,14 +349,24 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
                 "street":strStreetname,
                 "area":strArea,
                 "city":strCity
-                
             ]
+            
+//        http://13.126.228.76/Ironbox_new/public/api/EditAddress_phase3?
+//            AddressId= 2979&
+//            title=Home&
+//            apartment=test apratment&
             
             if(dictAddress.count != 0)
             {
-                API_EDIT_ADD = EDIT_ADDRESS
-                let addressId = dictAddress["id"]
-                param = [
+                let addressID: Any
+                if isForSpecialUpdate {
+                    API_EDIT_ADD = "EditAddress_phase3"
+                    addressID = editAddressID
+                } else {
+                    API_EDIT_ADD = EDIT_ADDRESS
+                    addressID = dictAddress["id"] as Any
+                }
+            param = [
                 "title":strAddressType,
                 "flatNo":txtFlatNo.text!,
                 "landmark":txtLandmark.text!,
@@ -348,7 +374,7 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
                 "address":strAddrLine,
                 "latitude":strLat,
                 "longitude":strLong,
-                "AddressId":addressId!,
+                "AddressId":addressID,
                 "street":strStreetname,
                 "area":strArea,
                 "city":strCity
@@ -372,6 +398,7 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
                         (result : UIAlertAction) -> Void in
                         
                         appDelegate.isNewAddressAdded = true
+                        self.isSpecialAddressUpdated = true
                        self.dismiss(animated: true, completion: nil)
                         //self.performSegue(withIdentifier: "Location_EnterLocation", sender: self)
                         

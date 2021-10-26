@@ -7,49 +7,49 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "CDA582E8-44D0-4DAC-BF02-91FE54E98911"
+            uuid = "09700A37-DCC0-4A7E-80A3-04F78905ED27"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Ironbox/ViewControllers/HomeVC.swift"
+            filePath = "Ironbox/ViewControllers/SignInVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1058"
-            endingLineNumber = "1058"
-            landmarkName = "onAddressPrevious(_:)"
+            startingLineNumber = "312"
+            endingLineNumber = "312"
+            landmarkName = "onConfirm(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "43690666-7C12-4A37-B842-EC7F65A4AAC9"
+            uuid = "ABD49EFE-E9EC-4702-AB43-B37875DFE5E2"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Ironbox/ViewControllers/HomeVC.swift"
+            filePath = "Ironbox/ViewControllers/SignInVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "128"
-            endingLineNumber = "128"
-            landmarkName = "isCash"
-            landmarkType = "24">
+            startingLineNumber = "311"
+            endingLineNumber = "311"
+            landmarkName = "onConfirm(_:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "06488609-AB34-4F97-A914-044A7C1412F8"
+            uuid = "4B17C5C3-D251-4C2C-B888-5730EE26AEB6"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Ironbox/ViewControllers/HomeVC.swift"
+            filePath = "Ironbox/ViewControllers/SignInVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "133"
-            endingLineNumber = "133"
-            landmarkName = "isNormalDeliveryType"
-            landmarkType = "24">
+            startingLineNumber = "247"
+            endingLineNumber = "247"
+            landmarkName = "onConfirm(_:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -442,12 +442,14 @@ extension UIViewController {
 
     
     // MARK: - NetWork Finder
-    func CheckNetwork()
+    @discardableResult
+    func CheckNetwork() -> Bool
     {
         let reachability = try! Reachability()
         
         if reachability.connection != .unavailable
         {
+            return true
            print("Network reachable")
         }
         else
@@ -462,6 +464,7 @@ extension UIViewController {
             appearance.bottomOffsetPortrait = 50
             appearance.cornerRadius = 15
             print("Network not reachable")
+            return false
         }
         
     }

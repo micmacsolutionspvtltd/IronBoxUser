@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Alamofire
 
 //class VMScheduleMyPickup: ObservableObject {
 //    let fieldCount = TextFieldCoordinator()
@@ -40,36 +41,38 @@ struct ToggleButton: View {
 
 struct ScheduleMyPickupScreen: View {
     
-//    @StateObject private var data = VMScheduleMyPickup()
+    //    @StateObject private var data = VMScheduleMyPickup()
     @ObservedObject var data: HomeVC
-    @ViewBuilder
-    private func navigationBar() -> some View {
-        ZStack {
-            Text("Shedule My Pickup")
-                
-            HStack {
-                Button {
-                    data.viewClothes2.isHidden = true
-//                    controller.navigationController?.setNavigationBarHidden(false, animated: true)
-                    data.viewBooking.isHidden = true
-                } label: {
-                    Image("BackButton")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(height: 22)
-                }
-                
-                Spacer()
-            }
-            .padding(.horizontal, 10)
-        }
-        .foregroundColor(.white)
-        .padding(.top, safeArea.top)
-        .padding(.vertical, 10)
-        .background(
-            Color(.primaryColor)
-        )
-    }
+    @State private var isShowConfirmationPopup = false
+    @State private var isBookWithCount = true
+//    @ViewBuilder
+//    private func navigationBar() -> some View {
+//        ZStack {
+//            Text("Shedule My Pickup")
+//
+//            HStack {
+//                Button {
+//                    data.viewClothes2.isHidden = true
+//                    //                    controller.navigationController?.setNavigationBarHidden(false, animated: true)
+//                    data.viewBooking.isHidden = true
+//                } label: {
+//                    Image("BackButton")
+//                        .resizable()
+//                        .scaledToFit()
+//                        .frame(height: 22)
+//                }
+//
+//                Spacer()
+//            }
+//            .padding(.horizontal, 10)
+//        }
+//        .foregroundColor(.white)
+//        .padding(.top, safeArea.top)
+//        .padding(.vertical, 10)
+//        .background(
+//            Color(.primaryColor)
+//        )
+//    }
     
     @ViewBuilder
     private func button(title: String, action: @escaping () -> ()) -> some View {
@@ -77,11 +80,13 @@ struct ScheduleMyPickupScreen: View {
             action()
         } label: {
             Text(title)
-                .font(.custom(FONT_REG, size: 12))
+                .font(.custom(FONT_MEDIUM, size: 14))
                 .foregroundColor(.white)
-                .padding(10)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 10)
                 .background(
-                    Color(.primaryColor)
+                    RoundedRectangle(cornerRadius: 2)
+                        .fill(Color(.primaryColor))
                 )
         }
     }
@@ -92,6 +97,7 @@ struct ScheduleMyPickupScreen: View {
             .resizable()
             .aspectRatio(1, contentMode: .fit)
             .frame(height: 30)
+            .clipShape(Circle())
     }
     
     @ViewBuilder
@@ -101,22 +107,39 @@ struct ScheduleMyPickupScreen: View {
                 .resizable()
                 .aspectRatio(1, contentMode: .fit)
                 .frame(height: 30)
+                .clipShape(Circle())
                 .padding(.trailing, 20)
             Text(title)
                 .font(.custom(FONT_REG, size: 16))
         }
     }
     
+    
+    
+    private func scBooking() {
+        if isBookWithCount {
+            data.onConfirmBooking(UIButton())
+        } else {
+            data.onSkipClothesCount(UIButton())
+        }
+    }
+    
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
-//                navigationBar()
+                //                navigationBar()
                 ScrollView {
-                    VStack(spacing: 10) {
-                        HStack(spacing: 10) {
-                            imageView1(name: "OnGoing Orders")
-                            Text(data.selectedAddressName)
-                                .font(.custom(FONT_REG, size: 13))
+                    VStack(spacing: 18) {
+                        HStack(spacing: 15) {
+                            imageView1(name: "placeholder")
+                            if data.selectedAddressName != "" {
+                                Text(data.selectedAddressName)
+                                    .font(.custom(FONT_REG, size: 14))
+                            } else {
+                                Text("Choose Address")
+                                    .font(.custom(FONT_REG, size: 14))
+                            }
+                            
                             Spacer()
                             button(title: "CHANGE") {
                                 data.showPopup(leftView: nil, rightView: data.viewAddress, isMoveRight: true)
@@ -124,10 +147,16 @@ struct ScheduleMyPickupScreen: View {
                         }
                         .modifier(ScheduleMyPickupBackgroundModifier())
                         
-                        HStack(spacing: 10) {
-                            imageView1(name: "OnGoing Orders")
-                            Text("DATE: \(data.dSelectedDate), TIME: \(data.strTimeSlot)")
-                                .font(.custom(FONT_REG, size: 13))
+                        HStack(spacing: 15) {
+                            imageView1(name: "clock")
+                            if data.dSelectedDate != "" && data.strTimeSlot != "" {
+                                Text("DATE: \(data.dSelectedDate), TIME: \(data.strTimeSlot)")
+                                    .font(.custom(FONT_REG, size: 14))
+                            } else {
+                                Text("Choose date and time")
+                                    .font(.custom(FONT_REG, size: 14))
+                            }
+                            
                             Spacer()
                             button(title: "CHANGE") {
                                 data.showPopup(leftView: nil, rightView: data.viewDate, isMoveRight: true)
@@ -135,22 +164,27 @@ struct ScheduleMyPickupScreen: View {
                         }
                         .modifier(ScheduleMyPickupBackgroundModifier())
                         
-                        VStack(alignment: .leading) {
+                        VStack(alignment: .leading, spacing: 18) {
                             HStack {
-                                imageView2(imageName: "OnGoing Orders", title: "Count of clothes")
+                                imageView2(imageName: "towel_hanger", title: "Count of clothes")
+                                    .layoutPriority(1)
                                 Spacer()
-                                UI<UITextField> {
-                                    let field = data.fieldCount.textField
-                                    field.textAlignment = .center
-                                    field.font = .init(name: FONT_REG, size: 15)
-                                    field.keyboardType = .numberPad
-                                    return field
+                                ZStack {
+                                    UI<UITextField> {
+                                        let field = data.fieldCount.textField
+                                        field.textAlignment = .center
+                                        field.font = .init(name: FONT_REG, size: 15)
+                                        field.keyboardType = .numberPad
+                                        return field
+                                    }
+                                    .padding(8)
+                                    .background(
+                                        Color(.hex("D8D8D8"))
+                                    )
+                                    Text("      Offer      ")
+                                        .opacity(0)
                                 }
-                                .padding(8)
-                                .background(
-                                    Color(.hex("D8D8D8"))
-                                )
-                                .fixedSize(horizontal: false, vertical: true)
+                                .fixedSize(horizontal: true, vertical: true)
                             }
                             
                             HStack(spacing: 10) {
@@ -172,7 +206,7 @@ struct ScheduleMyPickupScreen: View {
                         .modifier(ScheduleMyPickupBackgroundModifier())
                         
                         VStack(alignment: .leading, spacing: 20) {
-                            imageView2(imageName: "OnGoing Orders", title: "Payment Mode")
+                            imageView2(imageName: "payment_type", title: "Payment Mode")
                             HStack(spacing: 10) {
                                 ToggleButton(text: "Cash", isSelected: data.isCash) {
                                     data.isCash = true
@@ -186,7 +220,7 @@ struct ScheduleMyPickupScreen: View {
                         .modifier(ScheduleMyPickupBackgroundModifier())
                         
                         VStack(alignment: .leading, spacing: 20) {
-                            imageView2(imageName: "OnGoing Orders", title: "Delivery Type")
+                            imageView2(imageName: "cycle", title: "Delivery Type")
                             HStack(spacing: 10) {
                                 ToggleButton(text: "Normal", isSelected: data.isNormalDeliveryType) {
                                     data.isNormalDeliveryType = true
@@ -199,49 +233,177 @@ struct ScheduleMyPickupScreen: View {
                         }
                         .modifier(ScheduleMyPickupBackgroundModifier())
                         
-//                        UI<UITextField> {
-//                            let field = data.fieldInstruction.textField
-//                            field.textAlignment = .center
-//                            field.placeholder = "Enter instructions..."
-//                            field.font = .init(name: FONT_REG, size: 15)
-//                            field.keyboardType = .numberPad
-//                            return field
-//                        }
-//                        .padding(10)
-//                        .background(
-//                            Color(.hex("D8D8D8"))
-//                        )
-//                        .fixedSize(horizontal: false, vertical: true)
+                        //                        UI<UITextField> {
+                        //                            let field = data.fieldInstruction.textField
+                        //                            field.textAlignment = .center
+                        //                            field.placeholder = "Enter instructions..."
+                        //                            field.font = .init(name: FONT_REG, size: 15)
+                        //                            field.keyboardType = .numberPad
+                        //                            return field
+                        //                        }
+                        //                        .padding(10)
+                        //                        .background(
+                        //                            Color(.hex("D8D8D8"))
+                        //                        )
+                        //                        .fixedSize(horizontal: false, vertical: true)
                         
                         Button {
-                            
+                            isBookWithCount = false
+                            scCheckAlreadyBooked()
                         } label: {
                             Text("CONTINUE WITHOUT COUNT")
+                                .font(.custom(FONT_MEDIUM, size: 15))
                                 .foregroundColor(.white)
-                                .padding(5)
+                                .padding(8)
                                 .background(
-                                    Color(.primaryColor)
+                                    RoundedRectangle(cornerRadius: 3)
+                                        .fill(Color(.primaryColor))
                                 )
                         }
                         
                         Button {
-                            
+                            isBookWithCount = true
+                            scCheckAlreadyBooked()
                         } label: {
                             Text("CONFIRM")
+                                .font(.custom(FONT_MEDIUM, size: 17))
                                 .foregroundColor(.white)
-                                .padding(5)
+                                .padding(10)
                                 .frame(maxWidth: .infinity)
                                 .background(
-                                    Color(.primaryColor)
+                                    RoundedRectangle(cornerRadius: 3)
+                                        .fill(Color(.primaryColor))
                                 )
                                 .padding(.horizontal, 25)
                         }
+                        .padding(.vertical, 10)
                     }
-                    .padding(10)
+                    .padding(20)
+                }
+            }
+            
+            if isShowConfirmationPopup {
+                BookingConfirmationAlertView {
+                    scBooking()
+                    isShowConfirmationPopup = false
+                } onCancel: {
+                    isShowConfirmationPopup = false
                 }
             }
         }
         .edgesIgnoringSafeArea(.top)
+    }
+    
+    private func showLoader() {
+        data.navigationController?.view.addSubview(UIView().customActivityIndicator(view: (data.navigationController?.view)!, widthView: nil, message: "Loading"))
+        
+    }
+    
+    private func hideLoader() {
+        UIView().hideLoader(removeFrom: (data.navigationController?.view)!)
+    }
+    
+    struct MBookingStatus: Codable {
+        let error, errorMessage: String
+        
+        enum CodingKeys: String, CodingKey {
+            case error
+            case errorMessage = "error_message"
+        }
+    }
+    
+    private func scCheckAlreadyBooked() {
+        guard data.isValid(isWithCount: isBookWithCount) else { return }
+        guard data.CheckNetwork() else { return }
+        let accessToken = userDefaults.object(forKey: ACCESS_TOKEN)
+        let header:HTTPHeaders = ["Accept":"application/json", "Authorization":accessToken as! String]
+        showLoader()
+        let defaultErrorMessage = "Something went wrong. please try again"
+        SessionManager.default.request("\(BASEURL)Check_if_user_has_current_booking", method: .post, headers: header).responseJSON { res in
+            hideLoader()
+            guard let dataObject = res.data else {
+                data.ShowAlert(msg: defaultErrorMessage)
+                return
+            }
+            do {
+                let model = try JSONDecoder().decode(MBookingStatus.self, from: dataObject)
+                if model.error == "false" {
+                    scBooking()
+                } else {
+                    isShowConfirmationPopup = true
+                }
+            } catch {
+                data.ShowAlert(msg: defaultErrorMessage)
+            }
+        }
+    }
+}
+
+struct BookingConfirmationAlertView: View {
+    
+    let onOkay: () -> Void
+    let onCancel: () -> Void
+    
+    var body: some View {
+        ZStack {
+            Color.black.opacity(0.5)
+            VStack(spacing: 0) {
+                VStack(spacing: 0) {
+                    Text("Confirmation")
+                        .font(.custom(FONT_MEDIUM, size: 16))
+                        .foregroundColor(Color(.black))
+                        .padding(.vertical, 10)
+                    Color.black
+                        .frame(height: 1)
+                }
+                VStack {
+                    Text("You have made booking already which is inprogress. do you want to make another booking?")
+                        .font(.custom(FONT_REG, size: 14))
+                        .foregroundColor(Color(.black))
+                    
+                    HStack {
+                        Spacer()
+                        Button {
+                            onCancel()
+                        } label: {
+                            Text("CANCEL")
+                                .font(.custom(FONT_MEDIUM, size: 14))
+                                .foregroundColor(.white)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 20)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 3)
+                                        .fill(Color(.systemRed))
+                                )
+                        }
+                        Spacer()
+                        Button {
+                            onOkay()
+                        } label: {
+                            Text("BOOK")
+                                .font(.custom(FONT_MEDIUM, size: 14))
+                                .foregroundColor(.white)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 20)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 3)
+                                        .fill(Color(.systemGreen))
+                                )
+                        }
+                        Spacer()
+                    }
+                    .padding(.vertical, 25)
+                }
+                .padding([.horizontal, .top])
+            }
+            .fixedSize(horizontal: false, vertical: true)
+            .background(
+                RoundedRectangle(cornerRadius: 3)
+                    .fill(Color.white)
+            )
+            .padding(.horizontal, 20)
+        }
+        .fixedSize(horizontal: false, vertical: false)
     }
 }
 
@@ -251,7 +413,9 @@ struct ScheduleMyPickupBackgroundModifier: ViewModifier {
         content
             .padding(15)
             .background(
-                Color(.appGray)
+                RoundedRectangle(cornerRadius: 2)
+                    .fill(Color(.appGray))
+                    .shadow(color: .black.opacity(0.01), radius: 1, x: 0, y: 0.2)
             )
     }
 }
