@@ -850,9 +850,9 @@
 				CODE_SIGN_ENTITLEMENTS = Ironbox/Ironbox.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = H882MQHXF6;
+				DEVELOPMENT_TEAM = ZW2UZC375R;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -869,8 +869,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 1.3.3;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sample;
+				MARKETING_VERSION = 1.3.4;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zerodegreesouth.Ironbox;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Ironbox-Bridging-Header.h";
@@ -889,9 +889,9 @@
 				CODE_SIGN_ENTITLEMENTS = Ironbox/Ironbox.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = H882MQHXF6;
+				DEVELOPMENT_TEAM = ZW2UZC375R;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -908,8 +908,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 1.3.3;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sample;
+				MARKETING_VERSION = 1.3.4;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zerodegreesouth.Ironbox;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Ironbox-Bridging-Header.h";
