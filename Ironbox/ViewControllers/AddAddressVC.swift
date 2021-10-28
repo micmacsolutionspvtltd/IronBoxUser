@@ -74,23 +74,23 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
         self.setFontFamilyAndSize()
         self.hideKeyboardWhenTappedAround()
        // viewAddress.backgroundColor = UIColor.white
-        let camera = GMSCameraPosition.camera(withLatitude: 13.0827, longitude: 80.2707, zoom: 15.5)
-        self.viewGoogleMap.camera = camera
-        self.viewGoogleMap.settings.scrollGestures = true
-        self.viewGoogleMap.settings.compassButton = true
-        self.viewGoogleMap.isMyLocationEnabled = true
-        self.viewGoogleMap.settings.myLocationButton = true
+//        let camera = GMSCameraPosition.camera(withLatitude: 13.0827, longitude: 80.2707, zoom: 15.5)
+//        self.viewGoogleMap.camera = camera
+//        self.viewGoogleMap.settings.scrollGestures = true
+//        self.viewGoogleMap.settings.compassButton = true
+//        self.viewGoogleMap.isMyLocationEnabled = true
+//        self.viewGoogleMap.settings.myLocationButton = true
         self.viewGoogleMap.delegate = self
-        do {
-            // Set the map style by passing the URL of the local file. Make sure style.json is present in your project
-            if let styleURL = Bundle.main.url(forResource: "style", withExtension: "json") {
-                viewGoogleMap.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
-            } else {
-                print("Unable to find style.json")
-            }
-        } catch {
-            print("The style definition could not be loaded: \(error)")
-        }
+//        do {
+//            // Set the map style by passing the URL of the local file. Make sure style.json is present in your project
+//            if let styleURL = Bundle.main.url(forResource: "style", withExtension: "json") {
+//                viewGoogleMap.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
+//            } else {
+//                print("Unable to find style.json")
+//            }
+//        } catch {
+//            print("The style definition could not be loaded: \(error)")
+//        }
         
         //Location Manager code to fetch current location
         locationManager.requestWhenInUseAuthorization()
@@ -157,13 +157,31 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
     
     override func viewWillAppear(_ animated: Bool)
     {
+        super.viewWillAppear(animated)
         if ((userDefaults.value(forKey: IS_ADDADDRESS_TUTORIAL_SHOWN) as? String) == nil)
         {
             self.showTutorialScreen()
         }
+        
+        let ud = UserDefaults.standard
+        let startingX = ud.double(forKey: CUR_LATITUDE)
+        let startingY = ud.double(forKey: CUR_LONGITUDE)
+
+        let camera = GMSCameraPosition.camera(withLatitude: startingX, longitude: startingY, zoom: 18.0)
+        viewGoogleMap.camera = camera
+
+        self.viewGoogleMap.mapType = .normal
+
+        self.viewGoogleMap.settings.scrollGestures = true
+        self.viewGoogleMap.settings.rotateGestures = true
+        self.viewGoogleMap.settings.consumesGesturesInView = true
+        self.viewGoogleMap.settings.compassButton = true
+        
+        self.viewGoogleMap.isMyLocationEnabled = true
+        self.viewGoogleMap.settings.myLocationButton = true
+//        self.viewGoogleMap.delegate = self
     }
     
-
     override func viewDidAppear(_ animated: Bool)
     {
         height = self.viewGoogleMap.frame.size.height + self.viewAddress.frame.size.height
