@@ -398,7 +398,6 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
                 "city":strCity
                 ]
             }
-            
           
             self.CheckNetwork()
             

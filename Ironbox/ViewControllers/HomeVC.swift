@@ -605,11 +605,11 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
                 userDefaults.set(strAmount, forKey: AMOUNT)
                 
                 //  let User = json["users"] as? Int ?? 0
-                let User = 1 as? Int ?? 0
+                let User = 1
                 let strUser = String(describing: User)
                 userDefaults.set(strUser, forKey: USER)
-                
-                print("amount,user",Amount,User)
+//
+//                print("amount,user",Amount,User)
                 
                 let arrImageSlide = json.value(forKey: "response") as! Array<Any>
                 var inputs = [KingfisherSource]()
@@ -738,12 +738,12 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
                         self.arrleaveDate.removeAll()
                         
                         
-                        self.arrTime = json.value(forKey: "Slots") as! Array<Any>
-                        self.arrHomeAddress = json.value(forKey: "Home") as! Array<Any>
-                        self.arrWorkAddress = json.value(forKey: "Work") as! Array<Any>
-                        self.arrOtherAddress = json.value(forKey: "Other") as! Array<Any>
-                        self.arrDate = json.value(forKey: "order_date") as! Array<Any>
-                        self.arrleaveDate = json.value(forKey: "leave_dates") as! Array<Any>
+                        self.arrTime = json.value(forKey: "Slots") as? Array ?? []
+                        self.arrHomeAddress = json.value(forKey: "Home") as? Array ?? []
+                        self.arrWorkAddress = json.value(forKey: "Work") as? Array ?? []
+                        self.arrOtherAddress = json.value(forKey: "Other") as? Array ?? []
+                        self.arrDate = json.value(forKey: "order_date") as? Array ?? []
+                        self.arrleaveDate = json.value(forKey: "leave_dates") as? Array ?? []
                         
                         
                         if(appDelegate.isNewAddressAdded)

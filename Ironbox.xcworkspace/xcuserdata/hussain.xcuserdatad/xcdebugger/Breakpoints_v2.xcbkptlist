@@ -39,16 +39,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "4B17C5C3-D251-4C2C-B888-5730EE26AEB6"
+            uuid = "79C6DF63-3C2D-4FFF-B5C9-43F1CB00C08A"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Ironbox/ViewControllers/SignInVC.swift"
+            filePath = "Ironbox/ViewControllers/HomeVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "247"
-            endingLineNumber = "247"
-            landmarkName = "onConfirm(_:)"
+            startingLineNumber = "1741"
+            endingLineNumber = "1741"
+            landmarkName = "bookingConfirmationAPICall()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5FC0C5FF-3859-42FE-ABB3-72EC3C08641D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Ironbox/ViewControllers/HomeVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1736"
+            endingLineNumber = "1736"
+            landmarkName = "bookingConfirmationAPICall()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
