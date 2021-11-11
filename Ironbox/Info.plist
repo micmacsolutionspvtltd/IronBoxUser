@@ -47,7 +47,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>This allows you to share photos from your camera roll.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Allow location access to get your address easily.</string>
+	<string>This app would like to access your location to pickup and drop the clothes</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This allows you to share photos from your library.</string>
 	<key>UIAppFonts</key>

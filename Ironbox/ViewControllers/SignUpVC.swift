@@ -319,17 +319,17 @@ class SignUpVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDe
                 userDefaults.set(strReferalCode, forKey: USER_REFERAL_CODE)
                 userDefaults.set("yes", forKey: IS_LOGIN)
                 
-                let strCheckPin = json.value(forKey: "CheckPin") as? String ?? ""
-                if strCheckPin == "No"
-                {
-                    self.performSegue(withIdentifier: "Register_Location", sender: self)
-                }
-                else
-                {
+//                let strCheckPin = json.value(forKey: "CheckPin") as? String ?? ""
+//                if strCheckPin == "No"
+//                {
+//                    self.performSegue(withIdentifier: "Register_Location", sender: self)
+//                }
+//                else
+//                {
                     let story = UIStoryboard.init(name: "Main", bundle: nil)
-                    let HomeVC = story.instantiateViewController(withIdentifier: "HomeVC")as! HomeVC
+                    let HomeVC = story.instantiateViewController(withIdentifier: "HomeVC") as! HomeVC
                     self.navigationController?.pushViewController(HomeVC, animated: false)
-                }
+//                }
                 
             }
             else

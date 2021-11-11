@@ -225,7 +225,7 @@ class SignInVC: UIViewController, UITextFieldDelegate{
         }
         else
         {
-           self.navigationController?.view.addSubview(UIView().customActivityIndicator(view: (self.navigationController?.view)!, widthView: nil, message: "Loading"))
+            self.navigationController?.view.addSubview(UIView().customActivityIndicator(view: (self.navigationController?.view)!, widthView: nil, message: "Loading"))
             
             let header:HTTPHeaders = ["Accept":"application/json"]
             
@@ -236,18 +236,18 @@ class SignInVC: UIViewController, UITextFieldDelegate{
                 "mobile":strMobileNo,
                 "otp":strEnteredOTP
             ]
-           
+            
             self.CheckNetwork()
             
             AlamofireHC.requestPOST(CHECK_OTP, params: param as [String : AnyObject], headers: header, success: { (JSON) in
                 UIView().hideLoader(removeFrom: (self.navigationController?.view)!)
                 let  result = JSON.dictionaryObject
                 let json = result! as NSDictionary
-               
+                
                 let err = json.value(forKey: "error") as? String ?? ""
                 if (err == "false")
                 {
-                     self.onClose(self)
+                    self.onClose(self)
                     
                     let strType = json["type"] as? String ?? ""
                     let strCheckPin = json["CheckPin"] as? String ?? ""
@@ -255,62 +255,62 @@ class SignInVC: UIViewController, UITextFieldDelegate{
                     var strAccessToken = json["access_token"] as? String ?? ""
                     strAccessToken = "Bearer " + strAccessToken
                     userDefaults.set(strAccessToken, forKey: ACCESS_TOKEN)
-                
+                    
                     if strType == "NotRegister"
                     {
                         self.performSegue(withIdentifier: "SignIn_SignUp", sender: self)
                     }
-                    else if strCheckPin == "No"
-                    {
-                        let strEmail = json["email"] as? String ?? ""
-                        let strGender = json["gender"] as? String ?? ""
-                        let strDob = json["dob"] as? String ?? ""
-                        let strName = json["name"] as? String ?? ""
-                        let strMobileNo = json["mobile"] as? String ?? ""
-                        let strAlternateMobileNo = json["alternate_number"] as? String ?? ""
-                        let strProfileImage = json["image"] as? String ?? ""
-                        let strReferalCode = json["referral_code"] as? String ?? ""
-                        let ID = json["id"]
-                        let strID = String(describing: ID!)
-                        
-                        userDefaults.set(strName, forKey: USER_NAME)
-                        userDefaults.set(strMobileNo, forKey: USER_MOBILE)
-                        userDefaults.set(strAlternateMobileNo, forKey: USER_ALTERNATE_MOBILE)
-                        userDefaults.set(strID, forKey: USER_ID)
-                        userDefaults.set(strEmail, forKey: USER_EMAIL)
-                        userDefaults.set(strGender, forKey: USER_GENDER)
-                        userDefaults.set(strDob, forKey: USER_DOB)
-                        userDefaults.set(strProfileImage, forKey: USER_PROFILE_IMAGE)
-                        userDefaults.set(strReferalCode, forKey: USER_REFERAL_CODE)
-                        
-                        self.performSegue(withIdentifier: "SignIn_Location", sender: self)
-                    }
-                    else if strCheckAddress == "No"
-                    {
-                        let strEmail = json["email"] as? String ?? ""
-                        let strGender = json["gender"] as? String ?? ""
-                        let strDob = json["dob"] as? String ?? ""
-                        let strName = json["name"] as? String ?? ""
-                        let strMobileNo = json["mobile"] as? String ?? ""
-                        let strAlternateMobileNo = json["alternate_number"] as? String ?? ""
-                        let strProfileImage = json["image"] as? String ?? ""
-                        let strReferalCode = json["referral_code"] as? String ?? ""
-                        let ID = json["id"]
-                        let strID = String(describing: ID!)
-                        
-                        userDefaults.set(strName, forKey: USER_NAME)
-                        userDefaults.set(strMobileNo, forKey: USER_MOBILE)
-                        userDefaults.set(strAlternateMobileNo, forKey: USER_ALTERNATE_MOBILE)
-                        userDefaults.set(strID, forKey: USER_ID)
-                        userDefaults.set(strEmail, forKey: USER_EMAIL)
-                        userDefaults.set(strGender, forKey: USER_GENDER)
-                        userDefaults.set(strDob, forKey: USER_DOB)
-                        userDefaults.set(strProfileImage, forKey: USER_PROFILE_IMAGE)
-                        userDefaults.set(strReferalCode, forKey: USER_REFERAL_CODE)
-                        
-                        appDelegate.IsNewRegistration = true
-                        self.performSegue(withIdentifier: "SignIn_Address", sender: self)
-                    }
+//                    else if strCheckPin == "No"
+//                    {
+//                        let strEmail = json["email"] as? String ?? ""
+//                        let strGender = json["gender"] as? String ?? ""
+//                        let strDob = json["dob"] as? String ?? ""
+//                        let strName = json["name"] as? String ?? ""
+//                        let strMobileNo = json["mobile"] as? String ?? ""
+//                        let strAlternateMobileNo = json["alternate_number"] as? String ?? ""
+//                        let strProfileImage = json["image"] as? String ?? ""
+//                        let strReferalCode = json["referral_code"] as? String ?? ""
+//                        let ID = json["id"]
+//                        let strID = String(describing: ID!)
+//
+//                        userDefaults.set(strName, forKey: USER_NAME)
+//                        userDefaults.set(strMobileNo, forKey: USER_MOBILE)
+//                        userDefaults.set(strAlternateMobileNo, forKey: USER_ALTERNATE_MOBILE)
+//                        userDefaults.set(strID, forKey: USER_ID)
+//                        userDefaults.set(strEmail, forKey: USER_EMAIL)
+//                        userDefaults.set(strGender, forKey: USER_GENDER)
+//                        userDefaults.set(strDob, forKey: USER_DOB)
+//                        userDefaults.set(strProfileImage, forKey: USER_PROFILE_IMAGE)
+//                        userDefaults.set(strReferalCode, forKey: USER_REFERAL_CODE)
+//
+//                        self.performSegue(withIdentifier: "SignIn_Location", sender: self)
+//                    }
+//                    else if strCheckAddress == "No"
+//                    {
+//                        let strEmail = json["email"] as? String ?? ""
+//                        let strGender = json["gender"] as? String ?? ""
+//                        let strDob = json["dob"] as? String ?? ""
+//                        let strName = json["name"] as? String ?? ""
+//                        let strMobileNo = json["mobile"] as? String ?? ""
+//                        let strAlternateMobileNo = json["alternate_number"] as? String ?? ""
+//                        let strProfileImage = json["image"] as? String ?? ""
+//                        let strReferalCode = json["referral_code"] as? String ?? ""
+//                        let ID = json["id"]
+//                        let strID = String(describing: ID!)
+//
+//                        userDefaults.set(strName, forKey: USER_NAME)
+//                        userDefaults.set(strMobileNo, forKey: USER_MOBILE)
+//                        userDefaults.set(strAlternateMobileNo, forKey: USER_ALTERNATE_MOBILE)
+//                        userDefaults.set(strID, forKey: USER_ID)
+//                        userDefaults.set(strEmail, forKey: USER_EMAIL)
+//                        userDefaults.set(strGender, forKey: USER_GENDER)
+//                        userDefaults.set(strDob, forKey: USER_DOB)
+//                        userDefaults.set(strProfileImage, forKey: USER_PROFILE_IMAGE)
+//                        userDefaults.set(strReferalCode, forKey: USER_REFERAL_CODE)
+//
+//                        appDelegate.IsNewRegistration = true
+//                        self.performSegue(withIdentifier: "SignIn_Address", sender: self)
+//                    }
                     else
                     {
                         
@@ -352,10 +352,7 @@ class SignInVC: UIViewController, UITextFieldDelegate{
                 UIView().hideLoader(removeFrom: (self.navigationController?.view)!)
                 print(error)
             })
-
         }
-        
-        
     }
     
     @IBAction func onResendOTP(_ sender: Any)

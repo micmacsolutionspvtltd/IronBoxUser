@@ -113,7 +113,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
     }
     
     func didupdateLocation(isUpdated: Bool) {
-        isShowLocationConfirmationAlert = !isUpdated
+//        isShowLocationConfirmationAlert = !isUpdated
     }
     
     lazy var locationConfirmationAlertView: UIView = {
@@ -594,7 +594,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             {
                 if let addressID = json["user_home_address_id"] as? Int {
                     self.editAddressID = "\(addressID)"
-                    self.isShowLocationConfirmationAlert = ((json["is_address_updated"] as? String ?? "") != "1")
+//                    self.isShowLocationConfirmationAlert = ((json["is_address_updated"] as? String ?? "") != "1")
                 }
                 let refAmount = json["referral_amount"] as? Int ?? 0
                 let strRefAmount = String(describing: refAmount)

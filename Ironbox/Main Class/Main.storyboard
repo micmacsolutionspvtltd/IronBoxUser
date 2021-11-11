@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2ly-C0-c8t">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2ly-C0-c8t">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -645,7 +645,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mza-1c-Ukg">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
+                                <rect key="frame" x="0.0" y="56" width="414" height="660"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rtj-wE-ZSS">
                                         <rect key="frame" x="364" y="5" width="50" height="50"/>
@@ -658,7 +658,7 @@
                                         </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CloseWhite" translatesAutoresizingMaskIntoConstraints="NO" id="YSP-Ql-COm">
-                                        <rect key="frame" x="381.66666666666669" y="22.666666666666668" width="15" height="15.000000000000004"/>
+                                        <rect key="frame" x="381.66666666666669" y="22.666666666666671" width="15" height="15"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="15" id="jAA-sB-AMF"/>
                                             <constraint firstAttribute="width" constant="15" id="z6f-wj-ZOm"/>
@@ -674,7 +674,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="imu-pW-0a5">
-                                        <rect key="frame" x="0.0" y="656" width="414" height="60"/>
+                                        <rect key="frame" x="0.0" y="600" width="414" height="60"/>
                                         <color key="backgroundColor" red="0.54509803921568623" green="0.83921568627450982" blue="0.93725490196078431" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="cBU-mH-xbZ"/>
@@ -688,7 +688,7 @@
                                         </connections>
                                     </button>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="40" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XYr-en-dj5">
-                                        <rect key="frame" x="15" y="135" width="384" height="516"/>
+                                        <rect key="frame" x="15" y="135" width="384" height="460"/>
                                         <color key="backgroundColor" red="0.1019607843" green="0.23529411759999999" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PinCodeTableViewCell" rowHeight="40" id="mHS-IU-qoR" customClass="PinCodeTableViewCell" customModule="Ironbox" customModuleProvider="target">
@@ -790,7 +790,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nM1-y4-F1z">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
+                                <rect key="frame" x="0.0" y="56" width="414" height="660"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose your location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kB9-gX-jCs">
                                         <rect key="frame" x="20" y="5" width="374" height="40"/>
@@ -824,7 +824,7 @@
                                         </connections>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eDT-xG-gSD">
-                                        <rect key="frame" x="82.666666666666671" y="646" width="248.66666666666663" height="45"/>
+                                        <rect key="frame" x="82.666666666666671" y="590" width="248.66666666666663" height="45"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="45" id="Nm6-yP-RYz"/>
@@ -7750,7 +7750,7 @@
                                             <color key="titleColor" red="0.1019607843" green="0.23529411759999999" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         </state>
                                         <connections>
-                                            <segue destination="EkG-d0-xGD" kind="presentation" id="rtN-1t-bYi"/>
+                                            <segue destination="EkG-d0-xGD" kind="presentation" identifier="AddAddress" id="rtN-1t-bYi"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -8544,11 +8544,11 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="VJ6-iQ-cbG"/>
+        <segue reference="ojt-Ka-OM7"/>
         <segue reference="cXc-AI-2RL"/>
         <segue reference="wTh-eo-nvy"/>
         <segue reference="2jA-M7-vp9"/>
-        <segue reference="FS1-ZO-Zbo"/>
+        <segue reference="rtN-1t-bYi"/>
         <segue reference="k5x-So-UHO"/>
     </inferredMetricsTieBreakers>
     <resources>

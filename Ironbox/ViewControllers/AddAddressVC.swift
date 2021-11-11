@@ -18,7 +18,7 @@ protocol DelegateUpdateLocation {
 }
 
 class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, GMSAutocompleteViewControllerDelegate {
-
+    
     
     @IBOutlet weak var viewGoogleMap: GMSMapView!
     @IBOutlet weak var viewAddress: UIView!
@@ -30,7 +30,7 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
     @IBOutlet weak var imgHomeRadio: UIImageView!
     @IBOutlet weak var imgWorkRadio: UIImageView!
     @IBOutlet weak var imgOtherRadio: UIImageView!
-
+    
     @IBOutlet weak var btnHomeRadio: UIButton!
     @IBOutlet weak var btnWorkRadio: UIButton!
     @IBOutlet weak var btnOtherRadio: UIButton!
@@ -65,7 +65,7 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
     var height = CGFloat()
     var isForSpecialUpdate = false //There is two update address api
     var editAddressID: String!
-    var isSpecialAddressUpdated = false
+//    var isSpecialAddressUpdated = false
     
     // MARK: - VIEW LIFE CYCLE
     override func viewDidLoad() {
@@ -73,24 +73,24 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
         navigationController?.setNavigationBarHidden(true, animated: true)
         self.setFontFamilyAndSize()
         self.hideKeyboardWhenTappedAround()
-       // viewAddress.backgroundColor = UIColor.white
-//        let camera = GMSCameraPosition.camera(withLatitude: 13.0827, longitude: 80.2707, zoom: 15.5)
-//        self.viewGoogleMap.camera = camera
-//        self.viewGoogleMap.settings.scrollGestures = true
-//        self.viewGoogleMap.settings.compassButton = true
-//        self.viewGoogleMap.isMyLocationEnabled = true
-//        self.viewGoogleMap.settings.myLocationButton = true
+        // viewAddress.backgroundColor = UIColor.white
+        //        let camera = GMSCameraPosition.camera(withLatitude: 13.0827, longitude: 80.2707, zoom: 15.5)
+        //        self.viewGoogleMap.camera = camera
+        //        self.viewGoogleMap.settings.scrollGestures = true
+        //        self.viewGoogleMap.settings.compassButton = true
+        //        self.viewGoogleMap.isMyLocationEnabled = true
+        //        self.viewGoogleMap.settings.myLocationButton = true
         self.viewGoogleMap.delegate = self
-//        do {
-//            // Set the map style by passing the URL of the local file. Make sure style.json is present in your project
-//            if let styleURL = Bundle.main.url(forResource: "style", withExtension: "json") {
-//                viewGoogleMap.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
-//            } else {
-//                print("Unable to find style.json")
-//            }
-//        } catch {
-//            print("The style definition could not be loaded: \(error)")
-//        }
+        //        do {
+        //            // Set the map style by passing the URL of the local file. Make sure style.json is present in your project
+        //            if let styleURL = Bundle.main.url(forResource: "style", withExtension: "json") {
+        //                viewGoogleMap.mapStyle = try GMSMapStyle(contentsOfFileURL: styleURL)
+        //            } else {
+        //                print("Unable to find style.json")
+        //            }
+        //        } catch {
+        //            print("The style definition could not be loaded: \(error)")
+        //        }
         
         //Location Manager code to fetch current location
         locationManager.requestWhenInUseAuthorization()
@@ -112,7 +112,7 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
         
         if(dictAddress.count != 0)
         {
-         
+            
             strPincode = dictAddress["pincode"] as? String ?? ""
             strAddressType = dictAddress["title"] as? String ?? ""
             txtFlatNo.text = dictAddress["flatNo"] as? String ?? ""
@@ -132,7 +132,7 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
             {
                 let camera = GMSCameraPosition.camera(withLatitude: latt!, longitude: longg! , zoom: 15.5)
                 self.viewGoogleMap?.animate(to: camera)
-              
+                
             }
             
             if strAddressType == "Home"
@@ -163,15 +163,21 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
             self.showTutorialScreen()
         }
         
-        let ud = UserDefaults.standard
-        let startingX = ud.double(forKey: CUR_LATITUDE)
-        let startingY = ud.double(forKey: CUR_LONGITUDE)
-
-        let camera = GMSCameraPosition.camera(withLatitude: startingX, longitude: startingY, zoom: 18.0)
-        viewGoogleMap.camera = camera
-
+        if dictAddress.count == 0 {
+            let ud = UserDefaults.standard
+            var startingX = ud.double(forKey: CUR_LATITUDE)
+            var startingY = ud.double(forKey: CUR_LONGITUDE)
+            if startingX == 0.0 && startingY == 0.0 {
+                startingX = 13.0632
+                startingY = 80.2250
+            }
+            
+            let camera = GMSCameraPosition.camera(withLatitude: startingX, longitude: startingY, zoom: 18.0)
+            viewGoogleMap.camera = camera
+        }
+        
         self.viewGoogleMap.mapType = .normal
-
+        
         self.viewGoogleMap.settings.scrollGestures = true
         self.viewGoogleMap.settings.rotateGestures = true
         self.viewGoogleMap.settings.consumesGesturesInView = true
@@ -179,7 +185,7 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
         
         self.viewGoogleMap.isMyLocationEnabled = true
         self.viewGoogleMap.settings.myLocationButton = true
-//        self.viewGoogleMap.delegate = self
+        //        self.viewGoogleMap.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool)
@@ -187,12 +193,10 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
         height = self.viewGoogleMap.frame.size.height + self.viewAddress.frame.size.height
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        if isForSpecialUpdate {
-            delegateDidUpdateLocation?.didupdateLocation(isUpdated: isSpecialAddressUpdated)
-        }
-    }
+//    override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//            delegateDidUpdateLocation?.didupdateLocation(isUpdated: isSpecialAddressUpdated)
+//    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -303,29 +307,29 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
         self.navigationController?.popViewController(animated: true)
         self.dismiss(animated: true, completion: nil)
     }
-
+    
     @IBAction func onHome(_ sender: Any)
     {
-         strAddressType = "Home"
+        strAddressType = "Home"
         imgHomeRadio.image = UIImage(named: "RadioOn") // RadioOff
         imgWorkRadio.image = UIImage(named: "RadioOff")
         imgOtherRadio.image = UIImage(named: "RadioOff")
     }
     @IBAction func onWork(_ sender: Any)
     {
-         strAddressType = "Work"
+        strAddressType = "Work"
         imgHomeRadio.image = UIImage(named: "RadioOff") // RadioOff
         imgWorkRadio.image = UIImage(named: "RadioOn")
         imgOtherRadio.image = UIImage(named: "RadioOff")
     }
     @IBAction func onOthers(_ sender: Any)
     {
-         strAddressType = "Other"
+        strAddressType = "Other"
         imgHomeRadio.image = UIImage(named: "RadioOff") // RadioOff
         imgWorkRadio.image = UIImage(named: "RadioOff")
         imgOtherRadio.image = UIImage(named: "RadioOn")
     }
-   
+    
     @IBAction func onEnterAddress(_ sender: Any)
     {
         let autocompleteController = GMSAutocompleteViewController()
@@ -369,10 +373,10 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
                 "city":strCity
             ]
             
-//        http://13.126.228.76/Ironbox_new/public/api/EditAddress_phase3?
-//            AddressId= 2979&
-//            title=Home&
-//            apartment=test apratment&
+            //        http://13.126.228.76/Ironbox_new/public/api/EditAddress_phase3?
+            //            AddressId= 2979&
+            //            title=Home&
+            //            apartment=test apratment&
             
             if(dictAddress.count != 0)
             {
@@ -384,21 +388,21 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
                     API_EDIT_ADD = EDIT_ADDRESS
                     addressID = dictAddress["id"] as Any
                 }
-            param = [
-                "title":strAddressType,
-                "flatNo":txtFlatNo.text!,
-                "landmark":txtLandmark.text!,
-                "pincode":txtPincode.text!,
-                "address":strAddrLine,
-                "latitude":strLat,
-                "longitude":strLong,
-                "AddressId":addressID,
-                "street":strStreetname,
-                "area":strArea,
-                "city":strCity
+                param = [
+                    "title":strAddressType,
+                    "flatNo":txtFlatNo.text!,
+                    "landmark":txtLandmark.text!,
+                    "pincode":txtPincode.text!,
+                    "address":strAddrLine,
+                    "latitude":strLat,
+                    "longitude":strLong,
+                    "AddressId":addressID,
+                    "street":strStreetname,
+                    "area":strArea,
+                    "city":strCity
                 ]
             }
-          
+            
             self.CheckNetwork()
             
             AlamofireHC.requestPOST(API_EDIT_ADD, params: param as [String : AnyObject], headers: header, success: { (JSON) in
@@ -415,11 +419,11 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
                         (result : UIAlertAction) -> Void in
                         
                         appDelegate.isNewAddressAdded = true
-                        self.isSpecialAddressUpdated = true
-                       self.dismiss(animated: true, completion: nil)
+                        self.delegateDidUpdateLocation?.didupdateLocation(isUpdated: true)
+                        self.dismiss(animated: true, completion: nil)
                         //self.performSegue(withIdentifier: "Location_EnterLocation", sender: self)
                         
-
+                        
                     }
                     alertController.addAction(okAction)
                     self.present(alertController, animated: true, completion: nil)
@@ -427,10 +431,9 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
                 else
                 {
                     let errorMessage = json.value(forKey: "error_message")as? String ?? ""
+                    self.delegateDidUpdateLocation?.didupdateLocation(isUpdated: false)
                     self.ShowAlert(msg: errorMessage)
                 }
-                
-                
             }, failure: { (error) in
                 UIView().hideLoader(removeFrom: (self.view)!)
                 print(error)
@@ -444,21 +447,21 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
     func getAddressFromLatLong(_ locat: CLLocationCoordinate2D)
     {
         let reverseGeoCoder = GMSGeocoder()
-      //  let coordinate = manager.location?.coordinate
+        //  let coordinate = manager.location?.coordinate
         reverseGeoCoder.reverseGeocodeCoordinate(locat, completionHandler: {(placeMark, error) -> Void in
             if error == nil {
                 if let placeMarkObject = placeMark
                 {
-                  //  print(placeMarkObject.results()!)
+                    //  print(placeMarkObject.results()!)
                     let addressCount = placeMarkObject.results()?.count
                     if addressCount != 0
                     {
-                       // print(placeMarkObject.firstResult()!)
+                        // print(placeMarkObject.firstResult()!)
                         let strAddrLinecount = placeMarkObject.firstResult()?.lines?.count
                         self.strAddrLine = ""
                         if strAddrLinecount == 0
                         {
-                        
+                            
                         }
                         else if strAddrLinecount == 1
                         {
@@ -478,10 +481,10 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
                         self.txtPincode.text = self.strPincode
                         self.strFlatno = placeMarkObject.firstResult()?.thoroughfare ?? ""
                         self.txtFlatNo.text = self.strFlatno
-//                        self.strLandmark = placeMarkObject.firstResult()?.postalCode ?? ""
-//                        self.txtLandmark.text = self.strLandmark
-//                        self.strApartmentname = placeMarkObject.firstResult()?.postalCode ?? ""
-//                        self.txtApartmentname.text = self.strApartmentname
+                        //                        self.strLandmark = placeMarkObject.firstResult()?.postalCode ?? ""
+                        //                        self.txtLandmark.text = self.strLandmark
+                        //                        self.strApartmentname = placeMarkObject.firstResult()?.postalCode ?? ""
+                        //                        self.txtApartmentname.text = self.strApartmentname
                         self.strStreetname = placeMarkObject.firstResult()?.thoroughfare ?? ""
                         self.txtStreetname.text = self.strStreetname
                         let strArea = placeMarkObject.firstResult()?.subLocality ?? ""
@@ -501,24 +504,24 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
         })
     }
     
-  /*  func mapView(_ mapView: GMSMapView, willMove gesture: Bool)
-    {
-        print("yes")
-        UIView.animate(withDuration: 0.2, animations: {
-            self.viewGoogleMap.frame.size.height = (self.height/10) * 7.5
-            self.viewAddress.frame.origin.y =  self.viewGoogleMap.frame.origin.y + self.viewGoogleMap.frame.size.height
-            self.viewAddress.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.viewGoogleMap.transform = CGAffineTransform(scaleX: 1, y: 1)
-            self.markerCenter.center.y = self.viewGoogleMap.center.y - 15
-            self.markerCenter.transform = CGAffineTransform(scaleX: 1, y: 1)
-        }) { (finished) in
-            UIView.animate(withDuration: 0.4, animations: {
-                self.viewGoogleMap.transform = CGAffineTransform.identity
-                self.viewAddress.transform = CGAffineTransform.identity
-                self.markerCenter.transform = CGAffineTransform.identity
-            })
-        }
-    } */
+    /*  func mapView(_ mapView: GMSMapView, willMove gesture: Bool)
+     {
+     print("yes")
+     UIView.animate(withDuration: 0.2, animations: {
+     self.viewGoogleMap.frame.size.height = (self.height/10) * 7.5
+     self.viewAddress.frame.origin.y =  self.viewGoogleMap.frame.origin.y + self.viewGoogleMap.frame.size.height
+     self.viewAddress.transform = CGAffineTransform(scaleX: 1, y: 1)
+     self.viewGoogleMap.transform = CGAffineTransform(scaleX: 1, y: 1)
+     self.markerCenter.center.y = self.viewGoogleMap.center.y - 15
+     self.markerCenter.transform = CGAffineTransform(scaleX: 1, y: 1)
+     }) { (finished) in
+     UIView.animate(withDuration: 0.4, animations: {
+     self.viewGoogleMap.transform = CGAffineTransform.identity
+     self.viewAddress.transform = CGAffineTransform.identity
+     self.markerCenter.transform = CGAffineTransform.identity
+     })
+     }
+     } */
     
     // MARK: - MAP VIEW DELEGATE
     func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition)
@@ -532,23 +535,23 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
     }
     
     func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
-//        let latitude = mapView.camera.target.latitude
-//        let longitude = mapView.camera.target.longitude
-//        print(latitude)
-//        print(longitude)
+        //        let latitude = mapView.camera.target.latitude
+        //        let longitude = mapView.camera.target.longitude
+        //        print(latitude)
+        //        print(longitude)
     }
     
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-// MARK: - Location manager
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
+    // MARK: - Location manager
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
@@ -642,7 +645,7 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
             let  maxLength = 6
             let currentString: NSString = textField.text! as NSString
             let newString: NSString =
-                currentString.replacingCharacters(in: range, with: string) as NSString
+            currentString.replacingCharacters(in: range, with: string) as NSString
             return newString.length <= maxLength
             
         }
@@ -657,18 +660,16 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
     // MARK: - GOOGLE PLACES
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace)
     {
-//        print("Place name: \(place.coordinate)")
-//        print("Place address: \(place.formattedAddress)")
-//        print("Place attributions: \(place.attributions)")
-    
+        //        print("Place name: \(place.coordinate)")
+        //        print("Place address: \(place.formattedAddress)")
+        //        print("Place attributions: \(place.attributions)")
+        
         dismiss(animated: true, completion: nil)
         DispatchQueue.main.asyncAfter(deadline: .now() + 1)
         {
             let camera = GMSCameraPosition.camera(withLatitude: (place.coordinate.latitude), longitude: (place.coordinate.longitude), zoom: 15.5)
             self.viewGoogleMap?.animate(to: camera)
         }
-        
-        
     }
     
     func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error)

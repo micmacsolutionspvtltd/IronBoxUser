@@ -262,9 +262,19 @@ class AddressVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         if (segue.identifier == "EditAddress")
         {
             let addAddress = segue.destination as! AddAddressVC
+            addAddress.delegateDidUpdateLocation = self
             addAddress.dictAddress = dictAddress
+        } else if segue.identifier == "AddAddress" {
+            let addAddress = segue.destination as! AddAddressVC
+            addAddress.delegateDidUpdateLocation = self
         }
     }
    
 
+}
+
+extension AddressVC: DelegateUpdateLocation {
+    func didupdateLocation(isUpdated: Bool) {
+        self.viewWillAppear(true)
+    }
 }
