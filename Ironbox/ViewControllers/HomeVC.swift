@@ -20,6 +20,7 @@ import SwiftUI
 import SnapKit
 import Cosmos
 
+@available(iOS 13.0, *)
 class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, ObservableObject, DelegateUpdateLocation{
     
     @IBOutlet weak var viewOnGoingServicesCount: SpringView!
@@ -161,6 +162,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         }
     }
     
+    
 //    private func scCheckLocationUpdate(completion: @escaping ((Bool) -> Void)) {
 ////        CheckAddress
 //        guard CheckNetwork() else {
@@ -260,6 +262,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         showPopup(leftView: nil, rightView: nil, isMoveRight: true)
         setupNavigationBar(isDefault: true)
         fieldCount.setText("")
+        fieldPromoCode.setText("")
         viewClothes2.isHidden = true
     }
     
@@ -268,8 +271,12 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             self.navigationController?.navigationBar.titleTextAttributes = [ NSAttributedStringKey.font: UIFont(name: FONT_BOLD, size: 19)!, NSAttributedStringKey.foregroundColor : UIColor(red: 26/255.0, green: 60/255.0, blue: 92/255.0, alpha: 1.0)]
             
             let btnMenu = UIButton(type: .custom)
-            btnMenu.setImage(UIImage(named: "Menu"), for: .normal)
+            btnMenu.setImage(UIImage(named: "Menu Icon"), for: .normal)
+           
+            btnMenu.imageView?.contentMode = .scaleAspectFit
+            btnMenu.imageEdgeInsets = UIEdgeInsetsMake(8.0, 0.0, 8.0, 0.0)
             btnMenu.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+            
             navigationController?.navigationBar.barTintColor =  UIColor.white
             btnMenu.addTarget(self, action: #selector(self.onMenuClick), for: .touchUpInside)
             let item = UIBarButtonItem(customView: btnMenu)
@@ -285,13 +292,18 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             navigationController?.navigationBar.barTintColor =  UIColor.primaryColor
             btnMenu.addTarget(self, action: #selector(self.onBack), for: .touchUpInside)
             let item = UIBarButtonItem(customView: btnMenu)
-            self.title = "Shedule My Pickup"
+            self.title = "Schedule My Pickup"
             self.navigationItem.setLeftBarButtonItems([item], animated: true)
         }
     }
     
     
     var editAddressID = ""
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        fieldPromoCode.textField.text = appDelegate.strOfferCode
+    }
 
     // MARK: - VIEW LIFE CYCLE
     override func viewDidLoad() {
@@ -328,6 +340,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         imgSlide.contentScaleMode = UIViewContentMode.scaleAspectFill
         imgSlide.clipsToBounds = true
         imgSlide.circular = false
+        imgSlide.slideshowInterval = 5
         imgSlide.activityIndicator = DefaultActivityIndicator(style: .white, color: UIColor.black)
         imgSlide.currentPageChanged = { page in
             print("current page:", page)
@@ -1573,9 +1586,12 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
     {
         view.endEditing(true)
         appDelegate.strOfferType = "Booking"
-        guard let myVC = self.storyboard?.instantiateViewController(withIdentifier: "ApplyOffersVC") else { return }
+        guard let myVC = self.storyboard?.instantiateViewController(withIdentifier: "ApplyOffersVC") as? ApplyOffersVC else { return }
+        myVC.bookedTimeSlot = strTimeSlotID
+        myVC.bookedAreaId = strAddresspassId
+        myVC.bookedDate =  strBookingDate
+        myVC.homeVc = self
         let navController = UINavigationController(rootViewController: myVC)
-        
         self.navigationController?.present(navController, animated: true, completion: nil)
     }
     
@@ -1886,6 +1902,8 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
     
     @IBAction func onGoHome(_ sender: Any)
     {
+        
+        fieldPromoCode.setText("")
         self.onHomeAPI()
         let viewControllerSize = view.frame.size
         let width = viewControllerSize.width
@@ -1920,7 +1938,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         let dictAddress = self.arrAddress[indexPath.row] as! Dictionary<String, Any>
         let strFlatNo = dictAddress["flatNo"] as? String ?? ""
         let strAddress = dictAddress["address"] as? String ?? ""
-        cell.lblAddress.text = strFlatNo + " " + strAddress
+        cell.lblAddress.text = strAddress
         
         let strLandmark = dictAddress["landmark"] as? String ?? ""
         if strLandmark != ""
@@ -2752,6 +2770,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         })
     }
 }
+@available(iOS 13.0.0, *)
 
 struct LocationConfirmationAlertView: View {
     let onTap: () -> Void
@@ -2790,6 +2809,7 @@ struct LocationConfirmationAlertView: View {
         .fixedSize(horizontal: false, vertical: false)
     }
 }
+@available(iOS 13.0.0, *)
 
 struct Previews: PreviewProvider {
     static var previews: some View {

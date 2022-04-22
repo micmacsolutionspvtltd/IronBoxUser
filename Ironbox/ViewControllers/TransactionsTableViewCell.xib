@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -25,26 +22,23 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="89.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Esi-9q-FVf">
-                        <rect key="frame" x="10" y="10" width="300" height="79.5"/>
+                        <rect key="frame" x="10" y="10" width="300" height="80"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NvV-95-tas" customClass="GradientView" customModule="Ironbox" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="90" height="79.5"/>
+                                <rect key="frame" x="0.0" y="0.0" width="90" height="80"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30/05/2018" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jHt-QM-XnA">
-                                        <rect key="frame" x="0.0" y="12" width="90" height="25"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="25" id="XxI-Jq-hVB"/>
-                                        </constraints>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30/05/2018" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jHt-QM-XnA">
+                                        <rect key="frame" x="0.0" y="5" width="90" height="45"/>
                                         <fontDescription key="fontDescription" name="Quicksand-Medium" family="Quicksand" pointSize="15"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CREDIT" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zfd-35-GdF">
-                                        <rect key="frame" x="0.0" y="42.5" width="90" height="25"/>
+                                        <rect key="frame" x="0.0" y="50" width="90" height="25"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="25" id="V72-0P-g58"/>
                                         </constraints>
@@ -55,10 +49,11 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.35294117650000001" green="0.81176470590000005" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="jHt-QM-XnA" firstAttribute="top" secondItem="NvV-95-tas" secondAttribute="top" constant="12" id="5aT-tS-rep"/>
+                                    <constraint firstItem="jHt-QM-XnA" firstAttribute="top" secondItem="NvV-95-tas" secondAttribute="top" constant="5" id="5aT-tS-rep"/>
                                     <constraint firstAttribute="trailing" secondItem="jHt-QM-XnA" secondAttribute="trailing" id="8IR-5H-0g5"/>
                                     <constraint firstItem="zfd-35-GdF" firstAttribute="leading" secondItem="NvV-95-tas" secondAttribute="leading" id="CEK-vC-F89"/>
-                                    <constraint firstAttribute="bottom" secondItem="zfd-35-GdF" secondAttribute="bottom" constant="12" id="IZU-Qi-wOU"/>
+                                    <constraint firstAttribute="bottom" secondItem="zfd-35-GdF" secondAttribute="bottom" constant="5" id="IZU-Qi-wOU"/>
+                                    <constraint firstItem="zfd-35-GdF" firstAttribute="top" secondItem="jHt-QM-XnA" secondAttribute="bottom" id="OmT-vB-ASX"/>
                                     <constraint firstItem="jHt-QM-XnA" firstAttribute="leading" secondItem="NvV-95-tas" secondAttribute="leading" id="h5V-6J-g6n"/>
                                     <constraint firstAttribute="trailing" secondItem="zfd-35-GdF" secondAttribute="trailing" id="zw4-fd-vEi"/>
                                 </constraints>
@@ -148,6 +143,7 @@
                 <outlet property="viewBG" destination="Esi-9q-FVf" id="Usd-MB-4dK"/>
                 <outlet property="viewType" destination="NvV-95-tas" id="2xC-I4-nRn"/>
             </connections>
+            <point key="canvasLocation" x="139" y="77"/>
         </tableViewCell>
     </objects>
 </document>

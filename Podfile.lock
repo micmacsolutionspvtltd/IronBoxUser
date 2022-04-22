@@ -145,6 +145,7 @@ PODS:
   - ImageSlideshow/Kingfisher (1.7.0):
     - ImageSlideshow/Core
     - Kingfisher (> 3.0)
+  - iOSDropDown (0.3.4)
   - JVFloatLabeledTextField (1.2.2)
   - Kingfisher (4.10.1)
   - Motion (3.1.3):
@@ -207,6 +208,7 @@ DEPENDENCIES:
   - GooglePlacePicker
   - GooglePlaces
   - ImageSlideshow/Kingfisher
+  - iOSDropDown
   - JVFloatLabeledTextField
   - Motion
   - NVActivityIndicatorView
@@ -270,6 +272,7 @@ SPEC REPOS:
     - GooglePlaces
     - GoogleUtilities
     - ImageSlideshow
+    - iOSDropDown
     - JVFloatLabeledTextField
     - Kingfisher
     - Motion
@@ -336,6 +339,7 @@ SPEC CHECKSUMS:
   GooglePlaces: e874db179f2675c4f3eeda0b686b540273a578b0
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
   ImageSlideshow: f8eec5e37a980f60923b585ff23b0e140fd24018
+  iOSDropDown: c10a761f9a00c3f1cc9d3bce43ae504628e2f692
   JVFloatLabeledTextField: df48598472ee015701d509f43e59492a0d4ca208
   Kingfisher: c148cd7b47ebde9989f6bc7c27dcaa79d81279a0
   Motion: cf1e060e489f6661126374d5c60dbd2ed991605c
@@ -353,6 +357,6 @@ SPEC CHECKSUMS:
   Toaster: c3473963c78e8cabbf6ea6f11ad0fdaae6f54987
   UIFloatLabelTextView: 96b7c5a18739fd1af8fd9480f7943d75a7547e4d
 
-PODFILE CHECKSUM: 85a2728ce6a480011d6bda3f82072021e06f0bef
+PODFILE CHECKSUM: 5dbfa781906f5bf248029c661cab66ed6de53cac
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

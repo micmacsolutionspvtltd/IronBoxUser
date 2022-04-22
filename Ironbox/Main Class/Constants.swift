@@ -81,21 +81,22 @@ var EDIT_USER_PROFILE = "EditUserProfile"
 var GET_ADDRESS = "GetAddress"
 var GET_TIMESLOTS = "GetTimeSlots"
 var ADD_ADDRESS = "AddAddresses"
-var USER_BOOKING = "UserBooking_phase5"//"UserBooking_phase4"//"UserBooking"
+var USER_BOOKING = "UserBooking_phase4"//"UserBooking_phase4"//"UserBooking"
 var USER_CURRENT_ORDER_LIST = "UserOrderList"
 var BOOKING_HISTORY = "BookingHistory"
 var DELETE_ADDRESS = "DeleteAddress"
 var EDIT_ADDRESS = "EditAddress_phase3" //"EditAddress"
-var GET_RATECARD = "RateCard"
+var GET_RATECARD = "RateCard_phase5"
 var GET_USERDETAILS = "UserDetails"
 var SEND_FEEDBACK = "CustomerSupport"
 var ABOUT_US = "ContentPages"
 var CENCEL_REASON = "CancelReason"
 var CANCEL_ORDER = "OrderCancel"
 //var VIEW_BILLING_DETAILS = "ViewItems"
-var VIEW_BILLING_DETAILS = "ViewItems_phase3"
+var VIEW_BILLING_DETAILS = "ViewItems_phase5"
 var HOME_API = "Home_phase3"//"Home"
 var RATING = "Rating"
+var GET_PINCODE3 = "Pincode_phase3"
 var GET_PINCODE = "Pincode"
 var CHECK_PINCODE = "CheckPincode"
 var ADD_AMOUNT_WALLET = "AddWalletRazorPay"         // "AddWallet"
@@ -112,6 +113,7 @@ var PAYMENT_PACKAGES = "packagesPayment"
 var GET_MY_PACKAGES = "MyPackages"
 var MY_PACKAGE_TRANSACTIONS = "MyPackageTransactions"
 var ON_CLICK_BOOKING = "OneClickBooking"
+var AGENT_REFFERCODE = "agentcode"
 //var MY_PACKAGE_TRANSACTIONS = "MyPackageTransactions"
 
 
@@ -178,6 +180,7 @@ struct UI<V: UIView>: UIViewRepresentable { //hu
     }
 }
 
+@available(iOS 13.0, *)
 extension View {
     func uiView() -> UIView {
         let controller = UIHostingController(rootView: self)

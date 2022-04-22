@@ -11,9 +11,6 @@ import Alamofire
 import Spring
 import Razorpay
 
-
-
-
 class WalletVC: UIViewController, UITextFieldDelegate{
 
     @IBOutlet weak var viewBG: SpringView!
@@ -48,7 +45,7 @@ class WalletVC: UIViewController, UITextFieldDelegate{
         let item = UIBarButtonItem(customView: btnBack)
         self.navigationItem.setLeftBarButtonItems([item], animated: true)
         //razorpayObj = RazorpayCheckout.initWithKey("rzp_live_vq8tmnnZmbWVkx", andDelegate: self)
-        razorpayObj = RazorpayCheckout.initWithKey("rzp_live_vq8tmnnZmbWVkx", andDelegateWithData: self)
+        razorpayObj = RazorpayCheckout.initWithKey("rzp_live_li9Fr16AIXoqpK", andDelegateWithData: self)
         
         //        razorpay = Razorpay.initWithKey("", andDelegate: self)
         
@@ -68,18 +65,31 @@ class WalletVC: UIViewController, UITextFieldDelegate{
 
         txtPromoCode.text = appDelegate.strOfferCode
     }
-    //
-    //    override func viewDidAppear(_ animated: Bool)
-    //      {
-    //          self.showPaymentForm()
-    //
-    //      }
+    
+//        override func viewDidAppear(_ animated: Bool)
+//          {
+//              self.showPaymentForm()
+//
+//          }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+//        navigationController?.navigationBar.isHidden = false
+//        navigationController?.navigationBar.barTintColor = UIColor.white
+//        self.navigationController?.navigationBar.titleTextAttributes = [ NSAttributedStringKey.font: UIFont(name: FONT_BOLD, size: 19)!, NSAttributedStringKey.foregroundColor : UIColor(red: 26/255.0, green: 60/255.0, blue: 92/255.0, alpha: 1.0)]
+//
+//        self.navigationItem.hidesBackButton = true
+//        let btnBack = UIButton(type: .custom)
+//        btnBack.setImage(UIImage(named: "BackButton"), for: .normal)
+//        btnBack.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+//        btnBack.addTarget(self, action: #selector(self.ClickonBackBtn), for: .touchUpInside)
+//        let item = UIBarButtonItem(customView: btnBack)
+//        self.navigationItem.setLeftBarButtonItems([item], animated: true)
+    }
     override func viewWillLayoutSubviews()
     {
         self.txtEnterAmount.attributedPlaceholder = NSAttributedString(string: "Enter your amount",
@@ -217,15 +227,15 @@ class WalletVC: UIViewController, UITextFieldDelegate{
     @objc func getOrderId()
     {
         
-        self.navigationController?.view.addSubview(UIView().customActivityIndicator(view: (self.navigationController?.view)!, widthView: nil, message: "Loading"))
-        
+//        self.navigationController?.view.addSubview(UIView().customActivityIndicator(view: (self.navigationController?.view)!, widthView: nil, message: "Loading"))
+//
         let accessToken = userDefaults.object(forKey: ACCESS_TOKEN)
         let header:HTTPHeaders = ["Accept":"application/json", "Authorization":accessToken as! String]
         
         self.CheckNetwork()
         
         AlamofireHC.requestPOST(GET_ORDERID, params: nil, headers: header, success: { (JSON) in
-            UIView().hideLoader(removeFrom: (self.navigationController?.view)!)
+//            UIView().hideLoader(removeFrom: (self.navigationController?.view)!)
             let  result = JSON.dictionaryObject
             let json = result! as NSDictionary
             
@@ -233,7 +243,10 @@ class WalletVC: UIViewController, UITextFieldDelegate{
             if (err == "false")
             {
                 self.strOrderId = json.value(forKey: "orderId") as? String ?? ""
-                self.showPaymentForm()
+                DispatchQueue.main.async {
+                    self.showPaymentForm()
+                }
+              
                 //self.onGenerateCheckSum()
                 
             }
@@ -246,7 +259,7 @@ class WalletVC: UIViewController, UITextFieldDelegate{
             
             
         }, failure: { (error) in
-            UIView().hideLoader(removeFrom: (self.navigationController?.view)!)
+//            UIView().hideLoader(removeFrom: (self.navigationController?.view)!)
             print(error)
 
         })
@@ -367,6 +380,16 @@ class WalletVC: UIViewController, UITextFieldDelegate{
         
     }
     
+    @IBAction func addPackageClicked(_ sender: Any) {
+        view.endEditing(true)
+        appDelegate.strOfferType = "Packages"
+        
+        guard let myVC = self.storyboard?.instantiateViewController(withIdentifier: "AddPackageViewController") else { return }
+        let navController = UINavigationController(rootViewController: myVC)
+//
+        self.navigationController?.present(navController, animated: true, completion: nil)
+     //   self.navigationController?.pushViewController(myVC, animated: true)
+    }
     @IBAction func onOffers(_ sender: Any)
     {
         view.endEditing(true)
@@ -476,7 +499,8 @@ class WalletVC: UIViewController, UITextFieldDelegate{
 
     internal func showPaymentForm() {
 
-        let options: [AnyHashable:Any] = [
+        
+        let options: [String:Any] = [
             "prefill": [
                 "contact": userDefaults.object(forKey: USER_MOBILE) as? String,
                 "email": userDefaults.object(forKey: USER_EMAIL) as? String

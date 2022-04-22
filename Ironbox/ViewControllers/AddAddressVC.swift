@@ -12,6 +12,8 @@ import GooglePlaces
 import  Toaster
 import Alamofire
 import NVActivityIndicatorView
+import DropDown
+import iOSDropDown
 
 protocol DelegateUpdateLocation {
     func didupdateLocation(isUpdated: Bool)
@@ -19,7 +21,9 @@ protocol DelegateUpdateLocation {
 
 class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, GMSAutocompleteViewControllerDelegate {
     
-    
+    @IBOutlet weak var searchBar: UISearchBar!
+
+    @IBOutlet weak var dropDownTextFld: UITextField!
     @IBOutlet weak var viewGoogleMap: GMSMapView!
     @IBOutlet weak var viewAddress: UIView!
     @IBOutlet weak var markerCenter: UIImageView!
@@ -36,7 +40,8 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
     @IBOutlet weak var btnOtherRadio: UIButton!
     
     @IBOutlet weak var txtFlatNo: UITextField!
-    @IBOutlet weak var txtPincode: UITextField!
+   
+    @IBOutlet weak var pincodeButton: UIButton!
     @IBOutlet weak var txtLandmark: UITextField!
     @IBOutlet weak var txtApartmentname: UITextField!
     @IBOutlet weak var txtStreetname: UITextField!
@@ -48,7 +53,8 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
     
     var ViewTutorial = UIView()
     var ImgTutorial = UIImageView()
-    
+    let dropDown = DropDown()
+    var selectedPincode = ""
     var strAddressType = ""
     var strPincode = ""
     var strAddrLine = ""
@@ -65,11 +71,35 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
     var height = CGFloat()
     var isForSpecialUpdate = false //There is two update address api
     var editAddressID: String!
+    var pincodeValues:[String] = []
+    var pincodeIds:[Int] = []
 //    var isSpecialAddressUpdated = false
-    
+    var searchText = String() {
+        didSet{
+            var dataFiltered: [String] = []
+                    if searchText == "" {
+                dataFiltered = self.pincodeValues
+            }else{
+                dataFiltered = pincodeValues.filter {
+                    return $0.range(of: searchText, options: .caseInsensitive) != nil
+                }
+            }
+            if dataFiltered.count == 0{
+                dropDown.dataSource = ["No service available"]
+            }else{
+            dropDown.dataSource = dataFiltered
+            }
+            dropDown.show()
+        }
+    }
+    fileprivate var didSelectCompletion: (String, Int ,Int) -> () = {selectedText, index , id  in }
     // MARK: - VIEW LIFE CYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
+     //   dropDownTextFld.isHidden = true
+        dropDownTextFld.delegate = self
+        dropDownTextFld.addTarget(self, action: #selector(myTargetFunction), for: .touchDown)
+      
         navigationController?.setNavigationBarHidden(true, animated: true)
         self.setFontFamilyAndSize()
         self.hideKeyboardWhenTappedAround()
@@ -116,7 +146,7 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
             strPincode = dictAddress["pincode"] as? String ?? ""
             strAddressType = dictAddress["title"] as? String ?? ""
             txtFlatNo.text = dictAddress["flatNo"] as? String ?? ""
-            txtPincode.text = dictAddress["pincode"] as? String ?? ""
+            pincodeButton.setTitle(strPincode, for: .normal)
             txtLandmark.text = dictAddress["landmark"] as? String ?? ""
             strAddrLine = dictAddress["address"] as? String ?? ""
             txtStreetname.text = dictAddress["street"] as? String ?? ""
@@ -153,6 +183,8 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
         let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
         self.viewAddress.addGestureRecognizer(gestureRecognizer)
         markerCenter.layer.zPosition = 1
+        pincodeButton.layer.borderColor = UIColor.black.cgColor
+        pincodeButton.layer.borderWidth = 1
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -191,6 +223,7 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
     override func viewDidAppear(_ animated: Bool)
     {
         height = self.viewGoogleMap.frame.size.height + self.viewAddress.frame.size.height
+        setupDropDown()
     }
     
 //    override func viewWillDisappear(_ animated: Bool) {
@@ -345,11 +378,11 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
         {
             ShowAlert(msg: "Please enter flat no / block / floor")
         }
-        else if txtPincode.text! == "" || (txtPincode.text?.trimmingCharacters(in: .whitespaces).isEmpty)!
+        else if selectedPincode == "" || (pincodeButton.titleLabel?.text?.trimmingCharacters(in: .whitespaces).isEmpty)!
         {
             ShowAlert(msg: "Please enter pincode")
         }
-        else if txtPincode.text?.count != 6
+        else if selectedPincode.count != 6
         {
             ShowAlert(msg: "Please enter valid pincode")
         }
@@ -360,12 +393,30 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
             let accessToken = userDefaults.object(forKey: ACCESS_TOKEN)
             let header:HTTPHeaders = ["Accept":"application/json", "Authorization":accessToken as! String]
             var API_EDIT_ADD = ADD_ADDRESS
+            var addressValue = txtFlatNo.text! + ","
+            if let street = txtStreetname.text,street.count > 0 {
+                addressValue += street + ","
+            }
+            
+            if let apartmentName = txtApartmentname.text,apartmentName.count > 0 {
+                addressValue += apartmentName + ","
+            }
+            
+            if let landmark = txtLandmark.text,landmark.count > 0 {
+                addressValue += landmark + ","
+            }
+            
+            if let city = txtAreacity.text,city.count > 0 {
+                addressValue += city + "- \(selectedPincode)"
+            }
+            
+            
             var param: [String: Any] = [
                 "title":strAddressType,
                 "flatNo":txtFlatNo.text!,
-                "pincode":txtPincode.text!,
+                "pincode":selectedPincode,
                 "landmark":txtLandmark.text!,
-                "address":strAddrLine,
+                "address":addressValue,
                 "latitude":strLat,
                 "longitude":strLong,
                 "street":strStreetname,
@@ -392,8 +443,8 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
                     "title":strAddressType,
                     "flatNo":txtFlatNo.text!,
                     "landmark":txtLandmark.text!,
-                    "pincode":txtPincode.text!,
-                    "address":strAddrLine,
+                    "pincode":selectedPincode,
+                    "address":addressValue,
                     "latitude":strLat,
                     "longitude":strLong,
                     "AddressId":addressID,
@@ -443,6 +494,109 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
         
     }
     
+    @IBAction func pincodeClicked(_ sender: UIButton) {
+        dropDownTextFld.isHidden = false
+
+        var idvalues : [Int] = []
+        for i in 0..<pincodeValues.count{
+            idvalues.append(i)
+        }
+//        LoadDropDownValues(dropDown: dropDowns, data: pincodeValues, dataId: idvalues) { (selectedId) in
+//
+//
+//        }
+       
+
+//        dropDowns.optionArray = pincodeValues
+    //    dropDown.optionIds = pincodeIds
+//        dropDowns.didSelect{(selectedText , index ,id) in
+//       // self.valueLabel.text = "Selected String: \(selectedText) \n index: \(index)"
+//        }
+        dropDown.anchorView = txtAreacity //5
+     //   dropDown.anchorView = searchBar
+            dropDown.bottomOffset = CGPoint(x: 0, y: sender.frame.size.height)  // UIView or UIBarButtonItem
+            DropDown.appearance().backgroundColor = UIColor.white
+            dropDown.dataSource = pincodeValues
+        dropDown.direction = .top
+            dropDown.show()
+            dropDown.selectionAction = { [unowned self] (index, item) in
+                self.pincodeButton.setTitle(item, for: .normal)
+                selectedPincode = "\(pincodeIds[index])"
+                dropDownTextFld.isHidden = true
+
+            }
+    }
+    @objc func myTargetFunction(textField: UITextField) {
+        dropDown.anchorView = txtAreacity //5
+     //   dropDown.anchorView = searchBar
+           // dropDown.bottomOffset = CGPoint(x: 0, y: sender.frame.size.height)  // UIView or UIBarButtonItem
+            DropDown.appearance().backgroundColor = UIColor.white
+            dropDown.dataSource = pincodeValues
+        dropDown.direction = .top
+            dropDown.show()
+            dropDown.selectionAction = { [unowned self] (index, item) in
+                self.pincodeButton.setTitle(item, for: .normal)
+                dropDownTextFld.text = item
+                let selectingText = item
+
+                if searchText == ""{
+                    selectedPincode = "\(pincodeIds[index])"
+                }else{
+                    if let selected = pincodeValues.index(where: {$0 == selectingText}) {
+                        let id = pincodeIds[selected]
+                            didSelectCompletion(selectingText, selected , id )
+                        selectedPincode = String(id)
+                    }else{
+                        selectedPincode == ""
+                    }
+                }
+                                     dropDownTextFld.resignFirstResponder()
+
+              //  dropDownTextFld.isHidden = true
+
+            }
+    }
+    func setupDropDown(){
+        let accessToken = userDefaults.object(forKey: ACCESS_TOKEN)
+        let header:HTTPHeaders = ["Accept":"application/json", "Authorization":accessToken as! String]
+        AlamofireHC.requestPOST(GET_PINCODE3, params: nil, headers: header, success: { [unowned self] (JSON) in
+        
+            let  result = JSON.arrayObject
+            let json = result! as NSArray
+            for i in 0...json.count - 1 {
+                let jsonValue = json[i] as! NSDictionary
+                pincodeValues.append(jsonValue["code"] as! String + "-" + "\(jsonValue["area"] as! String)")
+                pincodeIds.append(Int(jsonValue["code"] as! String) ?? 0)
+            }
+            DispatchQueue.main.async {
+                self.pincodeButton.setTitle(pincodeValues[0], for: .normal)
+                dropDownTextFld.text = pincodeValues[0]
+            }
+            
+        }, failure: { (error) in
+            print(error)
+        })
+    }
+    
+    //MARK: - Pincode DROPDOWN
+    
+//    func LoadDropDownValues(dropDown:DropDown,data:[String],dataId:[Int],completion:@escaping (Int) -> ()) {
+//
+////            dropDown.textColor = UIColor.black
+////            dropDown.selectedRowColor = UIColor(red: 246.0/255.0, green: 246.0/255.0, blue: 246.0/255.0, alpha: 1.0)
+////            dropDown.optionArray = data
+////            dropDown.optionIds = dataId
+//////            dropDown.text = data[0]
+//////            self.customerTypeId = String(dataId[0])
+////            dropDown.didSelect{(selectedText , index ,id) in
+////                completion(id)
+////                dropDown.text = selectedText
+////
+////            }
+//        }
+//
+//    }
+    
     // MARK: - LAT LONG TO PHYSICAL ADDRESS
     func getAddressFromLatLong(_ locat: CLLocationCoordinate2D)
     {
@@ -456,29 +610,8 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
                     let addressCount = placeMarkObject.results()?.count
                     if addressCount != 0
                     {
-                        // print(placeMarkObject.firstResult()!)
-                        let strAddrLinecount = placeMarkObject.firstResult()?.lines?.count
-                        self.strAddrLine = ""
-                        if strAddrLinecount == 0
-                        {
-                            
-                        }
-                        else if strAddrLinecount == 1
-                        {
-                            let strAddrLine1 = (placeMarkObject.firstResult()?.lines![0])! as? String ?? ""
-                            self.strAddrLine = strAddrLine1
-                            
-                        }
-                        else if strAddrLinecount == 2
-                        {
-                            let strAddrLine1 = (placeMarkObject.firstResult()?.lines![0])! as? String ?? ""
-                            let strAddrLine2 = (placeMarkObject.firstResult()?.lines![1])! as? String ?? ""
-                            self.strAddrLine = strAddrLine1 + strAddrLine2
-                        }
-                        
+                      
                         self.lblAddress.text = self.strAddrLine
-                        self.strPincode = placeMarkObject.firstResult()?.postalCode ?? ""
-                        self.txtPincode.text = self.strPincode
                         self.strFlatno = placeMarkObject.firstResult()?.thoroughfare ?? ""
                         self.txtFlatNo.text = self.strFlatno
                         //                        self.strLandmark = placeMarkObject.firstResult()?.postalCode ?? ""
@@ -489,9 +622,11 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
                         self.txtStreetname.text = self.strStreetname
                         let strArea = placeMarkObject.firstResult()?.subLocality ?? ""
                         let strCity = placeMarkObject.firstResult()?.locality ?? ""
+                        let strState = placeMarkObject.firstResult()?.administrativeArea ?? ""
                         self.strArea = strArea
                         self.strCity = strCity
                         self.txtAreacity.text = strArea + "," + strCity
+                        self.strAddrLine = self.strFlatno + strArea + strCity + strState
                     }
                 }
                 else
@@ -640,23 +775,23 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
     // MARK: - TEXT FIELD DELEGATE
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
     {
-        if textField == txtPincode
-        {
-            let  maxLength = 6
-            let currentString: NSString = textField.text! as NSString
-            let newString: NSString =
-            currentString.replacingCharacters(in: range, with: string) as NSString
-            return newString.length <= maxLength
-            
+        if textField == dropDownTextFld{
+            if string != "" {
+                self.searchText = textField.text! + string
+            }else{
+                let subText = textField.text?.dropLast()
+                self.searchText = String(subText!)
+            }
         }
         return true
     }
-    
+  
+  
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
-    
+  
     // MARK: - GOOGLE PLACES
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace)
     {
@@ -690,7 +825,22 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
     func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
+//   func LoadDropDownValues(dropDown:DropDowns,data:[String],dataId:[Int],completion:@escaping (Int) -> ()) {
+//           DispatchQueue.main.async {
+//               dropDown.textColor = UIColor.black
+//               dropDown.selectedRowColor = UIColor(red: 246.0/255.0, green: 246.0/255.0, blue: 246.0/255.0, alpha: 1.0)
+//               dropDown.optionArray = data
+//               dropDown.optionIds = dataId
+//               dropDown.text = data[0]
+//               dropDown.didSelect{(selectedText , index ,id) in
+//                   completion(id)
+//                   dropDown.text = selectedText
+//
+//               }
+//           }
+//   }
     
 }
+
 
 

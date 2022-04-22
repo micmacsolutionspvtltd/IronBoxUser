@@ -8,8 +8,10 @@
 
 import SwiftUI
 
+@available(iOS 13.0, *)
 struct Textfield1: View {
     let coordinator: TextFieldCoordinator
+    @available(iOS 13.0.0, *)
     var body: some View {
         VStack {
             UI<UITextField> {

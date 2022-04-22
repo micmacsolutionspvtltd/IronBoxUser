@@ -11,10 +11,15 @@ import NVActivityIndicatorView
 import Alamofire
 import Spring
 
+@available(iOS 13.0, *)
 class ApplyOffersVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableOffers: UITableView!
     var arrOffers = Array<Any>()
+    var bookedDate:String?
+    var bookedAreaId:String?
+    var bookedTimeSlot:String?
+    var homeVc:HomeVC?
     @IBOutlet weak var viewBG: SpringView!
     
     // MARK: - VIEW LIFE CYCLE
@@ -49,9 +54,14 @@ class ApplyOffersVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         let accessToken = userDefaults.object(forKey: ACCESS_TOKEN)
         let header:HTTPHeaders = ["Accept":"application/json", "Authorization":accessToken as! String]
         
-        let param: [String: Any] = [
-            "offet_type":appDelegate.strOfferType
+        let param: [String: Any] =  [
+            "offet_type":appDelegate.strOfferType,
+            "UserId":(userDefaults.value(forKey: IS_ADDADDRESS_TUTORIAL_SHOWN) as? String) == nil,
+            "booked_areaid":bookedAreaId,
+            "booked_timeslot":bookedTimeSlot
         ]
+        
+       
        
         self.CheckNetwork()
         
@@ -195,6 +205,7 @@ class ApplyOffersVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         let btnTag = btn.tag - 10000
         let dictOffers = self.arrOffers[btnTag] as! Dictionary<String,Any>
         appDelegate.strOfferCode =  dictOffers["promocode"] as? String ?? ""
+        homeVc?.fieldPromoCode.setText(appDelegate.strOfferCode)
         self.dismiss(animated: true, completion: nil)
     }
     

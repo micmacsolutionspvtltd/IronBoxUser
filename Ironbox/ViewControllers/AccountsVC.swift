@@ -339,16 +339,16 @@ class AccountsVC: UIViewController, UITextFieldDelegate, UIImagePickerController
     @IBAction func onSave(_ sender: Any)
     {
         view.endEditing(true)
-        let strDob = btnDOB.currentTitle
+       // let strDob = btnDOB.currentTitle
         let strAltNo = txtAlternate_PhoneNumber.text?.replacingOccurrences(of: " ", with: "")
         if txtName.text == "" || (txtName.text?.trimmingCharacters(in: .whitespaces).isEmpty)!
         {
             ShowAlert(msg: "Please enter name")
         }
-        else if strDob == " "
-        {
-            ShowAlert(msg: "Please select date of birth")
-        }
+//        else if strDob == " "
+//        {
+//            ShowAlert(msg: "Please select date of birth")
+//        }
         else  if strAltNo != ""
         {
             if strAltNo?.count != 10
@@ -456,10 +456,10 @@ class AccountsVC: UIViewController, UITextFieldDelegate, UIImagePickerController
              strFileName = PROFILE_IMG_BASE_URL + strFileName
         }
         let param: [String: Any] = [
-            "dob":strDob!,
+            "dob":strDob ?? "",
             "gender":strGender,
-            "name":txtName.text!,
-            "alternate_number":txtAlternate_PhoneNumber.text!,
+            "name":txtName.text ?? "",
+            "alternate_number":txtAlternate_PhoneNumber.text ?? "",
             "keyvalue":"2",
             "image":strFileName
         ]

@@ -24,6 +24,7 @@ struct ToggleButton: View {
     let text: String
     let isSelected: Bool
     let action: () -> Void
+    @available(iOS 13.0.0, *)
     var body: some View {
         Text(text)
             .font(.custom(FONT_REG, size: 13))
@@ -39,6 +40,7 @@ struct ToggleButton: View {
     }
 }
 
+@available(iOS 13.0, *)
 struct ScheduleMyPickupScreen: View {
     
     //    @StateObject private var data = VMScheduleMyPickup()
@@ -233,19 +235,25 @@ struct ScheduleMyPickupScreen: View {
                         }
                         .modifier(ScheduleMyPickupBackgroundModifier())
                         
-                        //                        UI<UITextField> {
-                        //                            let field = data.fieldInstruction.textField
-                        //                            field.textAlignment = .center
-                        //                            field.placeholder = "Enter instructions..."
-                        //                            field.font = .init(name: FONT_REG, size: 15)
-                        //                            field.keyboardType = .numberPad
-                        //                            return field
-                        //                        }
-                        //                        .padding(10)
-                        //                        .background(
-                        //                            Color(.hex("D8D8D8"))
-                        //                        )
-                        //                        .fixedSize(horizontal: false, vertical: true)
+//                        VStack(alignment: .leading, spacing: 20) {
+//                            Textfield1(coordinator: data.fieldPromoCode)
+//                    
+//                        }
+//                        .modifier(ScheduleMyPickupBackgroundModifier())
+                        
+//                                                UI<UITextField> {
+//                                                    let field = data.fieldInstruction.textField
+//                                                    field.textAlignment = .center
+//                                                    field.placeholder = "Enter instructions..."
+//                                                    field.font = .init(name: FONT_REG, size: 15)
+//                                                    field.keyboardType = .numberPad
+//                                                    return field
+//                                                }
+//                                                .padding(10)
+//                                                .background(
+//                                                    Color(.hex("D8D8D8"))
+//                                                )
+//                                                .fixedSize(horizontal: false, vertical: true)
                         
                         Button {
                             isBookWithCount = false
@@ -344,6 +352,7 @@ struct BookingConfirmationAlertView: View {
     let onOkay: () -> Void
     let onCancel: () -> Void
     
+    @available(iOS 13.0.0, *)
     var body: some View {
         ZStack {
             Color.black.opacity(0.5)
@@ -409,6 +418,7 @@ struct BookingConfirmationAlertView: View {
 
 struct ScheduleMyPickupBackgroundModifier: ViewModifier {
     
+    @available(iOS 13.0.0, *)
     func body(content: Content) -> some View {
         content
             .padding(15)
@@ -421,6 +431,7 @@ struct ScheduleMyPickupBackgroundModifier: ViewModifier {
 }
 
 struct ScheduleMyPickupScreen_Previews: PreviewProvider {
+    @available(iOS 13.0.0, *)
     static var previews: some View {
         ScheduleMyPickupScreen(data: HomeVC())
     }

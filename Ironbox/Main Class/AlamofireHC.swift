@@ -58,7 +58,27 @@ class AlamofireHC: NSObject {
             }
         }
     }
-    
+    class func requestPOSTMethod(_ strMethod : String, params : [String : AnyObject]?, headers : [String : String]?, success:@escaping (Data) -> Void, failure:@escaping (Error) -> Void){
+        
+      
+        let URL = BASEURL + strMethod
+        print("Success with JSON: \(URL)")
+
+        Alamofire.request(URL, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON {
+            (responseObject) -> Void in
+            
+            print(responseObject)
+            
+            if responseObject.result.isSuccess {
+                let resJson = responseObject.data!
+                success(resJson)
+            }
+            if responseObject.result.isFailure {
+                let error : Error = responseObject.result.error!
+                failure(error)
+            }
+        }
+    }
     
     // MARK: - POST WITH IMAGE METHOD
     class func requestPOSTwithImage(_ strMethod : String,image : UIImage, params : [String : AnyObject]?, headers : [String : String]?, success:@escaping (JSON) -> Void, failure:@escaping (Error) -> Void){
@@ -89,13 +109,6 @@ class AlamofireHC: NSObject {
                                failure(encodingError)
                             }
         })
-
-     
-        
-        
-        
+    
     }
-    
-    
-
 }

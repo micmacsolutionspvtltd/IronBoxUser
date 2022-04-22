@@ -29,7 +29,7 @@ class SignUpVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDe
     @IBOutlet weak var txtReferralCode: UITextField!
     
     let dropDown = DropDown()
-    var strGender = "Male"
+    var strGender = ""
     var strMobile = ""
     var chosenImage = UIImage()
     let imagePicker = UIImagePickerController()
@@ -179,18 +179,18 @@ class SignUpVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDe
         {
             ShowAlert(msg: "Please enter your name")
         }
-        else if strDob == " "
-        {
-            ShowAlert(msg: "Please select your date of birth")
-        }
-        else if txtEmail.text == "" || (txtEmail.text?.trimmingCharacters(in: .whitespaces).isEmpty)!
-        {
-            ShowAlert(msg: "Please enter your email address")
-        }
-        else if isEmailAddressValid == false
-        {
-            ShowAlert(msg: "Please enter valid email address")
-        }
+//        else if strDob == " "
+//        {
+//            ShowAlert(msg: "Please select your date of birth")
+//        }
+//        else if txtEmail.text == "" || (txtEmail.text?.trimmingCharacters(in: .whitespaces).isEmpty)!
+//        {
+//            ShowAlert(msg: "Please enter your email address")
+//        }
+//        else if isEmailAddressValid == false
+//        {
+//            ShowAlert(msg: "Please enter valid email address")
+//        }
         else
         {
             if isImageSelected == false
@@ -275,13 +275,13 @@ class SignUpVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDe
         
         let param: [String: Any] = [
             "email":self.txtEmail.text!,
-            "dob":strDob!,
+            "dob":strDob ?? "",
             "gender":self.strGender,
-            "name":self.txtName.text!,
-            "alternate_number":self.txtAlternate_PhoneNumber.text!,
+            "name":self.txtName.text ?? "",
+            "alternate_number":self.txtAlternate_PhoneNumber.text ?? "",
             "keyvalue":"1",
             "image":strFileName,
-            "referral_code":txtReferralCode.text!
+            "referral_code":txtReferralCode.text ?? ""
         ]
        
         self.CheckNetwork()
@@ -327,8 +327,13 @@ class SignUpVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDe
 //                else
 //                {
                     let story = UIStoryboard.init(name: "Main", bundle: nil)
+                if #available(iOS 13.0, *) {
                     let HomeVC = story.instantiateViewController(withIdentifier: "HomeVC") as! HomeVC
                     self.navigationController?.pushViewController(HomeVC, animated: false)
+
+                } else {
+                    // Fallback on earlier versions
+                }
 //                }
                 
             }

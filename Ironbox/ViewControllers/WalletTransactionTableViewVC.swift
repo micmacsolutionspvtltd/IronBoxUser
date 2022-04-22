@@ -39,8 +39,11 @@ class WalletTransactionTableViewVC: UIViewController, UITableViewDelegate, UITab
        // view.constrainCentered(tableTransactions)
      //   view.backgroundColor = UIColor(red: 26/255, green: 60/255, blue: 92/255, alpha: 1)
         let strTitle = title.capitalized
+        if strTitle == "Spent"{
+            self.getTransactions(type: "Debit")
+        }else{
         self.getTransactions(type: strTitle)
-        
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -151,8 +154,10 @@ class WalletTransactionTableViewVC: UIViewController, UITableViewDelegate, UITab
         let strDate = dictTrans["createdAt"] as? String ?? ""
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
         let deliver: Date? = formatter.date(from: strDate)
-        formatter.dateFormat = "dd/MM/yyyy"
+        formatter.dateFormat = "dd/MM/yyyy \n h:mm a"
+      //  formatter.timeZone = "HH:mm"
         let strTransDate = formatter.string(from: deliver!)
         cell.lblDate.text = strTransDate
         

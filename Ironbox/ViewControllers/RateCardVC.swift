@@ -69,7 +69,7 @@ class RateCardVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                     var dictRateCard = self.arrRateCard[i] as! Dictionary<String, Any>
                     dictRateCard["isSelected"] = "0"
                     
-                    var arrCateg =  dictRateCard["Category"] as! Array<Any>
+                    var arrCateg =  dictRateCard["cloth_list"] as! Array<Any>
                     for var j in 0..<arrCateg.count
                     {
                         var dictCateg = arrCateg[j] as! Dictionary<String, Any>
@@ -78,7 +78,7 @@ class RateCardVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                         arrCateg.insert(dictCateg, at: j)
                     }
                     
-                    dictRateCard["Category"] = arrCateg
+                    dictRateCard["cloth_list"] = arrCateg
                     self.arrRateCard.remove(at: i)
                     self.arrRateCard.insert(dictRateCard, at: i)
                 }
@@ -167,7 +167,7 @@ class RateCardVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         let isSelected = dict["isSelected"] as? String ?? ""
         if isSelected == "1"
         {
-            let arSts = dict["Category"] as! Array<Any>
+            let arSts = dict["cloth_list"] as! Array<Any>
             var nHeight = 0
             for var j in 0..<arSts.count
             {
@@ -197,13 +197,11 @@ class RateCardVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         cell.btnCategoryPlusMinus.addTarget(self, action: #selector(self.onExtendCategory(btn:)), for: .touchUpInside)
         
         let dictRateCard = self.arrRateCard[indexPath.row] as! Dictionary<String, Any>
-        cell.lblCategoryName.text = dictRateCard["CategoryName"] as? String ?? ""
-        cell.lblPrice.text = dictRateCard["price"] as? String ?? ""
-        let qty = dictRateCard["quantity"]
-        cell.lblQuantity.text = String(describing: qty!)
+        cell.lblCategoryName.text = dictRateCard["group_name"] as? String ?? ""
+       
      //   cell.lblExample.text = dictRateCard["description"] as? String ?? ""
         
-         let arSts = dictRateCard["Category"] as! Array<Any>
+         let arSts = dictRateCard["cloth_list"] as! Array<Any>
         let isSelected = dictRateCard["isSelected"] as? String ?? ""
         if isSelected == "1"
         {
@@ -255,7 +253,7 @@ class RateCardVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
         let dict = arrRateCard[collectionView.tag] as! NSDictionary
-        self.arrCategory = dict["Category"] as! Array<Any>
+        self.arrCategory = dict["cloth_list"] as! Array<Any>
         return arrCategory.count
         
     }
@@ -263,10 +261,13 @@ class RateCardVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RateCardCollectionViewCell", for: indexPath) as! RateCardCollectionViewCell
         let dict = arrRateCard[collectionView.tag] as! NSDictionary
-        let arSts = dict["Category"] as! Array<Any>
+        let arSts = dict["cloth_list"] as! Array<Any>
         let dictSts = arSts[indexPath.row] as! NSDictionary
-        let strStatusName = dictSts["SubCategoryName"] as? String ?? ""
+        let strStatusName = dictSts["product_name"] as? String ?? ""
         cell.lblName.text = strStatusName
+        cell.priceLabel.text = dictSts["price"] as? String ?? ""
+       // let qty = dictSts["quantity"]
+        cell.qtyLabel.text = "1"
         
         if dictSts["arrSubCategory"] != nil
         {
@@ -341,7 +342,7 @@ class RateCardVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
         var dict = arrRateCard[collectionView.tag] as! Dictionary<String, Any>
-        var arSts = dict["Category"] as! Array<Any>
+        var arSts = dict["cloth_list"] as! Array<Any>
         var dictSts = arSts[indexPath.row] as! Dictionary<String, Any>
         if dictSts["arrSubCategory"] != nil
         {
@@ -357,7 +358,7 @@ class RateCardVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
            
             arSts.remove(at: indexPath.row)
             arSts.insert(dictSts, at: indexPath.row)
-            dict["Category"] = arSts
+            dict["cloth_list"] = arSts
             arrRateCard.remove(at: collectionView.tag)
             arrRateCard.insert(dict, at: collectionView.tag)
             let indexpath = NSIndexPath(row:collectionView.tag, section: 0)
@@ -377,7 +378,7 @@ class RateCardVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         layout.minimumLineSpacing = 0
         layout.invalidateLayout()
         var dict = arrRateCard[collectionView.tag] as! Dictionary<String, Any>
-        var arSts = dict["Category"] as! Array<Any>
+        var arSts = dict["cloth_list"] as! Array<Any>
         var dictSts = arSts[indexPath.row] as! Dictionary<String, Any>
         let isSelectedCateg = dictSts["isSelectedCateg"] as? String ?? ""
         

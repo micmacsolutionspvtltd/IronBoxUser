@@ -27,7 +27,6 @@ class MySubscriptionsVC: UIViewController ,UITableViewDelegate, UITableViewDataS
             tableMyPackages.frame = CGRect(x: 0, y: 10, width: self.view.frame.size.width, height: self.view.frame.size.height - 150)
         }
         
-        
         tableMyPackages.backgroundColor = UIColor(red: 26/255, green: 60/255, blue: 92/255, alpha: 1)
         tableMyPackages.register(UINib(nibName: "MySubscriptionsTableViewCell", bundle: nil), forCellReuseIdentifier: "MySubscriptionsTableViewCell")
         tableMyPackages.separatorStyle = .none
@@ -38,7 +37,6 @@ class MySubscriptionsVC: UIViewController ,UITableViewDelegate, UITableViewDataS
         self.getMyPackages()
 
        
-        
     }
     
     required init?(coder: NSCoder) {
@@ -93,10 +91,8 @@ class MySubscriptionsVC: UIViewController ,UITableViewDelegate, UITableViewDataS
                     self.view.backgroundColor = UIColor.clear
                 }
                 
-                
             }
-            else
-            {
+            else{
                 let errorMessage = json.value(forKey: "error_message")as? String ?? ""
                 // self.ShowAlert(msg: errorMessage)
                 self.tableMyPackages.isHidden = true

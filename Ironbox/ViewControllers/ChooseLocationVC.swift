@@ -29,19 +29,26 @@ class ChooseLocationVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     {
         self.navigationController?.isNavigationBarHidden = true
         
-        if appDelegate.IsNewRegistration == true
-        {
+        if appDelegate.IsNewRegistration == true{
             appDelegate.IsNewRegistration = false
             userDefaults.set("yes", forKey: IS_LOGIN)
             let story = UIStoryboard.init(name: "Main", bundle: nil)
-            let HomeVC = story.instantiateViewController(withIdentifier: "HomeVC")as! HomeVC
-            self.navigationController?.pushViewController(HomeVC, animated: false)
+            if #available(iOS 13.0, *) {
+                let HomeVC = story.instantiateViewController(withIdentifier: "HomeVC")as! HomeVC
+                self.navigationController?.pushViewController(HomeVC, animated: false)
+            }else {
+                
+                // Fallback on earlier versions
+            }
+            
         }
     }
+    
     override func viewWillDisappear(_ animated: Bool)
     {
         self.navigationController?.isNavigationBarHidden = false
     }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

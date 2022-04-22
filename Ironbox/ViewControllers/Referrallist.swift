@@ -54,8 +54,12 @@ class Referrallist: UITableViewController {
         let accessToken = userDefaults.object(forKey: ACCESS_TOKEN)
         let header:HTTPHeaders = ["Accept":"application/json", "Authorization":accessToken as! String]
         let param: [String: Any] = [
-            "offet_type":"All"
+            "offet_type":"All",
+            "booked_areaid":"",
+            "booked_date":"",
+            "booked_timeslot":""
         ]
+        
         
         self.CheckNetwork()
         

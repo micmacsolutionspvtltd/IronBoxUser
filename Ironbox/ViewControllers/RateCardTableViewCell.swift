@@ -17,7 +17,6 @@ class RateCardTableViewCell: UITableViewCell {
     @IBOutlet weak var lblExample: UILabel!
     @IBOutlet weak var viewDot: UIView!
     @IBOutlet fileprivate weak var collectionCategory: UICollectionView!
-    
     @IBOutlet weak var collectionViewHeight: NSLayoutConstraint!
     override func awakeFromNib() {
         super.awakeFromNib()

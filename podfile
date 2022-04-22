@@ -36,7 +36,7 @@ target 'Ironbox' do
 
     
 #    pod 'Paytm-Payments'
-
+    
     pod 'AWSAutoScaling'
     pod 'AWSCloudWatch'
     pod 'AWSCognito'
@@ -58,6 +58,8 @@ target 'Ironbox' do
     pod 'AWSSimpleDB'
     pod 'AWSSNS'
     pod 'AWSSQS'
+    pod 'iOSDropDown'
+
 
 post_install do |installer|
     installer.pods_project.build_configurations.each do |config|

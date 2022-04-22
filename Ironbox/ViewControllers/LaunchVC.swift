@@ -47,8 +47,13 @@ class LaunchVC: UIViewController {
             if ((userDefaults.value(forKey: IS_LOGIN) as? String) == "yes")
             {
                 let story = UIStoryboard.init(name: "Main", bundle: nil)
-                let HomeVC = story.instantiateViewController(withIdentifier: "HomeVC")as! HomeVC
-                self.navigationController?.pushViewController(HomeVC, animated: false)
+                if #available(iOS 13.0, *) {
+                    let HomeVC = story.instantiateViewController(withIdentifier: "HomeVC")as! HomeVC
+                    self.navigationController?.pushViewController(HomeVC, animated: false)
+
+                } else {
+                    // Fallback on earlier versions
+                }
             }
             else
             {

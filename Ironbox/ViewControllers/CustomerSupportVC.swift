@@ -10,9 +10,16 @@ import UIKit
 import NVActivityIndicatorView
 import Alamofire
 import Spring
+import Toaster
+
 
 class CustomerSupportVC: UIViewController, UITextViewDelegate {
 
+    @IBOutlet weak var referralTxtFldContentView: UIView!
+    @IBOutlet weak var submitBtnView: UIView!
+    @IBOutlet weak var referralCodeLbl: UILabel!
+    @IBOutlet weak var submitBtn: UIButton!
+    @IBOutlet weak var referralCodeTextFld: UITextField!
     @IBOutlet weak var viewBG: SpringView!
     @IBOutlet weak var txtVwFeedback: UITextView!
     @IBOutlet weak var lblContactNo: UILabel!
@@ -20,9 +27,10 @@ class CustomerSupportVC: UIViewController, UITextViewDelegate {
     // MARK: - VIEW LIFE CYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         self.setFontFamilyAndSize()
         self.hideKeyboardWhenTappedAround()
+        referralCodeTextFld.textColor = UIColor(red: 181/255, green: 181/255, blue: 181/255, alpha: 1.0)
         navigationController?.navigationBar.barTintColor = UIColor.white
         self.navigationController?.navigationBar.titleTextAttributes = [ NSAttributedStringKey.font: UIFont(name: FONT_BOLD, size: 19)!, NSAttributedStringKey.foregroundColor : UIColor(red: 26/255.0, green: 60/255.0, blue: 92/255.0, alpha: 1.0)]
         
@@ -33,7 +41,8 @@ class CustomerSupportVC: UIViewController, UITextViewDelegate {
         let item = UIBarButtonItem(customView: btnBack)
         self.navigationItem.setLeftBarButtonItems([item], animated: true)
         
-//        let stringValue = "Contact us at 9090903456"
+    //   addDottedLine(textField: referralCodeTextFld)
+        //        let stringValue = "Contact us at 9090903456"
 //        let attributedString: NSMutableAttributedString = NSMutableAttributedString(string: stringValue)
 //        attributedString.setColorForText(textForAttribute: "Contact us at ", withColor: UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha:1))
 //        attributedString.setColorForText(textForAttribute: "9090903456", withColor: UIColor(red: 139/255, green: 214/255, blue: 239/255, alpha:1))
@@ -57,16 +66,23 @@ class CustomerSupportVC: UIViewController, UITextViewDelegate {
 
     override func viewWillAppear(_ animated: Bool)
     {
-        
+        getAgentCodeValues(agentCode: "")
     }
     
     override func viewWillLayoutSubviews()
     {
+        referralCodeTextFld.textColor = UIColor(red: 181/255, green: 181/255, blue: 181/255, alpha: 1.0)
+        self.referralCodeTextFld.layer.borderWidth = 1
+        self.referralCodeTextFld.layer.borderColor = UIColor(red: 139/255, green: 214/255, blue: 239/255, alpha:0.43).cgColor
+        self.referralCodeTextFld.layer.masksToBounds = true
+        self.referralCodeTextFld.layer.cornerRadius = 3
+
         txtVwFeedback.text = "Type your comments"
         txtVwFeedback.textColor = UIColor(red: 181/255, green: 181/255, blue: 181/255, alpha: 1.0)
         self.txtVwFeedback.layer.borderWidth = 1
         self.txtVwFeedback.layer.borderColor = UIColor(red: 139/255, green: 214/255, blue: 239/255, alpha:0.43).cgColor
         self.txtVwFeedback.layer.masksToBounds = true
+        self.txtVwFeedback.layer.cornerRadius = 3
     }
     
     override func didReceiveMemoryWarning() {
@@ -80,6 +96,16 @@ class CustomerSupportVC: UIViewController, UITextViewDelegate {
         _ = navigationController?.popViewController(animated: true)
     }
     
+    @IBAction func referralSubmitAtn(_ sender: Any) {
+        if referralCodeTextFld.text == ""{
+            ShowAlert(msg: "Please enter your agent code")
+        }else{
+            getAgentCodeValues(agentCode: referralCodeTextFld.text ?? "")
+        }
+        
+
+        
+    }
     @IBAction func onFeedback(_ sender: Any)
     {
         view.endEditing(true)
@@ -158,4 +184,76 @@ class CustomerSupportVC: UIViewController, UITextViewDelegate {
             textView.textColor = UIColor(red: 181/255, green: 181/255, blue: 181/255, alpha: 1.0)
         }
     }
+    func addDottedLine(textField : UITextField){
+        let yourViewBorder = CAShapeLayer()
+        yourViewBorder.strokeColor = UIColor(red: 139/255, green: 214/255, blue: 239/255, alpha:0.43).cgColor
+        yourViewBorder.lineDashPattern = [10, 5]
+      //  yourViewBorder.frame = textField.bounds
+        yourViewBorder.fillColor = nil
+        yourViewBorder.path = UIBezierPath(rect: textField.bounds).cgPath
+        textField.layer.addSublayer(yourViewBorder)
+    }
+    func getAgentCodeValues(agentCode: String){
+        view.addSubview(UIView().customActivityIndicator(view: (self.view)!, widthView: nil, message: "Loading"))
+
+        let accessToken = userDefaults.object(forKey: ACCESS_TOKEN)
+        let header:HTTPHeaders = ["Accept":"application/json", "Authorization":accessToken as! String]
+        
+        var param: [String: Any] = [
+           "agentcode" : agentCode
+           ]
+        AlamofireHC.requestPOSTMethod(AGENT_REFFERCODE, params: param as [String : AnyObject], headers: header, success: { (JSON) in
+            let results : Data? = JSON
+            UIView().hideLoader(removeFrom: (self.view)!)
+
+            if results != nil{
+                do
+                {
+                let response = try JSONDecoder().decode(ReferralCodeModel.self, from: results!)
+                    self.getReferranceValuesData(data: response)
+               
+                }  catch let error as NSError
+                {
+                    print(error)
+                }
+            }else{
+               
+                print("Something Went wrong")
+            }
+
+       
+        }, failure: { (error) in
+            UIView().hideLoader(removeFrom: (self.view)!)
+            print(error)
+        })
+    }
+    
+    func getReferranceValuesData(data : ReferralCodeModel){
+        if data.status == "false"{
+            if referralCodeTextFld.text != ""{
+                ShowAlert(msg: "Agent Referral code is invalid")
+            }else{
+                
+            }
+            referralCodeLbl.text = "Enter Your Agent Referral code"
+            submitBtnView.isHidden = false
+            referralCodeTextFld.isUserInteractionEnabled = true
+        }else{
+            if referralCodeTextFld.text != ""{
+                ShowAlert(msg: "Your agent code register sucessfully")
+               // referralCodeTextFld.text = data.agentCode ?? ""
+
+            }else{
+                referralCodeTextFld.text = data.agentCode ?? ""
+
+            }
+            referralCodeLbl.text = "Your Agent Code"
+            referralCodeLbl.textAlignment = .center
+           // referralCodeLbl.isHidden = true
+            submitBtnView.isHidden = true
+            referralCodeTextFld.isUserInteractionEnabled = false
+          
+        }
+    }
+    
 }

@@ -67,8 +67,13 @@ class SignInVC: UIViewController, UITextFieldDelegate{
             appDelegate.IsNewRegistration = false
             userDefaults.set("yes", forKey: IS_LOGIN)
             let story = UIStoryboard.init(name: "Main", bundle: nil)
-            let HomeVC = story.instantiateViewController(withIdentifier: "HomeVC")as! HomeVC
-            self.navigationController?.pushViewController(HomeVC, animated: false)
+            if #available(iOS 13.0, *) {
+                let HomeVC = story.instantiateViewController(withIdentifier: "HomeVC")as! HomeVC
+                self.navigationController?.pushViewController(HomeVC, animated: false)
+
+            } else {
+                // Fallback on earlier versions
+            }
         }
     }
     override func viewWillDisappear(_ animated: Bool)
@@ -110,6 +115,8 @@ class SignInVC: UIViewController, UITextFieldDelegate{
             
             let header:HTTPHeaders = ["Accept":"application/json"]
 
+            self.CheckNetwork()
+            
             let tokenFCM = Messaging.messaging().fcmToken
 //            print("FCM token: \(tokenFCM ?? "")")
             let strMobileNo = txtMobileNo.text as String?
@@ -120,7 +127,7 @@ class SignInVC: UIViewController, UITextFieldDelegate{
                 "os":"ios"
             ]
 
-            self.CheckNetwork()
+           
             
             AlamofireHC.requestPOST(LOGIN, params: param as [String : AnyObject], headers: header, success: { (JSON) in
                 UIView().hideLoader(removeFrom: (self.navigationController?.view)!)
@@ -337,8 +344,13 @@ class SignInVC: UIViewController, UITextFieldDelegate{
                         userDefaults.set("yes", forKey: IS_LOGIN)
                         
                         let story = UIStoryboard.init(name: "Main", bundle: nil)
-                        let HomeVC = story.instantiateViewController(withIdentifier: "HomeVC")as! HomeVC
-                        self.navigationController?.pushViewController(HomeVC, animated: false)
+                        if #available(iOS 13.0, *) {
+                            let HomeVC = story.instantiateViewController(withIdentifier: "HomeVC")as! HomeVC
+                            self.navigationController?.pushViewController(HomeVC, animated: false)
+
+                        } else {
+                            // Fallback on earlier versions
+                        }
                     }
                 }
                 else

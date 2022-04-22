@@ -15,7 +15,7 @@ class WalletTransactionsVC: UIViewController {
     fileprivate let menu = [
         "ALL",
         "CREDIT",
-        "DEBIT",
+        "SPENT",
         ]
     
     override func viewDidLoad() {

@@ -36,7 +36,6 @@ class MenuController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        
         imgLogo.isHidden = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2)
         {
@@ -47,7 +46,6 @@ class MenuController: UIViewController, UITableViewDelegate, UITableViewDataSour
             self.imgLogo.repeatCount = 1
             self.imgLogo.animate()
         }
-        
         
     }
     
@@ -328,12 +326,11 @@ class MenuController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     
             }
             
-            
         }
         else
         {
-            self.performSegue(withIdentifier: segues[indexPath.row], sender: nil)
-        } 
+             self.performSegue(withIdentifier: segues[indexPath.row], sender: nil)
+        }
     }
     
 }

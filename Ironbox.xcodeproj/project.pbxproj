@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0474F36A280EDFB0000645E5 /* ReferralCodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0474F369280EDFB0000645E5 /* ReferralCodeModel.swift */; };
+		04AB6DF7280FEEE80084D310 /* AddPackageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AB6DF6280FEEE80084D310 /* AddPackageViewController.swift */; };
+		04AB6DFC280FFCE90084D310 /* AddPackageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AB6DFA280FFCE90084D310 /* AddPackageTableViewCell.swift */; };
+		04AB6DFD280FFCE90084D310 /* AddPackageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04AB6DFB280FFCE90084D310 /* AddPackageTableViewCell.xib */; };
+		0C61D28327B309AC0014AB45 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F4E9C5224055ADB00293783 /* WebKit.framework */; };
+		0C61D28A27B446E90014AB45 /* Razorpay.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C61D28927B446E90014AB45 /* Razorpay.xcframework */; };
+		0C61D28B27B446E90014AB45 /* Razorpay.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0C61D28927B446E90014AB45 /* Razorpay.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		170562F7208F158C00CEE5B3 /* BillingDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170562F6208F158C00CEE5B3 /* BillingDetailsTableViewCell.swift */; };
 		170CDD71207F74ED0075F39A /* ExpandDataCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170CDD70207F74EC0075F39A /* ExpandDataCollectionViewCell.swift */; };
 		171268AB207E312A0031178C /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171268AA207E31290031178C /* GradientView.swift */; };
@@ -69,7 +76,6 @@
 		17F3EBCF2087509B00057FF6 /* PinCodeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F3EBCE2087509B00057FF6 /* PinCodeTableViewCell.swift */; };
 		17F3EBD120876E6800057FF6 /* UpdateLocationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F3EBD020876E6800057FF6 /* UpdateLocationVC.swift */; };
 		17F643C520636B91000977DB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F643C420636B91000977DB /* AppDelegate.swift */; };
-		17F643CD20636B91000977DB /* Ironbox.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 17F643CB20636B91000977DB /* Ironbox.xcdatamodeld */; };
 		17F643CF20636B91000977DB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 17F643CE20636B91000977DB /* Assets.xcassets */; };
 		17F643D220636B91000977DB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 17F643D020636B91000977DB /* LaunchScreen.storyboard */; };
 		17F643DA20636CD9000977DB /* SignInVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F643D920636CD9000977DB /* SignInVC.swift */; };
@@ -80,10 +86,7 @@
 		17F643F82063A6C9000977DB /* AlamofireHC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F643F72063A6C9000977DB /* AlamofireHC.swift */; };
 		17F70C9A2068B88400F4B848 /* TimeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F70C982068B88400F4B848 /* TimeCollectionViewCell.swift */; };
 		17F70C9B2068B88400F4B848 /* DateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F70C992068B88400F4B848 /* DateCollectionViewCell.swift */; };
-		2F4E9C5324055ADB00293783 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F4E9C5224055ADB00293783 /* WebKit.framework */; };
 		2F67FA712591CE1600C7A553 /* Readme.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2F67FA702591CE1600C7A553 /* Readme.rtf */; };
-		2F7A3F8A258514E80083C018 /* Razorpay.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F7A3F882585140C0083C018 /* Razorpay.xcframework */; };
-		2F7A3F8B258514E80083C018 /* Razorpay.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2F7A3F882585140C0083C018 /* Razorpay.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2FAF936F23F5602C00CE6A29 /* Referrallist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAF936E23F5602C00CE6A29 /* Referrallist.swift */; };
 		2FAF937123F5611E00CE6A29 /* ReferlistTableviewcell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAF937023F5611E00CE6A29 /* ReferlistTableviewcell.swift */; };
 		2FAF937223F577E200CE6A29 /* Pods_Ironbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 203C2C3B87EFAD2A12815EEC /* Pods_Ironbox.framework */; };
@@ -95,13 +98,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		2FCBD359252613B400CD8B78 /* Embed Frameworks */ = {
+		0C61D28C27B446E90014AB45 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				2F7A3F8B258514E80083C018 /* Razorpay.xcframework in Embed Frameworks */,
+				0C61D28B27B446E90014AB45 /* Razorpay.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -109,6 +112,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0474F369280EDFB0000645E5 /* ReferralCodeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralCodeModel.swift; sourceTree = "<group>"; };
+		04AB6DF6280FEEE80084D310 /* AddPackageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPackageViewController.swift; sourceTree = "<group>"; };
+		04AB6DFA280FFCE90084D310 /* AddPackageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPackageTableViewCell.swift; sourceTree = "<group>"; };
+		04AB6DFB280FFCE90084D310 /* AddPackageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddPackageTableViewCell.xib; sourceTree = "<group>"; };
+		0C61D28927B446E90014AB45 /* Razorpay.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = Razorpay.xcframework; sourceTree = "<group>"; };
 		0FB4BB022068EC9C1051DB43 /* Pods-Ironbox.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ironbox.release.xcconfig"; path = "Pods/Target Support Files/Pods-Ironbox/Pods-Ironbox.release.xcconfig"; sourceTree = "<group>"; };
 		170562F6208F158C00CEE5B3 /* BillingDetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BillingDetailsTableViewCell.swift; sourceTree = "<group>"; };
 		170CDD70207F74EC0075F39A /* ExpandDataCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandDataCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -181,7 +189,6 @@
 		17F3EBD020876E6800057FF6 /* UpdateLocationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLocationVC.swift; sourceTree = "<group>"; };
 		17F643C120636B91000977DB /* Ironbox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ironbox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		17F643C420636B91000977DB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		17F643CC20636B91000977DB /* Ironbox.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Ironbox.xcdatamodel; sourceTree = "<group>"; };
 		17F643CE20636B91000977DB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		17F643D120636B91000977DB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		17F643D320636B91000977DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -196,7 +203,6 @@
 		203C2C3B87EFAD2A12815EEC /* Pods_Ironbox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ironbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F4E9C5224055ADB00293783 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		2F67FA702591CE1600C7A553 /* Readme.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Readme.rtf; sourceTree = "<group>"; };
-		2F7A3F882585140C0083C018 /* Razorpay.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = Razorpay.xcframework; sourceTree = "<group>"; };
 		2FAF936E23F5602C00CE6A29 /* Referrallist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Referrallist.swift; sourceTree = "<group>"; };
 		2FAF937023F5611E00CE6A29 /* ReferlistTableviewcell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferlistTableviewcell.swift; sourceTree = "<group>"; };
 		5085630423DC51C3004890DB /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -211,10 +217,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2F4E9C5324055ADB00293783 /* WebKit.framework in Frameworks */,
+				0C61D28327B309AC0014AB45 /* WebKit.framework in Frameworks */,
 				17EFCC1D20BC07590062A42F /* libPaymentsSDK.a in Frameworks */,
 				2FAF937523F577E500CE6A29 /* SystemConfiguration.framework in Frameworks */,
-				2F7A3F8A258514E80083C018 /* Razorpay.xcframework in Frameworks */,
+				0C61D28A27B446E90014AB45 /* Razorpay.xcframework in Frameworks */,
 				2FAF937223F577E200CE6A29 /* Pods_Ironbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -222,6 +228,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0474F368280EDABA000645E5 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0474F369280EDFB0000645E5 /* ReferralCodeModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		04AB6DF8280FFCAB0084D310 /* XibFiles */ = {
+			isa = PBXGroup;
+			children = (
+				04AB6DF9280FFCBB0084D310 /* AddPackageTableCell */,
+			);
+			path = XibFiles;
+			sourceTree = "<group>";
+		};
+		04AB6DF9280FFCBB0084D310 /* AddPackageTableCell */ = {
+			isa = PBXGroup;
+			children = (
+				04AB6DFA280FFCE90084D310 /* AddPackageTableViewCell.swift */,
+				04AB6DFB280FFCE90084D310 /* AddPackageTableViewCell.xib */,
+			);
+			path = AddPackageTableCell;
+			sourceTree = "<group>";
+		};
 		17F643B820636B91000977DB = {
 			isa = PBXGroup;
 			children = (
@@ -261,6 +292,8 @@
 				17EBC0FC2091F009001D06EE /* LoaderNew.gif */,
 				17F643F620637223000977DB /* QuickSand Font */,
 				17F643D320636B91000977DB /* Info.plist */,
+				04AB6DF8280FFCAB0084D310 /* XibFiles */,
+				0474F368280EDABA000645E5 /* Model */,
 				17F643DD20636D5A000977DB /* Main Class */,
 				17F643DE20636D85000977DB /* ViewControllers */,
 			);
@@ -280,7 +313,6 @@
 				17F643E320636EDA000977DB /* MenuController.swift */,
 				17F643E120636EDA000977DB /* SingleTonClass.swift */,
 				17DE03542090617600348AD4 /* AppNavigationController.swift */,
-				17F643CB20636B91000977DB /* Ironbox.xcdatamodeld */,
 			);
 			path = "Main Class";
 			sourceTree = "<group>";
@@ -289,6 +321,7 @@
 			isa = PBXGroup;
 			children = (
 				17EC503C208F393900054E40 /* LaunchVC.swift */,
+				04AB6DF6280FEEE80084D310 /* AddPackageViewController.swift */,
 				17F643D920636CD9000977DB /* SignInVC.swift */,
 				17F643DB20636CF7000977DB /* SignUpVC.swift */,
 				17F3EBCC20874F0200057FF6 /* ChooseLocationVC.swift */,
@@ -361,7 +394,7 @@
 		621D4F766D7BB168B43209FE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				2F7A3F882585140C0083C018 /* Razorpay.xcframework */,
+				0C61D28927B446E90014AB45 /* Razorpay.xcframework */,
 				2F4E9C5224055ADB00293783 /* WebKit.framework */,
 				17EFCC0E20BC004E0062A42F /* SystemConfiguration.framework */,
 				203C2C3B87EFAD2A12815EEC /* Pods_Ironbox.framework */,
@@ -408,7 +441,7 @@
 				17F643BF20636B91000977DB /* Resources */,
 				ABBA1FF71E5F5D97E20A28A2 /* [CP] Embed Pods Frameworks */,
 				BF3D031D3B3C9EADFED89FAF /* [CP] Copy Pods Resources */,
-				2FCBD359252613B400CD8B78 /* Embed Frameworks */,
+				0C61D28C27B446E90014AB45 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -467,6 +500,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				17F643D220636B91000977DB /* LaunchScreen.storyboard in Resources */,
+				04AB6DFD280FFCE90084D310 /* AddPackageTableViewCell.xib in Resources */,
 				17F643CF20636B91000977DB /* Assets.xcassets in Resources */,
 				2F67FA712591CE1600C7A553 /* Readme.rtf in Resources */,
 				17366E91206B5A08003BA4C8 /* style.json in Resources */,
@@ -559,6 +593,7 @@
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/Toaster/Toaster.framework",
 				"${BUILT_PRODUCTS_DIR}/UIFloatLabelTextView/UIFloatLabelTextView.framework",
+				"${BUILT_PRODUCTS_DIR}/iOSDropDown/iOSDropDown.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/FBAEMKit/FBAEMKit.framework/FBAEMKit",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework/FBSDKCoreKit",
@@ -613,6 +648,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toaster.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIFloatLabelTextView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/iOSDropDown.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBAEMKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
@@ -667,9 +703,11 @@
 				179D67C420AB084100E34E16 /* OffersTableViewCell.swift in Sources */,
 				17522C8B2077676800706AD2 /* RateCardTableViewCell.swift in Sources */,
 				171268AB207E312A0031178C /* GradientView.swift in Sources */,
+				04AB6DFC280FFCE90084D310 /* AddPackageTableViewCell.swift in Sources */,
 				17F3EBD120876E6800057FF6 /* UpdateLocationVC.swift in Sources */,
 				17366E8F206B5223003BA4C8 /* AddAddressVC.swift in Sources */,
 				1721C8AA21F302E2003A0DFB /* WebViewVC.swift in Sources */,
+				0474F36A280EDFB0000645E5 /* ReferralCodeModel.swift in Sources */,
 				1740804620BFD22100991E21 /* WalletTransactionTableViewVC.swift in Sources */,
 				17F643DC20636CF7000977DB /* SignUpVC.swift in Sources */,
 				17E5323A2085FEB5005E79B2 /* ServiceSuccessfullVC.swift in Sources */,
@@ -687,7 +725,6 @@
 				1734C92C20C566860076146B /* ApplyOffersVC.swift in Sources */,
 				170562F7208F158C00CEE5B3 /* BillingDetailsTableViewCell.swift in Sources */,
 				171DF703206F549F00BF16B4 /* AddressVC.swift in Sources */,
-				17F643CD20636B91000977DB /* Ironbox.xcdatamodeld in Sources */,
 				179D67C220AB072000E34E16 /* OffersVC.swift in Sources */,
 				17E6C69C20DBB36400E533D3 /* PackageVC.swift in Sources */,
 				17EC2BE62078831300A853B0 /* OrderHistoryVC.swift in Sources */,
@@ -716,6 +753,7 @@
 				17EC503D208F393900054E40 /* LaunchVC.swift in Sources */,
 				17F3EBCF2087509B00057FF6 /* PinCodeTableViewCell.swift in Sources */,
 				17EC2BE4207882F600A853B0 /* OrderHistoryTableViewCell.swift in Sources */,
+				04AB6DF7280FEEE80084D310 /* AddPackageViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -781,7 +819,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -832,7 +870,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -850,7 +888,7 @@
 				CODE_SIGN_ENTITLEMENTS = Ironbox/Ironbox.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = ZW2UZC375R;
 				ENABLE_BITCODE = NO;
@@ -869,7 +907,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 1.3.5;
+				MARKETING_VERSION = 1.3.10;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zerodegreesouth.Ironbox;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -889,7 +927,7 @@
 				CODE_SIGN_ENTITLEMENTS = Ironbox/Ironbox.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = ZW2UZC375R;
 				ENABLE_BITCODE = NO;
@@ -908,7 +946,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 1.3.5;
+				MARKETING_VERSION = 1.3.10;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zerodegreesouth.Ironbox;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -940,19 +978,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		17F643CB20636B91000977DB /* Ironbox.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				17F643CC20636B91000977DB /* Ironbox.xcdatamodel */,
-			);
-			currentVersion = 17F643CC20636B91000977DB /* Ironbox.xcdatamodel */;
-			path = Ironbox.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 17F643B920636B91000977DB /* Project object */;
 }

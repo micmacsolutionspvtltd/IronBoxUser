@@ -47,8 +47,12 @@ class UpdateLocationVC: UIViewController, UITextFieldDelegate {
             appDelegate.IsNewRegistration = false
             userDefaults.set("yes", forKey: IS_LOGIN)
             let story = UIStoryboard.init(name: "Main", bundle: nil)
-            let HomeVC = story.instantiateViewController(withIdentifier: "HomeVC")as! HomeVC
-            self.navigationController?.pushViewController(HomeVC, animated: false)
+            if #available(iOS 13.0, *) {
+                let HomeVC = story.instantiateViewController(withIdentifier: "HomeVC")as! HomeVC
+                self.navigationController?.pushViewController(HomeVC, animated: false)
+            } else {
+                // Fallback on earlier versions
+            }
         }
     }
     override func didReceiveMemoryWarning() {
@@ -83,9 +87,9 @@ class UpdateLocationVC: UIViewController, UITextFieldDelegate {
             revealType: RevealType.unreveal) { [weak self] in
                 self?.viewBG.isHidden = true
         }
-        
-        
     }
+    
+    
     @IBAction func onCheck(_ sender: Any)
     {
         view.endEditing(true)
@@ -182,6 +186,7 @@ class UpdateLocationVC: UIViewController, UITextFieldDelegate {
         }
         return true
     }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true

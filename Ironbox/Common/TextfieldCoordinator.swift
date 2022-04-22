@@ -29,6 +29,7 @@ class BackDetectTextField: UITextField {
     }
 }
 
+@available(iOS 13.0, *)
 class TextFieldCoordinator: NSObject, UITextFieldDelegate, ObservableObject {
     var index = 0
     var toolbarCoordinator = ToolbarCoordinator()

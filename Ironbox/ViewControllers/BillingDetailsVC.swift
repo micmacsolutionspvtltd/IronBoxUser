@@ -17,25 +17,20 @@ class BillingDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     @IBOutlet weak var tableBillingDetails: UITableView!
     var arrBillingDetails = Array<Any>()
 
-    @IBOutlet weak var lblTotalAmount: UILabel!
     @IBOutlet weak var lblOfferAmount: UILabel!
-    @IBOutlet weak var lblPayableAmount: UILabel!
-    @IBOutlet weak var lblPayableAmountWithoutOffer: UILabel!
 
-    @IBOutlet weak var lblStaticTotalAmount: UILabel!
     @IBOutlet weak var lblStaticOfferAmount: UILabel!
-    @IBOutlet weak var lblStaticPayableAmount: UILabel!
-    @IBOutlet weak var lblStaticPayableAmountWithoutOffer: UILabel!
     @IBOutlet weak var lblStaticgrandtotalwithoutgst: UILabel!
-    @IBOutlet weak var lblStaticCgst: UILabel!
-    @IBOutlet weak var lblStaticSgst: UILabel!
-    @IBOutlet weak var lblStaticpaidAmount: UILabel!
-    @IBOutlet weak var lblPaidAmount: UILabel!
     @IBOutlet weak var viewBG: UIView!
-    @IBOutlet weak var offerPriceLblHeight: NSLayoutConstraint!
-    @IBOutlet weak var payableLblHeight: NSLayoutConstraint!
-    @IBOutlet weak var statOfferPriceLblHeight: NSLayoutConstraint!
-    @IBOutlet weak var statPaybleHeight: NSLayoutConstraint!
+    @IBOutlet weak var amountHeaderLabel: UILabel!
+    @IBOutlet weak var taxAmountHeaderLabel: UILabel!
+    @IBOutlet weak var taxAmountLabel: UILabel!
+    @IBOutlet weak var totalAmountHeaderLabel: UILabel!
+    @IBOutlet weak var totalAmountLabel: UILabel!
+    @IBOutlet weak var paidAmountHeaderLabel: UILabel!
+    @IBOutlet weak var paidAmountLabel: UILabel!
+    @IBOutlet weak var totalPayableAmountHeaderLabel: UILabel!
+    @IBOutlet weak var totalPayableAmountLabel: UILabel!
 
     var strBookingId = ""
 
@@ -104,16 +99,19 @@ class BillingDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
 
                     if strDiscountAmount == ""
                     {
-                        self.statOfferPriceLblHeight.constant = 0
-                        self.statPaybleHeight.constant = 0
-                        self.offerPriceLblHeight.constant = 0
-                        self.payableLblHeight.constant = 0
-                        self.lblStaticgrandtotalwithoutgst.text = "\(json.value(forKey: "grandtotalwithoutgst") as? Double ?? 0.0)"
-                        let gstArray = json.value(forKey: "each_gst_amts") as! Array<[String: Any]>
-                        self.lblStaticSgst.text = "\(gstArray.last?["gst_val"] as? Double ?? 0.0)"
-                        self.lblStaticCgst.text = "\(gstArray.first?["gst_val"] as? Double ?? 0.0)"
+                        self.lblOfferAmount.isHidden = true
+                        self.lblStaticOfferAmount.isHidden = true
+                        self.lblStaticgrandtotalwithoutgst.text = "Rs.\(json.value(forKey: "grandtotalwithoutgst") as? Double ?? 0.0)"
+                    
+//                        self.lblStaticSgst.text = "\(gstArray.last?["gst_val"] as? Double ?? 0.0)"
+//                        self.lblStaticCgst.text = "\(gstArray.first?["gst_val"] as? Double ?? 0.0)"
                       //  self.lblTotalAmount.text = "\(json.value(forKey: "PaidAmount") as? Double ?? 0.0)"
-                        self.lblPaidAmount.text = "\(json.value(forKey: "PaidAmount") as? Double ?? 0.0)"
+                        self.paidAmountLabel.text = "Rs.\(json.value(forKey: "PaidAmount") as? Double ?? 0.0)"
+                        self.taxAmountLabel.text = "\(json.value(forKey: "taxamount") as? String ?? "")"
+                        self.totalAmountLabel.text =
+                        "\(json.value(forKey: "totalPayment") as? String ?? "")"
+                        self.totalPayableAmountLabel.text =
+                        "\(json.value(forKey: "grand_total") as? String ?? "")"
                        // self.lblPayableAmountWithoutOffer.text = json.value(forKey: "totalPayment") as? String ?? ""
 
                        // self.lblPayableAmountWithoutOffer.isHidden = false
@@ -124,9 +122,7 @@ class BillingDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
                         // self.lblStaticTotalAmount.isHidden = true
                         self.lblOfferAmount.isHidden = true
                         self.lblStaticOfferAmount.isHidden = true
-                        self.lblPayableAmount.isHidden = true
-                        self.lblStaticPayableAmount.isHidden = true
-
+                    
                         //test
                         print( json.value(forKey: "grandtotalwithoutgst")!)
                         print( json.value(forKey: "grandtotalwithoutgst")!)
@@ -138,9 +134,8 @@ class BillingDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
                         // self.lblStaticTotalAmount.isHidden = false
                         self.lblOfferAmount.isHidden = false
                         self.lblStaticOfferAmount.isHidden = false
-                        self.lblPayableAmount.isHidden = false
-                        self.lblStaticPayableAmount.isHidden = false
-
+                
+                      
                        // self.lblPayableAmountWithoutOffer.isHidden = true
                        // self.lblStaticPayableAmountWithoutOffer.isHidden = true
 
@@ -151,15 +146,17 @@ class BillingDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
                         let totalAmount = Double("\(self.lblStaticgrandtotalwithoutgst.text ?? "0.0")")
                         let offerprice = Double("\(self.lblOfferAmount.text?.components(separatedBy: ".").last ?? "0.0")")
                         let payable = (totalAmount ?? 0.0) - (offerprice ?? 0.0)
-                        self.lblPayableAmount.text =  "\(payable)"
+                        self.totalPayableAmountLabel.text =  "\(payable)"
                             //json.value(forKey: "grand_total") as? String ?? ""
 
                         let gstArray = json.value(forKey: "each_gst_amts") as! Array<[String: Any]>
-                        self.lblStaticSgst.text = "\(gstArray.last?["gst_val"] as? Double ?? 0.0)"
-                        self.lblStaticCgst.text = "\(gstArray.first?["gst_val"] as? Double ?? 0.0)"
                        // self.lblTotalAmount.text = "\(json.value(forKey: "PaidAmount") as? Double ?? 0.0)"
-                        self.lblPaidAmount.text = "\(json.value(forKey: "PaidAmount") as? Double ?? 0.0)"
-
+                        self.paidAmountLabel.text = "\(json.value(forKey: "PaidAmount") as? Double ?? 0.0)"
+                        self.taxAmountLabel.text = "\(json.value(forKey: "taxamount") as? String ?? "")"
+                        self.totalAmountLabel.text =
+                        "\(json.value(forKey: "totalPayment") as? String ?? "")"
+                        self.totalPayableAmountLabel.text =
+                        "\(json.value(forKey: "grand_total") as? String ?? "")"
                         let strPromoCode = json.value(forKey: "promocode") as? String ?? ""
 
                         let nPAckage = json.value(forKey: "Is_package")
@@ -231,7 +228,7 @@ class BillingDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         cell.selectionStyle = .none
 
         let dictRateCard = self.arrBillingDetails[indexPath.row] as! Dictionary<String, Any>
-        cell.lblCategoryName.text = dictRateCard["name"] as? String ?? ""
+        cell.lblCategoryName.text = dictRateCard["product_name"] as? String ?? ""
         cell.lblPrice.text = dictRateCard["amount"] as? String ?? ""
         let qty = dictRateCard["quantity"]
         cell.lblQuantity.text = String(describing: qty!)
