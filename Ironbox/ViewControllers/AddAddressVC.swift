@@ -185,6 +185,8 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
         markerCenter.layer.zPosition = 1
         pincodeButton.layer.borderColor = UIColor.black.cgColor
         pincodeButton.layer.borderWidth = 1
+        dropDownTextFld.layer.borderColor = UIColor.black.cgColor
+        dropDownTextFld.layer.borderWidth = 1
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -570,7 +572,7 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
             }
             DispatchQueue.main.async {
                 self.pincodeButton.setTitle(pincodeValues[0], for: .normal)
-                dropDownTextFld.text = pincodeValues[0]
+             //   dropDownTextFld.text = pincodeValues[0]
             }
             
         }, failure: { (error) in
