@@ -15,6 +15,7 @@ import CircularRevealKit
 
 class MenuController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    @IBOutlet weak var versionLbl: UILabel!
     @IBOutlet weak var btnClose: UIButton!
     @IBOutlet weak var imgClose: UIImageView!
     @IBOutlet weak var viewDetails: UIView!
@@ -36,6 +37,8 @@ class MenuController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+
         imgLogo.isHidden = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2)
         {
@@ -46,7 +49,7 @@ class MenuController: UIViewController, UITableViewDelegate, UITableViewDataSour
             self.imgLogo.repeatCount = 1
             self.imgLogo.animate()
         }
-        
+        versionLbl.text = "Version \(appVersion ?? "")"
     }
     
     override func viewWillAppear(_ animated: Bool)

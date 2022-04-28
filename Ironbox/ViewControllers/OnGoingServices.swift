@@ -1309,7 +1309,14 @@ class OnGoingServices: UIViewController, UITableViewDelegate, UITableViewDataSou
 
 
             }
-
+            if strStatus == "CONFIRMED"
+            {
+                cell.btnCancel.isHidden = false
+            }
+            else
+            {
+                cell.btnCancel.isHidden = true
+            }
             return cell
         }
         else

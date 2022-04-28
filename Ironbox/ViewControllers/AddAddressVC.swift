@@ -144,9 +144,11 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
         {
             
             strPincode = dictAddress["pincode"] as? String ?? ""
+            selectedPincode = strPincode
             strAddressType = dictAddress["title"] as? String ?? ""
             txtFlatNo.text = dictAddress["flatNo"] as? String ?? ""
             pincodeButton.setTitle(strPincode, for: .normal)
+            dropDownTextFld.text = strPincode
             txtLandmark.text = dictAddress["landmark"] as? String ?? ""
             strAddrLine = dictAddress["address"] as? String ?? ""
             txtStreetname.text = dictAddress["street"] as? String ?? ""
@@ -380,7 +382,7 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
         {
             ShowAlert(msg: "Please enter flat no / block / floor")
         }
-        else if selectedPincode == "" || (pincodeButton.titleLabel?.text?.trimmingCharacters(in: .whitespaces).isEmpty)!
+        else if selectedPincode == "" || (dropDownTextFld.text?.trimmingCharacters(in: .whitespaces).isEmpty)!
         {
             ShowAlert(msg: "Please enter pincode")
         }
@@ -549,7 +551,7 @@ class AddAddressVC: UIViewController, GMSMapViewDelegate, CLLocationManagerDeleg
                             didSelectCompletion(selectingText, selected , id )
                         selectedPincode = String(id)
                     }else{
-                        selectedPincode == ""
+                        selectedPincode = ""
                     }
                 }
                                      dropDownTextFld.resignFirstResponder()
