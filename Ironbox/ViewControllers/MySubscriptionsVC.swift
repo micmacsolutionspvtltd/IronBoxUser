@@ -76,8 +76,7 @@ class MySubscriptionsVC: UIViewController ,UITableViewDelegate, UITableViewDataS
             if (err == "false")
             {
                 self.arrPackages = json.value(forKey: "response") as! Array<Any>
-                if self.arrPackages.count != 0
-                {
+                if self.arrPackages.count != 0{
                     self.tableMyPackages.delegate = self
                     self.tableMyPackages.dataSource = self
                     self.tableMyPackages.reloadData()
@@ -90,9 +89,7 @@ class MySubscriptionsVC: UIViewController ,UITableViewDelegate, UITableViewDataS
                     self.tableMyPackages.isHidden = true
                     self.view.backgroundColor = UIColor.clear
                 }
-                
-            }
-            else{
+            }else{
                 let errorMessage = json.value(forKey: "error_message")as? String ?? ""
                 // self.ShowAlert(msg: errorMessage)
                 self.tableMyPackages.isHidden = true

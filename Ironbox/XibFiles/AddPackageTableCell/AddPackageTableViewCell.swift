@@ -10,6 +10,13 @@ import UIKit
 
 class AddPackageTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var buyNowView: UIView!
+    @IBOutlet weak var packageAmtLbl: UILabel!
+    @IBOutlet weak var expiryDateLbl: UILabel!
+    @IBOutlet weak var packageNameLbl: UILabel!
+    @IBOutlet weak var buyNowBtn: UIButton!
+    @IBOutlet weak var descriptionLbl: UILabel!
+    
     class var identifier: String
       {
           return String(describing: self)

@@ -23,8 +23,18 @@ import Cosmos
 @available(iOS 13.0, *)
 class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, ObservableObject, DelegateUpdateLocation{
     
+    @IBOutlet weak var startingImgView: UIImageView!
+    @IBOutlet weak var startingPopup: UIView!
+    @IBOutlet weak var updateView: UIView!
+    @IBOutlet weak var updateLbl: UILabel!
+    @IBOutlet weak var notNowView: UIView!
+    @IBOutlet weak var notNowLbl: UILabel!
+    @IBOutlet weak var alertContentLbl: UILabel!
+    @IBOutlet weak var alertTittleName: UILabel!
+    @IBOutlet weak var backGroundBlurView: UIView!
     @IBOutlet weak var viewOnGoingServicesCount: SpringView!
     
+    @IBOutlet weak var alertsView: UIView!
     @IBOutlet weak var btnOrder: UIButton!
     @IBOutlet weak var tableAddress: UITableView!
     @IBOutlet weak var dateCollectionView: UICollectionView!
@@ -37,6 +47,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
     @IBOutlet weak var viewPackages: SpringView!
     @IBOutlet weak var viewOffers: SpringView!
     
+    @IBOutlet weak var subscriptionsView: SpringView!
     @IBOutlet weak var viewBooking: UIView!
     @IBOutlet weak var viewBookingSuccess: UIView!
     @IBOutlet weak var viewDate: UIView!
@@ -101,6 +112,9 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
     var frameTxtClothesCount = CGRect()
     var CurrentDate = ""
     var deliverytype = ""
+    var moveToPackagePage = false
+  var subscriptionMinimumOrderQuantity = ""
+    var remainingPoints = ""
     
     let yourAttributes : [NSAttributedStringKey: Any] = [
         NSAttributedStringKey.font : UIFont(name: FONT_LIGHT, size: 14)!,
@@ -268,7 +282,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
     
     private func setupNavigationBar(isDefault: Bool) {
         if isDefault {
-            self.navigationController?.navigationBar.titleTextAttributes = [ NSAttributedStringKey.font: UIFont(name: FONT_BOLD, size: 19)!, NSAttributedStringKey.foregroundColor : UIColor(red: 26/255.0, green: 60/255.0, blue: 92/255.0, alpha: 1.0)]
+            self.navigationController?.navigationBar.titleTextAttributes = [ NSAttributedStringKey.font: UIFont(name: FONT_BOLD, size: 19)!, NSAttributedStringKey.foregroundColor : UIColor.white]
             
             let btnMenu = UIButton(type: .custom)
             btnMenu.setImage(UIImage(named: "Menu Icon"), for: .normal)
@@ -276,8 +290,8 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             btnMenu.imageView?.contentMode = .scaleAspectFit
             btnMenu.imageEdgeInsets = UIEdgeInsetsMake(8.0, 0.0, 8.0, 0.0)
             btnMenu.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-            
-            navigationController?.navigationBar.barTintColor =  UIColor.white
+            btnMenu.tintColor = .white
+            navigationController?.navigationBar.barTintColor =  UIColor.primaryColor
             btnMenu.addTarget(self, action: #selector(self.onMenuClick), for: .touchUpInside)
             let item = UIBarButtonItem(customView: btnMenu)
             self.title = "Ironbox"
@@ -303,11 +317,13 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         fieldPromoCode.textField.text = appDelegate.strOfferCode
+        navigationController?.navigationBar.isHidden = false
     }
 
     // MARK: - VIEW LIFE CYCLE
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.startingPopup.isHidden = true
         fieldPromoCode.textField.placeholder = "Enter promo code"
         fieldVoucherCode.textField.placeholder = "Enter voucher code"
         fieldCount.textField.placeholder = ""
@@ -404,6 +420,13 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             self.viewOffers.repeatCount = 1
             self.viewOffers.animate()
             
+            self.subscriptionsView.isHidden = false
+            self.subscriptionsView.animation = "zoomIn"
+            self.subscriptionsView.curve = "easeIn"
+            self.subscriptionsView.duration = 1
+            self.subscriptionsView.repeatCount = 1
+            self.subscriptionsView.animate()
+            
             self.viewOnGoingServicesCount.isHidden = false
             self.viewOnGoingServicesCount.animation = "pop"
             self.viewOnGoingServicesCount.curve = "easeOutCric"
@@ -415,8 +438,12 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         
         frameLblClothesCount = lblClothesCount.frame
         frameTxtClothesCount = txtClothesCount.frame
+        alertsView.isHidden=true
+        backGroundBlurView.isHidden = true
+        notNowView.isHidden = true
+     
     }
-    
+
     override func viewWillAppear(_ animated: Bool)
     {
         self.onHomeAPI()
@@ -434,11 +461,56 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         
         self.checkPendingPaytmResponse()
         showOrHideLocationConfirmationAlert()
-        
+        versionCheckvalue()
+        versionUpdateApi()
     }
     override func viewWillLayoutSubviews()
     {
         
+    }
+    func versionUpdateApi(){
+        let accessToken = userDefaults.object(forKey: ACCESS_TOKEN)
+        let header:HTTPHeaders = ["Accept":"application/json", "Authorization":accessToken as! String]
+        
+        let strVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString")
+        
+        let param: [String: Any] = ["":""]
+        let url = "http://13.126.228.76/Ironbox_new/public/IroningVendor/versioncheck?id=6&version=\(strVersion ?? "")"
+        self.CheckNetwork()
+      
+        AlamofireHC.newRequestPOST(url, params: (param  ) as [String : AnyObject], headers: header, success: { (JSON) in
+            
+            let  result = JSON.dictionaryObject
+            let json = result! as NSDictionary
+            
+            let err = json.value(forKey: "error") as? String ?? ""
+            if (err == "false")
+            {
+               
+                self.updateAlertPopup()
+                
+            }
+        
+            
+            
+        }, failure: { (error) in
+            
+            print(error)
+            appDelegate.isNewAddressAdded = false
+        })
+    }
+    func versionCheckvalue() -> Bool {
+        VersionCheck.shared.checkAppStore() { isNew, version in
+            print("IS NEW VERSION AVAILABLE: \(isNew), APP STORE VERSION: \(version)")
+       
+            if isNew == true {
+                print("New Version is available")
+            }
+            else {
+
+            }
+        }
+        return false
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -481,6 +553,9 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         ViewTutorial.addSubview(btnNxt)
     }
     
+    @IBAction func startPopupHideBtnAtn(_ sender: Any) {
+        startingPopup.isHidden = true
+    }
     @IBAction func onTutorialNext(_ sender: Any)
     {
         if nTutorialNumber == 1
@@ -574,7 +649,25 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             
         }
     }
+    // MARK: - POUP ACTIONS
     
+    @IBAction func notNowAtn(_ sender: Any) {
+        backGroundBlurView.isHidden = true
+        alertsView.isHidden = true
+    }
+    
+    @IBAction func updateAtn(_ sender: Any) {
+        if updateLbl.text == "Confirm"{
+            oneClickBooking()
+        }else{
+            if let url = URL(string: "https://apps.apple.com/in/app/ironbox/id1396394518") {
+                UIApplication.shared.open(url)
+            }
+        }
+       
+        backGroundBlurView.isHidden = true
+        alertsView.isHidden = true
+    }
     // MARK: - ACTIONS
     
     @objc func onMenuClick()
@@ -654,6 +747,43 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
                 
                 let rating = json.value(forKey: "rating")
                 let strRating = String(describing: rating!)
+                let remainingPoint = json.value(forKey: "remaining_points")
+                self.remainingPoints = String(describing: remainingPoint)
+                let subscribers = json.value(forKey: "subscribers")
+                let startingPopupImg = json.value(forKey: "home_img")
+                if UserDefaults.standard.value(forKey: "enterFirstTime") as! String == "true"{
+                    if startingPopupImg as! String != ""{
+                        self.startingPopup.isHidden = false
+                        var strImageURL = String(describing: startingPopupImg)
+                        strImageURL = strImageURL.addingPercentEncoding(withAllowedCharacters: NSCharacterSet.urlQueryAllowed)!
+                        self.startingImgView.imageFromServerURL(urlString: startingPopupImg as! String)
+                    }
+                   
+                }
+                UserDefaults.standard.set("false", forKey: "enterFirstTime")
+                if let subscribeValues = subscribers as? Dictionary<String,Any>{
+                    if let minorderQty = Int(subscribeValues["minimum_order_quantity"] as? String ?? ""){
+                        if (Int(self.remainingPoints) ?? 0 > Int(minorderQty)){
+                            self.subscriptionMinimumOrderQuantity = String(minorderQty)
+                            self.btnCash.isHidden = false
+                            self.btnWallet.isHidden = false
+                        }else{
+                            self.subscriptionMinimumOrderQuantity = String(minorderQty)
+                            self.btnCash.isHidden = true
+                            self.btnWallet.isHidden = true
+                           
+                            self.strPaymentType = "Subscribtion"
+                        }
+                        self.moveToPackagePage = false
+                    }else{
+                        self.moveToPackagePage = true
+                    }
+                    print("allValues" , subscribeValues["minimum_order_quantity"])
+                  
+                }else{
+                    self.moveToPackagePage = true
+                }
+            
                 
                 //                if strversion == "1"
                 //                {
@@ -717,9 +847,42 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
     @IBAction func onPackages(_ sender: Any)
     {
         //self.performSegue(withIdentifier: "Home_Package", sender: self)
-        oneClickBooking()
+        if moveToPackagePage{
+            oneClickBooking()
+        }else{
+           packagesAlert()
+        }
+       
     }
-    
+    fileprivate func updateAlertPopup(){
+        alertsView.isHidden = false
+        backGroundBlurView.isHidden = false
+        notNowView.isHidden = true
+        updateLbl.text = "Update"
+        alertTittleName.text = "Version Update"
+        alertContentLbl.text = "Here's an Update for you with new Version Click to grab the updated feautures"
+    }
+    fileprivate func packagesAlert(){
+        alertsView.isHidden = false
+        backGroundBlurView.isHidden = false
+        notNowView.isHidden = false
+        notNowLbl.text = "Cancel"
+        updateLbl.text = "Confirm"
+        alertTittleName.text = "One Click Booking"
+        alertContentLbl.text = "Minimum order quantity for subscriber is \(subscriptionMinimumOrderQuantity)"
+    }
+    @IBAction func subscriptionAtn(_ sender: Any) {
+//
+        if moveToPackagePage{
+            let packageVC = self.storyboard?.instantiateViewController(withIdentifier: "AddPackageViewController") as! AddPackageViewController
+                  navigationController?.pushViewController(packageVC, animated: true)
+        }else{
+            let subscriptionVc = self.storyboard?.instantiateViewController(withIdentifier: "SubscriptionDetailController") as! SubscriptionDetailController
+            navigationController?.pushViewController(subscriptionVc, animated: true)
+        }
+      
+       // self.performSegue(withIdentifier: "addPackage", sender: self)
+    }
     @IBAction func onMainOffers(_ sender: Any)
     {
         self.performSegue(withIdentifier: "Home_Offers", sender: self)
@@ -779,7 +942,11 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
                         else
                         {
                             self.startBookingProcess()
+                            
                             appDelegate.isNewAddressAdded = false
+                            
+                            
+                            
                         }
                     }
                     else
@@ -1645,12 +1812,27 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
                 return false
             }
             
-            
-            guard count >= 10 else {
-                ToastCenter.default.cancelAll()
-                Toast(text: "Clothes minimum 10 numbers only accepted", duration: 2.5).show()
-                return false
+            if moveToPackagePage{
+                guard count >= 10 else {
+                    ToastCenter.default.cancelAll()
+                    Toast(text: "Clothes minimum 10 numbers only accepted", duration: 2.5).show()
+                    return false
+                }
+            }else{
+                guard count >= (Int(subscriptionMinimumOrderQuantity) ?? 0) else{
+                    ToastCenter.default.cancelAll()
+                    Toast(text: "Subscribe user Clothes minimum \(subscriptionMinimumOrderQuantity) numbers only accepted", duration: 2.5).show()
+                    return false
+                }
+                guard count > (Int(remainingPoints) ?? 0) else{
+                    ToastCenter.default.cancelAll()
+                    Toast(text: "Subscribe user only \(remainingPoints) available please Recharge", duration: 2.5).show()
+                    return false
+                }
+              
+                
             }
+           
         }
         
         if fieldPromoCode.trimmedText.count > 0 && fieldVoucherCode.trimmedText.count > 0 {
@@ -1734,6 +1916,9 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         
         let accessToken = userDefaults.object(forKey: ACCESS_TOKEN)
         let header:HTTPHeaders = ["Accept":"application/json", "Authorization":accessToken as! String]
+        if moveToPackagePage == false{
+            strPaymentType = "Subscribtion"
+        }
         
         let param: [String: Any] = [
             "addressId":strAddressId,
@@ -1746,6 +1931,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             "voucher_code": fieldVoucherCode.text
         ]
         //        print("addressId,TimeSlotId,bookingDate,payment_type,promode_code,quantity,bookingType", strAddressId,strTimeSlotID,strBookingDate,strPaymentType,txtPromoCode.text,strQuantity)
+        print("Params",param)
         print("token", accessToken)
         self.CheckNetwork()
         

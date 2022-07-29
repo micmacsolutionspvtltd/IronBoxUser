@@ -984,7 +984,7 @@ class OnGoingServices: UIViewController, UITableViewDelegate, UITableViewDataSou
             let PaymentStatus = dictBooking["paidStatus"]
             let strPaymentStatus = String(describing: PaymentStatus!)
 
-
+           
             if strStatus == "CONFIRMED"
             {
                 cell.imgStatusIcon.image = UIImage(named: "Confirmed")
@@ -1206,7 +1206,9 @@ class OnGoingServices: UIViewController, UITableViewDelegate, UITableViewDataSou
 
             }
 
-
+            if strPaymentType == "Subscribtion"{
+                cell.viewDriverDetailsWithPay.isHidden = true
+            }
 
             let isSelected = dictBooking["isSelected"] as? String ?? ""
 

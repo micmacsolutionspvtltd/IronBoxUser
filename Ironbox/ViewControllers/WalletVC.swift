@@ -629,7 +629,7 @@ class WalletVC: UIViewController, UITextFieldDelegate{
 
      AlamofireHC.requestPOST(ADD_AMOUNT_WALLET, params: param as [String : AnyObject], headers: header, success: { (JSON) in
      UIView().hideLoader(removeFrom: (self.navigationController?.view)!)
-     let  result = JSON.dictionaryObject
+     let result = JSON.dictionaryObject
      let json = result! as NSDictionary
      let err = json.value(forKey: "error") as? String ?? ""
      if (err == "false"){
@@ -936,7 +936,7 @@ extension WalletVC : PGTransactionDelegate {
     dictPaymentSuccess["TXNID"] = payment_id
     dictPaymentSuccess["STATUS"] = "SUCCESS"
     dictPaymentSuccess["TXNAMOUNT"] = txtEnterAmount.text
-    dictPaymentSuccess["PAYMENTMODE"] = "Wallet"
+    dictPaymentSuccess["PAYMENTMODE"] = "Subscription"
     appDelegate.arrPaytmRsponse.append(dictPaymentSuccess)
     let PaytmRsponsesData = NSKeyedArchiver.archivedData(withRootObject: appDelegate.arrPaytmRsponse)
     userDefaults.set(PaytmRsponsesData, forKey: "PaytmRsponse")

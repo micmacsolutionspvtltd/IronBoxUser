@@ -114,6 +114,9 @@ var GET_MY_PACKAGES = "MyPackages"
 var MY_PACKAGE_TRANSACTIONS = "MyPackageTransactions"
 var ON_CLICK_BOOKING = "OneClickBooking"
 var AGENT_REFFERCODE = "agentcode"
+var SUBSCRIPTION_VALUE = "SubscriberPackages"
+var SUBSCRIPE_PAYMENT = "SuscriberRazorPay"
+var SUBSCRIPTION_DETAILS = "SubscriberDetails"
 //var MY_PACKAGE_TRANSACTIONS = "MyPackageTransactions"
 
 
@@ -150,6 +153,23 @@ var FONT_LIGHT = "Quicksand-Light"
 //var FONT_EXTRALIGHT = "Quicksand-Extralight"
 
 // MARK: - Basic Functions
+func changingDateFormat(date : Date , format : String? = "dd-MM-yyyy") -> String{
+    let formatter = DateFormatter()
+    formatter.dateFormat = format
+   // formatter.date(from: date)
+    let finalDate = formatter.string(from: date)
+    return finalDate
+}
+func changeFormatMonthAndYear(date : String) -> String{
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd"
+    if let dateObj = dateFormatter.date(from: date){
+        dateFormatter.dateFormat = "dd-MMM-yyyy"
+     //  print("Date Values",(dateFormatter.string(from: dateObj)))
+        return (dateFormatter.string(from: dateObj))
+    }
+   return ""
+}
 func UserDefaults_Obj() -> UserDefaults
 {
     
@@ -231,3 +251,16 @@ extension UIColor {
 }
 
 var safeArea: UIEdgeInsets = appDelegate.window?.safeAreaInsets ?? UIEdgeInsets(top: 22, left: 0, bottom: 0, right: 0)
+
+extension UIView {
+  
+
+  func applyShadowView(color:UIColor,radius:CGFloat,cornerRadius:CGFloat, alpha: Float = 1.0) {
+      self.layer.masksToBounds = false;
+      self.layer.shadowColor = color.cgColor
+      self.layer.shadowOpacity = alpha;
+      self.layer.shadowRadius = radius;
+      self.layer.shadowOffset = CGSize(width: -1, height: 1)
+      self.layer.cornerRadius = cornerRadius
+  }
+}

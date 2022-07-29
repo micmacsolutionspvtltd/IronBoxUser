@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0439ADA52838D7B400D58569 /* SubscriptionDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0439ADA42838D7B400D58569 /* SubscriptionDetailController.swift */; };
+		0439ADA72838FA7100D58569 /* BookingHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0439ADA62838FA7100D58569 /* BookingHistoryCell.swift */; };
+		043E6ADF282B88B500C554F5 /* VersionCheckClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043E6ADE282B88B500C554F5 /* VersionCheckClass.swift */; };
+		045CEB392837CE0700A871E6 /* SubscriptionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045CEB382837CE0700A871E6 /* SubscriptionModel.swift */; };
+		0460A1BF282ADB6C00EA4A88 /* MenuPageAlertVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0460A1BD282ADB6C00EA4A88 /* MenuPageAlertVIew.swift */; };
+		0460A1C0282ADB6C00EA4A88 /* MenuPageAlertVIew.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0460A1BE282ADB6C00EA4A88 /* MenuPageAlertVIew.xib */; };
 		0474F36A280EDFB0000645E5 /* ReferralCodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0474F369280EDFB0000645E5 /* ReferralCodeModel.swift */; };
 		04AB6DF7280FEEE80084D310 /* AddPackageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AB6DF6280FEEE80084D310 /* AddPackageViewController.swift */; };
 		04AB6DFC280FFCE90084D310 /* AddPackageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AB6DFA280FFCE90084D310 /* AddPackageTableViewCell.swift */; };
@@ -112,6 +118,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0439ADA42838D7B400D58569 /* SubscriptionDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionDetailController.swift; sourceTree = "<group>"; };
+		0439ADA62838FA7100D58569 /* BookingHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingHistoryCell.swift; sourceTree = "<group>"; };
+		043E6ADE282B88B500C554F5 /* VersionCheckClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionCheckClass.swift; sourceTree = "<group>"; };
+		045CEB382837CE0700A871E6 /* SubscriptionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionModel.swift; sourceTree = "<group>"; };
+		0460A1BD282ADB6C00EA4A88 /* MenuPageAlertVIew.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuPageAlertVIew.swift; sourceTree = "<group>"; };
+		0460A1BE282ADB6C00EA4A88 /* MenuPageAlertVIew.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenuPageAlertVIew.xib; sourceTree = "<group>"; };
 		0474F369280EDFB0000645E5 /* ReferralCodeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferralCodeModel.swift; sourceTree = "<group>"; };
 		04AB6DF6280FEEE80084D310 /* AddPackageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPackageViewController.swift; sourceTree = "<group>"; };
 		04AB6DFA280FFCE90084D310 /* AddPackageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPackageTableViewCell.swift; sourceTree = "<group>"; };
@@ -228,10 +240,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0460A1BC282ADB6C00EA4A88 /* CommonAlert */ = {
+			isa = PBXGroup;
+			children = (
+				0460A1BD282ADB6C00EA4A88 /* MenuPageAlertVIew.swift */,
+				0460A1BE282ADB6C00EA4A88 /* MenuPageAlertVIew.xib */,
+			);
+			path = CommonAlert;
+			sourceTree = "<group>";
+		};
 		0474F368280EDABA000645E5 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				0474F369280EDFB0000645E5 /* ReferralCodeModel.swift */,
+				045CEB382837CE0700A871E6 /* SubscriptionModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -376,6 +398,8 @@
 				17E6C6A920DBB9B300E533D3 /* MySubscriptionsTableViewCell.xib */,
 				17EBF99620DCB786004F1A3A /* MySubscriptionTransactionsVC.swift */,
 				17EBF99820DCC7E9004F1A3A /* MySubscriptionTransactionsTableViewCell.swift */,
+				0439ADA42838D7B400D58569 /* SubscriptionDetailController.swift */,
+				0439ADA62838FA7100D58569 /* BookingHistoryCell.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -422,8 +446,10 @@
 		97592C742720922200BF0479 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				0460A1BC282ADB6C00EA4A88 /* CommonAlert */,
 				97592C752720923400BF0479 /* TextfieldCoordinator.swift */,
 				97592C772720BFF000BF0479 /* TextFields.swift */,
+				043E6ADE282B88B500C554F5 /* VersionCheckClass.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -506,6 +532,7 @@
 				17366E91206B5A08003BA4C8 /* style.json in Resources */,
 				17E6C6AB20DBB9B300E533D3 /* MySubscriptionsTableViewCell.xib in Resources */,
 				17E6C6A220DBB92F00E533D3 /* PackagesListTableViewCell.xib in Resources */,
+				0460A1C0282ADB6C00EA4A88 /* MenuPageAlertVIew.xib in Resources */,
 				17A6662020652AF900C79CA1 /* Quicksand-Light.ttf in Resources */,
 				17A6661E20652AF400C79CA1 /* Quicksand-Regular.ttf in Resources */,
 				17EBC0FB2091D591001D06EE /* Loader-512.gif in Resources */,
@@ -694,6 +721,7 @@
 				17ECDD6420E107FE004A6014 /* AppUpdateVC.swift in Sources */,
 				17F643E720636EDB000977DB /* MenuController.swift in Sources */,
 				17CFB2E7207C9ED400CBE144 /* OnGoingTableViewCell.swift in Sources */,
+				0460A1BF282ADB6C00EA4A88 /* MenuPageAlertVIew.swift in Sources */,
 				97592C782720BFF000BF0479 /* TextFields.swift in Sources */,
 				17E6C6AD20DBB9D900E533D3 /* MySubscriptionsVC.swift in Sources */,
 				2FAF937123F5611E00CE6A29 /* ReferlistTableviewcell.swift in Sources */,
@@ -702,6 +730,7 @@
 				17F643E420636EDB000977DB /* Constants.swift in Sources */,
 				179D67C420AB084100E34E16 /* OffersTableViewCell.swift in Sources */,
 				17522C8B2077676800706AD2 /* RateCardTableViewCell.swift in Sources */,
+				043E6ADF282B88B500C554F5 /* VersionCheckClass.swift in Sources */,
 				171268AB207E312A0031178C /* GradientView.swift in Sources */,
 				04AB6DFC280FFCE90084D310 /* AddPackageTableViewCell.swift in Sources */,
 				17F3EBD120876E6800057FF6 /* UpdateLocationVC.swift in Sources */,
@@ -715,6 +744,7 @@
 				973849B7271F63C300F61D36 /* ScheduleMyPickupScreen.swift in Sources */,
 				17D42B9C20C80967003A44EF /* WalletPaymentVC.swift in Sources */,
 				17EBF99720DCB786004F1A3A /* MySubscriptionTransactionsVC.swift in Sources */,
+				0439ADA72838FA7100D58569 /* BookingHistoryCell.swift in Sources */,
 				17F70C9B2068B88400F4B848 /* DateCollectionViewCell.swift in Sources */,
 				17F643E520636EDB000977DB /* SingleTonClass.swift in Sources */,
 				17522C892077674E00706AD2 /* RateCardVC.swift in Sources */,
@@ -723,6 +753,7 @@
 				171A239B2080D850007C47E1 /* CancelReasonTableViewCell.swift in Sources */,
 				170CDD71207F74ED0075F39A /* ExpandDataCollectionViewCell.swift in Sources */,
 				1734C92C20C566860076146B /* ApplyOffersVC.swift in Sources */,
+				045CEB392837CE0700A871E6 /* SubscriptionModel.swift in Sources */,
 				170562F7208F158C00CEE5B3 /* BillingDetailsTableViewCell.swift in Sources */,
 				171DF703206F549F00BF16B4 /* AddressVC.swift in Sources */,
 				179D67C220AB072000E34E16 /* OffersVC.swift in Sources */,
@@ -743,6 +774,7 @@
 				171268AD207E33FD0031178C /* BillingDetailsVC.swift in Sources */,
 				17F643DA20636CD9000977DB /* SignInVC.swift in Sources */,
 				17EF4DD32078CAFA00572DBD /* ReferAndEarnVC.swift in Sources */,
+				0439ADA52838D7B400D58569 /* SubscriptionDetailController.swift in Sources */,
 				17EBF99920DCC7E9004F1A3A /* MySubscriptionTransactionsTableViewCell.swift in Sources */,
 				17E6C6A120DBB92F00E533D3 /* PackagesListTableViewCell.swift in Sources */,
 				17F70C9A2068B88400F4B848 /* TimeCollectionViewCell.swift in Sources */,
@@ -888,7 +920,7 @@
 				CODE_SIGN_ENTITLEMENTS = Ironbox/Ironbox.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = ZW2UZC375R;
 				ENABLE_BITCODE = NO;
@@ -907,7 +939,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zerodegreesouth.Ironbox;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -927,7 +959,7 @@
 				CODE_SIGN_ENTITLEMENTS = Ironbox/Ironbox.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = ZW2UZC375R;
 				ENABLE_BITCODE = NO;
@@ -946,7 +978,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zerodegreesouth.Ironbox;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

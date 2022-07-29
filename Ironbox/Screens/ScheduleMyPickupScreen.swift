@@ -188,7 +188,7 @@ struct ScheduleMyPickupScreen: View {
                                 }
                                 .fixedSize(horizontal: true, vertical: true)
                             }
-                            
+                            if data.moveToPackagePage == true{
                             HStack(spacing: 10) {
                                 Textfield1(coordinator: data.fieldPromoCode)
                                 Spacer()
@@ -204,22 +204,27 @@ struct ScheduleMyPickupScreen: View {
                                 Text("     Offer     ")
                                     .opacity(0)
                             }
-                        }
-                        .modifier(ScheduleMyPickupBackgroundModifier())
-                        
-                        VStack(alignment: .leading, spacing: 20) {
-                            imageView2(imageName: "payment_type", title: "Payment Mode")
-                            HStack(spacing: 10) {
-                                ToggleButton(text: "Cash", isSelected: data.isCash) {
-                                    data.isCash = true
-                                }
-                                ToggleButton(text: "Wallet", isSelected: !data.isCash) {
-                                    data.isCash = false
-                                }
                             }
-                            .padding(.leading, 60)
                         }
                         .modifier(ScheduleMyPickupBackgroundModifier())
+                        if data.moveToPackagePage == true{
+                            VStack(alignment: .leading, spacing: 20) {
+                                imageView2(imageName: "payment_type", title: "Payment Mode")
+                                HStack(spacing: 10) {
+                                    ToggleButton(text: "Cash", isSelected: data.isCash) {
+                                        data.isCash = true
+                                    }
+                                    ToggleButton(text: "Wallet", isSelected: !data.isCash) {
+                                        data.isCash = false
+                                    }
+                                }
+                                .padding(.leading, 60)
+                            }
+                            .modifier(ScheduleMyPickupBackgroundModifier())
+                        }else{
+                            
+                        }
+                   
                         
                         VStack(alignment: .leading, spacing: 20) {
                             imageView2(imageName: "cycle", title: "Delivery Type")
@@ -254,21 +259,21 @@ struct ScheduleMyPickupScreen: View {
 //                                                    Color(.hex("D8D8D8"))
 //                                                )
 //                                                .fixedSize(horizontal: false, vertical: true)
-                        
-                        Button {
-                            isBookWithCount = false
-                            scCheckAlreadyBooked()
-                        } label: {
-                            Text("CONTINUE WITHOUT COUNT")
-                                .font(.custom(FONT_MEDIUM, size: 15))
-                                .foregroundColor(.white)
-                                .padding(8)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 3)
-                                        .fill(Color(.primaryColor))
-                                )
-                        }
-                        
+                        if data.moveToPackagePage{
+                            Button {
+                                isBookWithCount = false
+                                scCheckAlreadyBooked()
+                            } label: {
+                                Text("CONTINUE WITHOUT COUNT")
+                                    .font(.custom(FONT_MEDIUM, size: 15))
+                                    .foregroundColor(.white)
+                                    .padding(8)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 3)
+                                            .fill(Color(.primaryColor))
+                                    )
+                            }
+                        }                        
                         Button {
                             isBookWithCount = true
                             scCheckAlreadyBooked()

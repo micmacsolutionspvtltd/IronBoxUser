@@ -54,7 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         AppEvents.shared.activateApp()
         Settings.shared.isAutoLogAppEventsEnabled = true
-
+        UserDefaults.standard.set("true", forKey: "enterFirstTime")
 //
         guard let gai = GAI.sharedInstance() else {
             assert(false, "Google Analytics not configured correctly")
