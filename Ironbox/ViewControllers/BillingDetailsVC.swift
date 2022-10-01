@@ -12,6 +12,13 @@ import NVActivityIndicatorView
 
 class BillingDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    @IBOutlet weak var priceTopLbl: UILabel!
+    @IBOutlet weak var stackViewSix: UIStackView!
+    @IBOutlet weak var stackViewFive: UIStackView!
+    @IBOutlet weak var stackViewFour: UIStackView!
+    @IBOutlet weak var stackViewThree: UIStackView!
+    @IBOutlet weak var stackViewTwo: UIStackView!
+    @IBOutlet weak var stackViewOne: UIStackView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var tableBillingHeight: NSLayoutConstraint!
     @IBOutlet weak var tableBillingDetails: UITableView!
@@ -33,6 +40,7 @@ class BillingDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     @IBOutlet weak var totalPayableAmountLabel: UILabel!
 
     var strBookingId = ""
+    var isSubscription = false
 
     // MARK: - VIEW LIFE CYCLE
     override func viewDidLoad() {
@@ -88,6 +96,12 @@ class BillingDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
             let json = result! as NSDictionary
 
             let err = json.value(forKey: "error") as? String ?? ""
+            if (json.value(forKey: "Total_points") as? Int ?? 0) == 0{
+                self.isSubscription = false
+            }else{
+                self.isSubscription = true
+            }
+          //  self.taxAmountLabel.text = "\(json.value(forKey: "taxamount") as? String ?? "")"
             if (err == "false")
             {
 
@@ -96,6 +110,17 @@ class BillingDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
                 if self.arrBillingDetails.count != 0
                 {
                     let strDiscountAmount = json.value(forKey: "discount_amount") as? String ?? ""
+                    if self.isSubscription{
+                        self.amountHeaderLabel.text = "TOTAL POINTS"
+                        self.lblStaticgrandtotalwithoutgst.text =
+                        "\(json.value(forKey: "Total_points") as? Int ?? 0) Points"
+                        self.stackViewTwo.isHidden = true
+                        self.stackViewThree.isHidden = true
+                        self.stackViewFour.isHidden = true
+                        self.stackViewFive.isHidden = true
+                        self.stackViewSix.isHidden = true
+                        self.priceTopLbl.text = "Points"
+                    }else{
 
                     if strDiscountAmount == ""
                     {
@@ -178,6 +203,7 @@ class BillingDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
                         }
 
                     }
+                }
 
                     self.tableBillingDetails.delegate = self
                     self.tableBillingDetails.dataSource = self
@@ -229,11 +255,17 @@ class BillingDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
 
         let dictRateCard = self.arrBillingDetails[indexPath.row] as! Dictionary<String, Any>
         cell.lblCategoryName.text = dictRateCard["product_name"] as? String ?? ""
+        
         cell.lblPrice.text = dictRateCard["amount"] as? String ?? ""
         let qty = dictRateCard["quantity"]
         cell.lblQuantity.text = String(describing: qty!)
 
         let isPackageAmt = dictRateCard["IsPackage_amt"] as? Int ?? 0
+        if isSubscription{
+            cell.lblPrice.text = String(describing: qty!)
+        }else{
+            cell.lblPrice.text = dictRateCard["amount"] as? String ?? ""
+        }
         if isPackageAmt == 1
         {
             cell.lblIsPackage.isHidden = false

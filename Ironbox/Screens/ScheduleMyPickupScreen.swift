@@ -188,7 +188,7 @@ struct ScheduleMyPickupScreen: View {
                                 }
                                 .fixedSize(horizontal: true, vertical: true)
                             }
-                            if data.moveToPackagePage == true{
+                            if (data.moveToPackagePage && data.subscriptionBalanceLow) || (data.moveToPackagePage == false && data.subscriptionBalanceLow){
                             HStack(spacing: 10) {
                                 Textfield1(coordinator: data.fieldPromoCode)
                                 Spacer()
@@ -207,7 +207,7 @@ struct ScheduleMyPickupScreen: View {
                             }
                         }
                         .modifier(ScheduleMyPickupBackgroundModifier())
-                        if data.moveToPackagePage == true{
+                        if (data.moveToPackagePage && data.subscriptionBalanceLow) || (data.moveToPackagePage == false && data.subscriptionBalanceLow){
                             VStack(alignment: .leading, spacing: 20) {
                                 imageView2(imageName: "payment_type", title: "Payment Mode")
                                 HStack(spacing: 10) {
@@ -259,7 +259,7 @@ struct ScheduleMyPickupScreen: View {
 //                                                    Color(.hex("D8D8D8"))
 //                                                )
 //                                                .fixedSize(horizontal: false, vertical: true)
-                        if data.moveToPackagePage{
+                        if (data.moveToPackagePage && data.subscriptionBalanceLow) || (data.moveToPackagePage == false && data.subscriptionBalanceLow){
                             Button {
                                 isBookWithCount = false
                                 scCheckAlreadyBooked()

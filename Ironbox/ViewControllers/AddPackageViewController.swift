@@ -17,6 +17,7 @@ class AddPackageViewController: UIViewController {
     var strOrderId = ""
      var packageId = ""
     var packageAmount = ""
+    var buyBtnShow = false
     var razorpayObj : RazorpayCheckout? = nil
     fileprivate var packageData : SubscriptionModel?
     {
@@ -303,7 +304,7 @@ extension AddPackageViewController : UITableViewDelegate , UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AddPackageTableViewCell") as! AddPackageTableViewCell
-        if packageData?.status == "false"{
+        if buyBtnShow == false{
             cell.buyNowView.isHidden = true
         }else{
             cell.buyNowView.isHidden = false

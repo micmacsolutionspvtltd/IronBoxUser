@@ -42,7 +42,8 @@ class AlamofireHC: NSObject {
       
         let URL = BASEURL + strMethod
         print("Success with JSON: \(URL)")
-
+        
+        print("Parameter : \(params)")
         Alamofire.request(URL, method: .post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON {
             (responseObject) -> Void in
             

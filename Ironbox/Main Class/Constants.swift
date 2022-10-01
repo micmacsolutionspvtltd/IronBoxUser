@@ -25,6 +25,7 @@ import SwiftUI
 // MARK: - Production Url
 
 var BASEURL = "http://13.126.228.76/Ironbox_new/public/api/"
+//var BASEURL = "http://43.205.221.246/Ironbox_new/public/api/"
 var TERMSCONDS_URL = "http://13.126.228.76/Ironbox_new/public/UserTerms"
 var PRIVACY_URL = "http://13.126.228.76/Ironbox_new/public/UserPrivacy"
 var REFUND_URL = "http://13.126.228.76/Ironbox_new/public/Refunds"

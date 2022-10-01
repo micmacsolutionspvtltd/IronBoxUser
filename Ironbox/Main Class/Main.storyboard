@@ -6210,10 +6210,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xyA-7a-vvu">
-                                <rect key="frame" x="0.0" y="56" width="414" height="660"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wBK-Ai-WwI">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="660"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AU5-Pg-hxY">
                                                 <rect key="frame" x="20" y="10" width="364" height="50"/>
@@ -6255,10 +6255,10 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3sb-pt-cWX">
-                                                <rect key="frame" x="0.0" y="60" width="414" height="600"/>
+                                                <rect key="frame" x="0.0" y="60" width="414" height="656"/>
                                                 <subviews>
                                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xf6-s5-m8l">
-                                                        <rect key="frame" x="0.0" y="0.0" width="414" height="600"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="414" height="656"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D7j-DQ-mfy">
                                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="1004"/>
@@ -6560,7 +6560,14 @@
                         <outlet property="lblStaticgrandtotalwithoutgst" destination="qBw-l1-SzX" id="wPP-cy-P5C"/>
                         <outlet property="paidAmountHeaderLabel" destination="czn-1t-pLm" id="q7e-yA-8ga"/>
                         <outlet property="paidAmountLabel" destination="yho-Yk-rHf" id="Ro0-RN-ZMG"/>
+                        <outlet property="priceTopLbl" destination="HOg-z3-Cnz" id="czn-vl-1bt"/>
                         <outlet property="scrollView" destination="Xf6-s5-m8l" id="QoM-zO-vrp"/>
+                        <outlet property="stackViewFive" destination="da1-Dy-Arl" id="hS9-iQ-Qff"/>
+                        <outlet property="stackViewFour" destination="Pba-j7-hCy" id="LsU-He-nyF"/>
+                        <outlet property="stackViewOne" destination="5s6-q0-5Vr" id="JmS-JM-FIy"/>
+                        <outlet property="stackViewSix" destination="paK-lD-mWX" id="Qlf-iu-Jmz"/>
+                        <outlet property="stackViewThree" destination="ncL-2M-zwN" id="Tgq-C2-sW0"/>
+                        <outlet property="stackViewTwo" destination="vSB-OF-Jf7" id="A5v-S6-NSJ"/>
                         <outlet property="tableBillingDetails" destination="P9O-w8-clr" id="8dr-Za-jm2"/>
                         <outlet property="tableBillingHeight" destination="18e-BY-pOD" id="P4R-cu-mhe"/>
                         <outlet property="taxAmountHeaderLabel" destination="Z9m-yD-eob" id="WHF-lE-c2f"/>
@@ -7422,16 +7429,16 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="USC-U9-AJP">
-                                <rect key="frame" x="0.0" y="56" width="414" height="660"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Booking Building" translatesAutoresizingMaskIntoConstraints="NO" id="9Wq-d9-YVb">
-                                        <rect key="frame" x="0.0" y="214" width="414" height="100"/>
+                                        <rect key="frame" x="0.0" y="236.33333333333337" width="414" height="100"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="100" id="X15-fB-s9L"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NO SERVICE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vVC-Ef-sOq">
-                                        <rect key="frame" x="10" y="291" width="394" height="23"/>
+                                        <rect key="frame" x="10" y="313.33333333333331" width="394" height="23"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="23" id="LaK-dF-lr9"/>
                                         </constraints>
@@ -7440,7 +7447,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="520" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Dy6-SE-coa">
-                                        <rect key="frame" x="0.0" y="15" width="414" height="645"/>
+                                        <rect key="frame" x="0.0" y="15" width="414" height="701"/>
                                         <color key="backgroundColor" red="0.1019607843" green="0.23529411759999999" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="OnGoingTableViewCell" rowHeight="520" id="03d-8w-cu8" customClass="OnGoingTableViewCell" customModule="Ironbox" customModuleProvider="target">

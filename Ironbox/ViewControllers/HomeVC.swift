@@ -115,6 +115,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
     var moveToPackagePage = false
   var subscriptionMinimumOrderQuantity = ""
     var remainingPoints = ""
+    var subscriptionBalanceLow = false
     
     let yourAttributes : [NSAttributedStringKey: Any] = [
         NSAttributedStringKey.font : UIFont(name: FONT_LIGHT, size: 14)!,
@@ -475,7 +476,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         let strVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString")
         
         let param: [String: Any] = ["":""]
-        let url = "http://13.126.228.76/Ironbox_new/public/IroningVendor/versioncheck?id=6&version=\(strVersion ?? "")"
+        let url = "http://43.205.221.246/Ironbox_new/public/IroningVendor/versioncheck?id=6&version=\(strVersion ?? "")"
         self.CheckNetwork()
       
         AlamofireHC.newRequestPOST(url, params: (param  ) as [String : AnyObject], headers: header, success: { (JSON) in
@@ -748,7 +749,8 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
                 let rating = json.value(forKey: "rating")
                 let strRating = String(describing: rating!)
                 let remainingPoint = json.value(forKey: "remaining_points")
-                self.remainingPoints = String(describing: remainingPoint)
+                
+                self.remainingPoints = String(describing: remainingPoint ?? "")
                 let subscribers = json.value(forKey: "subscribers")
                 let startingPopupImg = json.value(forKey: "home_img")
                 if UserDefaults.standard.value(forKey: "enterFirstTime") as! String == "true"{
@@ -763,25 +765,28 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
                 UserDefaults.standard.set("false", forKey: "enterFirstTime")
                 if let subscribeValues = subscribers as? Dictionary<String,Any>{
                     if let minorderQty = Int(subscribeValues["minimum_order_quantity"] as? String ?? ""){
-                        if (Int(self.remainingPoints) ?? 0 > Int(minorderQty)){
+                        if (Int(self.remainingPoints) ?? 0 < Int(minorderQty)){
                             self.subscriptionMinimumOrderQuantity = String(minorderQty)
                             self.btnCash.isHidden = false
                             self.btnWallet.isHidden = false
+                            self.subscriptionBalanceLow = true
                         }else{
                             self.subscriptionMinimumOrderQuantity = String(minorderQty)
                             self.btnCash.isHidden = true
                             self.btnWallet.isHidden = true
-                           
                             self.strPaymentType = "Subscribtion"
+                            self.subscriptionBalanceLow = false
                         }
                         self.moveToPackagePage = false
                     }else{
                         self.moveToPackagePage = true
+                        self.subscriptionBalanceLow = true
                     }
                     print("allValues" , subscribeValues["minimum_order_quantity"])
                   
                 }else{
                     self.moveToPackagePage = true
+                    self.subscriptionBalanceLow = true
                 }
             
                 
@@ -873,11 +878,13 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
     }
     @IBAction func subscriptionAtn(_ sender: Any) {
 //
-        if moveToPackagePage{
+        if (moveToPackagePage && subscriptionBalanceLow) || (moveToPackagePage == false && subscriptionBalanceLow){
             let packageVC = self.storyboard?.instantiateViewController(withIdentifier: "AddPackageViewController") as! AddPackageViewController
+            packageVC.buyBtnShow = subscriptionBalanceLow
                   navigationController?.pushViewController(packageVC, animated: true)
         }else{
             let subscriptionVc = self.storyboard?.instantiateViewController(withIdentifier: "SubscriptionDetailController") as! SubscriptionDetailController
+            subscriptionVc.buyBtnShow = subscriptionBalanceLow
             navigationController?.pushViewController(subscriptionVc, animated: true)
         }
       
@@ -1812,7 +1819,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
                 return false
             }
             
-            if moveToPackagePage{
+            if (moveToPackagePage && subscriptionBalanceLow) || (moveToPackagePage == false && subscriptionBalanceLow){
                 guard count >= 10 else {
                     ToastCenter.default.cancelAll()
                     Toast(text: "Clothes minimum 10 numbers only accepted", duration: 2.5).show()
@@ -1824,7 +1831,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
                     Toast(text: "Subscribe user Clothes minimum \(subscriptionMinimumOrderQuantity) numbers only accepted", duration: 2.5).show()
                     return false
                 }
-                guard count > (Int(remainingPoints) ?? 0) else{
+                guard count <= (Int(remainingPoints) ?? 0) else{
                     ToastCenter.default.cancelAll()
                     Toast(text: "Subscribe user only \(remainingPoints) available please Recharge", duration: 2.5).show()
                     return false
@@ -1847,6 +1854,13 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
     {
         view.endEditing(true)
         strQuantity = fieldCount.text
+//        if (Int(remainingPoints) ?? 0) <= (Int(strQuantity) ?? 0){
+//            print("true")
+//        }else{
+//            print("false")
+//        }
+        
+        
         self.bookingConfirmationAPICall()
         
 //        if txtClothesCount.text == "" || (txtClothesCount.text?.trimmingCharacters(in: .whitespaces).isEmpty)!
@@ -1916,7 +1930,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
         
         let accessToken = userDefaults.object(forKey: ACCESS_TOKEN)
         let header:HTTPHeaders = ["Accept":"application/json", "Authorization":accessToken as! String]
-        if moveToPackagePage == false{
+        if moveToPackagePage == false && subscriptionBalanceLow == false{
             strPaymentType = "Subscribtion"
         }
         
@@ -1930,7 +1944,7 @@ class HomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UICo
             "bookingType":deliverytype,
             "voucher_code": fieldVoucherCode.text
         ]
-        //        print("addressId,TimeSlotId,bookingDate,payment_type,promode_code,quantity,bookingType", strAddressId,strTimeSlotID,strBookingDate,strPaymentType,txtPromoCode.text,strQuantity)
+        //        print("addressId,TimeSlotId,bookingDate,payment_type,promode_code,quantity,bookingType", strAddressId,strTimeSlotID,strBookingDate,strPaymentType,txtPromoCode.text,strQuantity) strQuantiity is more than some items 
         print("Params",param)
         print("token", accessToken)
         self.CheckNetwork()

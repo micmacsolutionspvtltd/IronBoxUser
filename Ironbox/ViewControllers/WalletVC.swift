@@ -46,7 +46,7 @@ class WalletVC: UIViewController, UITextFieldDelegate{
         self.navigationItem.setLeftBarButtonItems([item], animated: true)
         //razorpayObj = RazorpayCheckout.initWithKey("rzp_live_vq8tmnnZmbWVkx", andDelegate: self)
         razorpayObj = RazorpayCheckout.initWithKey("rzp_live_li9Fr16AIXoqpK", andDelegateWithData: self)
-        
+      //  razorpayObj = RazorpayCheckout.initWithKey("rzp_test_Ah4i08pOreY6XZ", andDelegateWithData: self)
         //        razorpay = Razorpay.initWithKey("", andDelegate: self)
         
 

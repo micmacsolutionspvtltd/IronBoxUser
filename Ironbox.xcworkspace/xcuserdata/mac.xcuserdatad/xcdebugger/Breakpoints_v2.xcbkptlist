@@ -7,16 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "87D608D0-E745-48D7-A550-3548AB193397"
+            uuid = "AE3CD4A7-0BE2-4719-9134-D511D75C76CF"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Ironbox/Main Class/AlamofireHC.swift"
+            filePath = "Ironbox/ViewControllers/OrderHistoryVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "118"
-            endingLineNumber = "118"
-            landmarkName = "newRequestPOST(_:params:headers:success:failure:)"
+            startingLineNumber = "114"
+            endingLineNumber = "114"
+            landmarkName = "getOrderHistory()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

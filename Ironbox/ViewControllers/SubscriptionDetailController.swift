@@ -25,7 +25,7 @@ class SubscriptionDetailController: UIViewController {
     @IBOutlet weak var seeAllBtn: UIButton!
     var viewAll : Bool? = false
     var subscriptionDetails : SubscriptionDetailModel?
-    
+    var buyBtnShow = false
     override func viewDidLoad() {
         super.viewDidLoad()
         prePareViews()
@@ -40,6 +40,7 @@ class SubscriptionDetailController: UIViewController {
     }
     @IBAction func viewPackageAtn(_ sender: Any) {
         let subscriptionVc = self.storyboard?.instantiateViewController(withIdentifier: "AddPackageViewController") as! AddPackageViewController
+        subscriptionVc.buyBtnShow = buyBtnShow
                navigationController?.pushViewController(subscriptionVc, animated: true)
     }
     
